@@ -1,0 +1,28 @@
+{
+  "name": "ddlog_dl",
+  "rules": {
+    "PARSE": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "parse"
+        },
+        {
+          "type": "BLANK"
+        }
+      ]
+    }
+  },
+  "extras": [
+    {
+      "type": "PATTERN",
+      "value": "\\s"
+    }
+  ],
+  "conflicts": [],
+  "externals": [],
+  "inline": [],
+  "supertypes": []
+}
+
