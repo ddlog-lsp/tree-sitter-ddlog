@@ -60,21 +60,84 @@ module.exports = grammar({
     _expr: $ =>
       choice(
         $._term,
-        // $.expr_bit_slice,
-        // $.expr_function_call,
-        // $.expr_function_call_dot,
-        // $.expr_struct_field,
+        $.expr_add,
+        $.expr_bit_and,
+        $.expr_bit_or,
+        $.expr_bit_slice,
+        $.expr_block,
+        $.expr_cat,
+        $.expr_div,
+        $.expr_eq,
+        $.expr_function_call,
+        $.expr_function_call_dot,
+        $.expr_gt,
+        $.expr_gteq,
+        $.expr_log_and,
+        $.expr_log_or,
+        $.expr_lt,
+        $.expr_lteq,
+        $.expr_mul,
+        $.expr_neq,
+        $.expr_parens,
+        $.expr_rem,
+        $.expr_seq,
+        $.expr_shl,
+        $.expr_shr,
+        $.expr_struct_field,
+        $.expr_sub,
         // $.expr_type_annotation,
       ),
 
+    expr_add: $ => prec.right(seq($._expr, "+", $._expr)),
+
+    expr_bit_and: $ => prec.right(seq($._expr, "&", $._expr)),
+
+    expr_bit_or: $ => prec.right(seq($._expr, "|", $._expr)),
+
     expr_bit_slice: $ => seq($._expr, "[", Pattern.decimal, ",", Pattern.decimal, "]"),
+
+    expr_block: $ => seq("{", $._term, "}"),
+
+    expr_cat: $ => prec.right(seq($._expr, "++", $._expr)),
+
+    expr_div: $ => prec.right(seq($._expr, "/", $._expr)),
+
+    expr_eq: $ => prec.right(seq($._expr, "==", $._expr)),
 
     expr_function_call: $ => seq($._expr, "(", optional(seq($._expr, repeat(seq(",", $._expr)))), ")"),
 
     expr_function_call_dot: $ =>
       seq($._expr, ".", $.name_func, "(", optional(seq($._expr, repeat(seq(",", $._expr)))), ")"),
 
+    expr_gt: $ => prec.right(seq($._expr, ">", $._expr)),
+
+    expr_gteq: $ => prec.right(seq($._expr, ">=", $._expr)),
+
+    expr_log_and: $ => prec.right(seq($._expr, "and", $._expr)),
+
+    expr_log_or: $ => prec.right(seq($._expr, "or", $._expr)),
+
+    expr_lt: $ => prec.right(seq($._expr, "<", $._expr)),
+
+    expr_lteq: $ => prec.right(seq($._expr, "<=", $._expr)),
+
+    expr_mul: $ => prec.right(seq($._expr, "*", $._expr)),
+
+    expr_neq: $ => prec.right(seq($._expr, "!=", $._expr)),
+
+    expr_parens: $ => seq("(", $._term, ")"),
+
+    expr_rem: $ => prec.right(seq($._expr, "%", $._expr)),
+
+    expr_seq: $ => prec.right(seq($._expr, ";", $._expr)),
+
+    expr_shl: $ => prec.right(seq($._expr, "<<", $._expr)),
+
+    expr_shr: $ => prec.right(seq($._expr, ">>", $._expr)),
+
     expr_struct_field: $ => seq($._expr, ".", $._ident),
+
+    expr_sub: $ => prec.right(seq($._expr, "-", $._expr)),
 
     expr_type_annotation: $ => seq($._expr, ":", $._type_spec_simple),
 
@@ -105,17 +168,17 @@ module.exports = grammar({
       ),
 
     item_function_normal: $ =>
-      seq(
-        "function",
-        $.name_func,
-        "(",
-        optional(seq($.arg, repeat(seq(",", $.arg)))),
-        ")",
-        ":",
-        $._type_spec_simple,
-        "{",
-        $._expr,
-        "}",
+      prec.right(
+        seq(
+          "function",
+          $.name_func,
+          "(",
+          optional(seq($.arg, repeat(seq(",", $.arg)))),
+          ")",
+          ":",
+          $._type_spec_simple,
+          choice(seq("=", $._expr), "{", $._expr, "}"),
+        ),
       ),
 
     _item_relation: $ => choice($.item_relation_args, $.item_relation_elem),
@@ -209,11 +272,14 @@ module.exports = grammar({
     _pattern_cons: $ => choice($.pattern_cons_named, $.pattern_cons_positional),
 
     pattern_cons_named: $ =>
-      seq(
-        $.name_cons,
-        "{",
-        optional(seq(".", $.name_field, "=", $._pattern, repeat(seq(",", ".", $.name_field, "=", $._pattern)))),
-        "}",
+      prec(
+        1,
+        seq(
+          $.name_cons,
+          "{",
+          optional(seq(".", $.name_field, "=", $._pattern, repeat(seq(",", ".", $.name_field, "=", $._pattern)))),
+          "}",
+        ),
       ),
 
     pattern_cons_positional: $ =>
@@ -253,11 +319,13 @@ module.exports = grammar({
 
     _term: $ =>
       choice(
+        $.term_tuple,
         $.term_break,
         $.term_cond,
         $.term_continue,
         $.term_for,
         $._term_literal,
+        $.term_match,
         $.term_return,
         $.term_decl_var,
         $.term_wildcard,
@@ -288,9 +356,12 @@ module.exports = grammar({
 
     _term_literal: $ => choice($._literal_bool, $.literal_map, $.literal_vec),
 
-    term_match: $ => seq("match", "(", $._expr, ")", "{", $.match_clause, repeat(seq(",", $.match_clause)), "}"),
+    term_match: $ =>
+      seq("match", "(", $._expr, ")", "{", optional($.match_clause), repeat(seq(",", $.match_clause)), "}"),
 
-    term_return: $ => seq("return", optional($._expr)),
+    term_return: $ => prec.right(seq("return", optional($._expr))),
+
+    term_tuple: $ => seq("(", $._term, repeat1(seq(",", $._term)), ")"),
 
     term_wildcard: $ => "_",
 
