@@ -2,21 +2,25 @@
 
 const Pattern = {
   decimal: /[0-9]+/,
+  ident_lower: /[a-z_][a-zA-Z0-9_]*/,
+  ident_upper: /[A-Z][a-zA-Z0-9_]*/,
 };
 
 module.exports = grammar({
   name: "ddlog_dl",
 
-  conflicts: $ => [[$.term_cond], [$.term_return]],
+  conflicts: $ => [[$.term_cond], [$.term_return], [$.name_cons, $.name_type]],
 
-  word: $ => $._ident_lower,
+  extras: $ => [$._comment_block, $._comment_line, /[\s\uFEFF\u2060\u200B\u00A0]/],
+
+  word: $ => $.word,
 
   rules: {
-    ROOT: $ => repeat($.annotated_item),
+    ROOT: $ => repeat($._annotated_item),
 
-    annotated_item: $ => seq(optional($.attributes), $.item),
+    _annotated_item: $ => seq(optional($.attributes), $._item),
 
-    arg: $ => seq($.name_arg, ":", $.type_spec_simple),
+    arg: $ => seq($.name_arg, ":", $._type_spec_simple),
 
     _atom: $ => choice($.atom_named, $.atom_positional, $.atom_elem),
 
@@ -42,11 +46,16 @@ module.exports = grammar({
 
     attributes: $ => seq("#[", $.attribute, repeat(seq(",", $.attribute)), "]"),
 
-    _constructor: $ => choice($.constructor_positional, $.constructor_named),
+    _comment_block: $ => seq("/*", repeat(choice($._comment_block, /[^/*]+/, "/", "*")), "*/"),
+
+    _comment_line: $ => token(seq("//", /.*/)),
+
+    _constructor: $ => choice($.constructor_named, $.constructor_positional),
 
     constructor_positional: $ => seq(optional($.attributes), $.name_cons),
 
-    constructor_named: $ => seq(optional($.attributes), $.name_cons, "{", $.field, repeat(seq(",", $.field)), "}"),
+    constructor_named: $ =>
+      prec(1, seq(optional($.attributes), $.name_cons, "{", $.field, repeat(seq(",", $.field)), "}")),
 
     _expr: $ =>
       choice(
@@ -67,23 +76,17 @@ module.exports = grammar({
 
     expr_struct_field: $ => seq($._expr, ".", $._ident),
 
-    expr_type_annotation: $ => seq($._expr, ":", $.type_spec_simple),
+    expr_type_annotation: $ => seq($._expr, ":", $._type_spec_simple),
 
-    field: $ => seq(optional($.attributes), $.name_field, ":", $.type_spec_simple),
+    field: $ => seq(optional($.attributes), $.name_field, ":", $._type_spec_simple),
 
-    _ident: $ => choice($._ident_lower, $._ident_upper),
+    _ident: $ => choice(Pattern.ident_lower, Pattern.ident_upper),
 
-    _ident_lower: $ => token(seq(/[a-z_]/, repeat(/[a-zA-Z0-9_]/))),
+    _ident_lower_scoped: $ => /(([a-z_][a-zA-Z0-9_]*|[A-Z][a-zA-Z0-9_]*)\.)*[a-z_][a-zA-Z0-9_]*/,
 
-    _ident_lower_scoped: $ => seq(optional($.ident_scope), $._ident_lower),
+    _ident_upper_scoped: $ => /(([a-z_][a-zA-Z0-9_]*|[A-Z][a-zA-Z0-9_]*)\.)*[A-Z][a-zA-Z0-9_]*/,
 
-    ident_scope: $ => prec.right(repeat1(seq($._ident, "::"))),
-
-    _ident_upper: $ => token(seq(/[A-Z]/, repeat(/[a-zA-Z0-9_]/))),
-
-    _ident_upper_scoped: $ => seq(optional($.ident_scope), $._ident_upper),
-
-    item: $ => choice($.item_import, $._item_function, $._item_relation, $.item_rule, $._item_typedef),
+    _item: $ => choice($.item_import, $._item_function, $._item_relation, $.item_rule, $._item_typedef),
 
     item_import: $ => seq("import", $.module_path, optional(seq("as", $.module_alias))),
 
@@ -98,7 +101,7 @@ module.exports = grammar({
         optional(seq($.arg, repeat(seq(",", $.arg)))),
         ")",
         ":",
-        $.type_spec_simple,
+        $._type_spec_simple,
       ),
 
     item_function_normal: $ =>
@@ -109,7 +112,7 @@ module.exports = grammar({
         optional(seq($.arg, repeat(seq(",", $.arg)))),
         ")",
         ":",
-        $.type_spec_simple,
+        $._type_spec_simple,
         "{",
         $._expr,
         "}",
@@ -121,6 +124,7 @@ module.exports = grammar({
       seq(
         optional(choice("input", "output")),
         "relation",
+        optional("&"),
         $.name_rel,
         "(",
         $.arg,
@@ -135,7 +139,7 @@ module.exports = grammar({
         "relation",
         $.name_rel,
         "[",
-        $.type_spec_simple,
+        $._type_spec_simple,
         "]",
         optional($.primary_key),
       ),
@@ -155,7 +159,7 @@ module.exports = grammar({
     item_typedef_normal: $ =>
       seq(
         "typedef",
-        $.name_var_type,
+        $.name_type,
         optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">")),
         "=",
         $._type_spec,
@@ -181,21 +185,23 @@ module.exports = grammar({
 
     module_path: $ => seq($._ident, repeat(seq("::", $._ident))),
 
-    name: $ => $._ident_lower,
+    name: $ => Pattern.ident_lower,
 
-    name_arg: $ => $._ident_lower,
+    name_arg: $ => Pattern.ident_lower,
 
     name_cons: $ => $._ident_upper_scoped,
 
-    name_field: $ => $._ident_lower,
+    name_field: $ => Pattern.ident_lower,
 
     name_func: $ => $._ident_lower_scoped,
 
     name_rel: $ => $._ident_upper_scoped,
 
-    name_var_term: $ => $._ident_lower,
+    name_type: $ => choice($._ident_lower_scoped, $._ident_upper_scoped),
 
-    name_var_type: $ => token(seq("'", /[A-Z]/, repeat(/[a-zA-Z0-9_]/))),
+    name_var_term: $ => $._ident_lower_scoped,
+
+    name_var_type: $ => /'[A-Z][a-zA-Z0-9_]*/,
 
     _pattern: $ =>
       choice($._pattern_cons, $.pattern_term_decl_var, $._pattern_literal, $.pattern_tuple, $.pattern_wildcard),
@@ -304,7 +310,7 @@ module.exports = grammar({
         $.type_spec_var,
       ),
 
-    type_spec_alias: $ => seq($.name_var_type, optional(seq("<", $._type_spec, repeat(seq(",", $._type_spec)), ">"))),
+    type_spec_alias: $ => seq($.name_type, optional(seq("<", $._type_spec, repeat(seq(",", $._type_spec)), ">"))),
 
     type_spec_bigint: $ => "bigint",
 
@@ -337,14 +343,28 @@ module.exports = grammar({
 
     type_spec_integer: $ => seq("signed", "<", Pattern.decimal, ">"),
 
-    type_spec_simple: $ => "type_spec_simple",
+    _type_spec_simple: $ =>
+      choice(
+        $.type_spec_bigint,
+        $.type_spec_bool,
+        $.type_spec_string,
+        $.type_spec_bitvector,
+        $.type_spec_double,
+        $.type_spec_float,
+        $.type_spec_tuple,
+        $.type_spec_alias,
+        $.type_spec_var,
+        $.type_spec_function,
+      ),
 
     type_spec_string: $ => "string",
 
-    type_spec_tuple: $ => seq("(", repeat($.type_spec_simple), ")"),
+    type_spec_tuple: $ => seq("(", repeat($._type_spec_simple), ")"),
 
     type_spec_union: $ => prec.right(seq(repeat(seq($._constructor, "|")), $._constructor)),
 
     type_spec_var: $ => "var",
+
+    word: $ => token(seq(/[a-z_]/, repeat(/[a-zA-Z0-9_]/))),
   },
 });
