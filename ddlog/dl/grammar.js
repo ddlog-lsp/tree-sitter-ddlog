@@ -9,7 +9,28 @@ const Pattern = {
 module.exports = grammar({
   name: "ddlog_dl",
 
-  conflicts: $ => [[$.term_cond], [$.term_return], [$.name_cons, $.name_type]],
+  conflicts: $ => [
+    [$.expr_assign],
+    [$.expr_eq, $.expr_gt],
+    [$.expr_eq, $.expr_lt],
+    [$.expr_eq, $.expr_lteq],
+    [$.expr_eq, $.expr_gteq],
+    [$.expr_gt],
+    [$.expr_gt, $.expr_gteq],
+    [$.expr_gt, $.expr_lt],
+    [$.expr_gt, $.expr_lteq],
+    [$.expr_gt, $.expr_neq],
+    [$.expr_gteq],
+    [$.expr_gteq, $.expr_lt],
+    [$.expr_gteq, $.expr_lteq],
+    [$.expr_gteq, $.expr_neq],
+    [$.expr_lt],
+    [$.expr_lt, $.expr_lteq],
+    [$.expr_lt, $.expr_neq],
+    [$.expr_lteq],
+    [$.expr_lteq, $.expr_neq],
+    [$.name_cons, $.name_type],
+  ],
 
   extras: $ => [$._comment_block, $._comment_line, /[\s\uFEFF\u2060\u200B\u00A0]/],
 
@@ -20,16 +41,15 @@ module.exports = grammar({
 
     _annotated_item: $ => seq(optional($.attributes), $._item),
 
-    arg: $ => seq($.name_arg, ":", $._type_spec_simple),
+    arg: $ => seq($.name_arg, ":", $._type_atom),
 
-    _atom: $ => choice($.atom_named, $.atom_positional, $.atom_elem),
+    _atom: $ => choice($.atom_rec, $.atom_pos, $.atom_elem),
 
     atom_elem: $ => seq($.name_rel, "[", $._expr, "]"),
 
-    atom_positional: $ =>
-      seq(optional(seq($.name_var_term, "in")), $.name_rel, "(", $._expr, repeat(seq(",", $._expr)), ")"),
+    atom_pos: $ => seq(optional(seq($.name_var_term, "in")), $.name_rel, "(", $._expr, repeat(seq(",", $._expr)), ")"),
 
-    atom_named: $ =>
+    atom_rec: $ =>
       seq(
         optional(seq($.name_var_term, "in")),
         $.name_rel,
@@ -46,116 +66,185 @@ module.exports = grammar({
 
     attributes: $ => seq("#[", $.attribute, repeat(seq(",", $.attribute)), "]"),
 
+    bool_false: $ => "false",
+
+    bool_true: $ => "true",
+
     _comment_block: $ => seq("/*", repeat(choice($._comment_block, /[^/*]+/, "/", "*")), "*/"),
 
     _comment_line: $ => token(seq("//", /.*/)),
 
-    _constructor: $ => choice($.constructor_named, $.constructor_positional),
+    _cons: $ => choice($.cons_rec, $.cons_pos),
 
-    constructor_positional: $ => seq(optional($.attributes), $.name_cons),
+    cons_pos: $ => seq(optional($.attributes), $.name_cons),
 
-    constructor_named: $ =>
-      prec(1, seq(optional($.attributes), $.name_cons, "{", $.field, repeat(seq(",", $.field)), "}")),
+    cons_rec: $ => prec(1, seq(optional($.attributes), $.name_cons, "{", $.field, repeat(seq(",", $.field)), "}")),
+
+    _escape_sequence: $ =>
+      token.immediate(
+        seq("\\", choice(/[^xu0-7]/, /[0-7]{1,3}/, /x[0-9a-fA-F]{2}/, /u[0-9a-fA-F]{4}/, /u{[0-9a-fA-F]+}/)),
+      ),
 
     _expr: $ =>
       choice(
-        $._term,
         $.expr_add,
+        $.expr_assign,
         $.expr_bit_and,
+        $.expr_bit_neg,
         $.expr_bit_or,
         $.expr_bit_slice,
         $.expr_block,
+        $.expr_break,
+        $.expr_cast,
         $.expr_cat,
+        $.expr_cond,
+        $.expr_continue,
+        $.expr_cons_rec,
+        $.expr_cons_pos,
+        $.expr_decl_var,
         $.expr_div,
         $.expr_eq,
-        $.expr_function_call,
-        $.expr_function_call_dot,
+        $.expr_field,
+        $.expr_for,
+        $.expr_fun_call,
+        $.expr_fun_call_dot,
         $.expr_gt,
         $.expr_gteq,
+        $._expr_lit,
         $.expr_log_and,
+        $.expr_log_imp,
+        $.expr_log_neg,
         $.expr_log_or,
         $.expr_lt,
         $.expr_lteq,
+        $.expr_match,
         $.expr_mul,
+        $.expr_neg,
         $.expr_neq,
         $.expr_parens,
+        $.expr_proj,
         $.expr_rem,
+        $.expr_return,
         $.expr_seq,
         $.expr_shl,
         $.expr_shr,
-        $.expr_struct_field,
         $.expr_sub,
-        // $.expr_type_annotation,
+        $.expr_tuple,
+        $.expr_type,
+        $.expr_wild,
       ),
 
-    expr_add: $ => prec.right(seq($._expr, "+", $._expr)),
+    expr_add: $ => prec.left(11, seq($._expr, "+", $._expr)),
 
-    expr_bit_and: $ => prec.right(seq($._expr, "&", $._expr)),
+    expr_assign: $ => prec(1, seq($._expr, "=", $._expr)),
 
-    expr_bit_or: $ => prec.right(seq($._expr, "|", $._expr)),
+    expr_bit_and: $ => prec.left(7, seq($._expr, "&", $._expr)),
 
-    expr_bit_slice: $ => seq($._expr, "[", Pattern.decimal, ",", Pattern.decimal, "]"),
+    expr_bit_neg: $ => prec(14, seq("~", $._expr)),
 
-    expr_block: $ => seq("{", $._term, "}"),
+    expr_bit_or: $ => prec.left(5, seq($._expr, "|", $._expr)),
 
-    expr_cat: $ => prec.right(seq($._expr, "++", $._expr)),
+    expr_bit_slice: $ => prec(17, seq($._expr, "[", Pattern.decimal, ",", Pattern.decimal, "]")),
 
-    expr_div: $ => prec.right(seq($._expr, "/", $._expr)),
+    expr_bit_xor: $ => prec.left(6, seq($._expr, "^", $._expr)),
 
-    expr_eq: $ => prec.right(seq($._expr, "==", $._expr)),
+    expr_block: $ => seq("{", optional($._expr), "}"),
 
-    expr_function_call: $ => seq($._expr, "(", optional(seq($._expr, repeat(seq(",", $._expr)))), ")"),
+    expr_break: $ => "break",
 
-    expr_function_call_dot: $ =>
-      seq($._expr, ".", $.name_func, "(", optional(seq($._expr, repeat(seq(",", $._expr)))), ")"),
+    expr_cast: $ => prec(17, seq($._expr, "as", $._type_atom)),
 
-    expr_gt: $ => prec.right(seq($._expr, ">", $._expr)),
+    expr_cat: $ => prec.left(9, seq($._expr, "++", $._expr)),
 
-    expr_gteq: $ => prec.right(seq($._expr, ">=", $._expr)),
+    expr_cond: $ => prec.left(seq("if", $._expr, $._expr, optional(seq("else", $._expr)))),
 
-    expr_log_and: $ => prec.right(seq($._expr, "and", $._expr)),
+    expr_continue: $ => "continue",
 
-    expr_log_or: $ => prec.right(seq($._expr, "or", $._expr)),
+    _expr_cons: $ => choice($.expr_cons_rec, $.expr_cons_pos),
 
-    expr_lt: $ => prec.right(seq($._expr, "<", $._expr)),
+    expr_cons_rec: $ =>
+      prec(
+        1,
+        seq(
+          $.name_cons,
+          "{",
+          optional(seq(".", $.name_field, "=", $._expr, repeat(seq(",", ".", $.name_field, "=", $._expr)))),
+          "}",
+        ),
+      ),
 
-    expr_lteq: $ => prec.right(seq($._expr, "<=", $._expr)),
+    expr_cons_pos: $ => seq($.name_cons, optional(seq("{", optional(seq($._expr, repeat(seq(",", $._expr)))), "}"))),
 
-    expr_mul: $ => prec.right(seq($._expr, "*", $._expr)),
+    expr_decl_var: $ => seq(optional("var"), $.name_var_term),
 
-    expr_neq: $ => prec.right(seq($._expr, "!=", $._expr)),
+    expr_div: $ => prec.left(12, seq($._expr, "/", $._expr)),
 
-    expr_parens: $ => seq("(", $._term, ")"),
+    expr_eq: $ => prec.left(8, seq($._expr, "==", $._expr)),
 
-    expr_rem: $ => prec.right(seq($._expr, "%", $._expr)),
+    expr_field: $ => prec(17, seq($._expr, ".", $._ident)),
 
-    expr_seq: $ => prec.right(seq($._expr, ";", $._expr)),
+    // FIXME: precedence
+    expr_for: $ => prec(18, seq("for", "(", $.name_var_term, "in", $._expr, ")", $._expr)),
 
-    expr_shl: $ => prec.right(seq($._expr, "<<", $._expr)),
+    expr_fun_call: $ => prec(17, seq($._expr, "(", optional(seq($._expr, repeat(seq(",", $._expr)))), ")")),
 
-    expr_shr: $ => prec.right(seq($._expr, ">>", $._expr)),
+    expr_fun_call_dot: $ =>
+      prec(17, seq($._expr, ".", $.name_func, "(", optional(seq($._expr, repeat(seq(",", $._expr)))), ")")),
 
-    expr_struct_field: $ => seq($._expr, ".", $._ident),
+    expr_gt: $ => prec(8, seq($._expr, ">", $._expr)),
 
-    expr_sub: $ => prec.right(seq($._expr, "-", $._expr)),
+    expr_gteq: $ => prec(8, seq($._expr, ">=", $._expr)),
 
-    expr_type_annotation: $ => seq($._expr, ":", $._type_spec_simple),
+    _expr_lit: $ => choice($._literal_bool, $.literal_int, $.literal_map, $.literal_string, $.literal_vec),
 
-    field: $ => seq(optional($.attributes), $.name_field, ":", $._type_spec_simple),
+    expr_log_and: $ => prec.left(4, seq($._expr, "and", $._expr)),
 
-    _ident: $ => choice(Pattern.ident_lower, Pattern.ident_upper),
+    expr_log_imp: $ => prec.left(2, seq($._expr, "=>", $._expr)),
 
-    _ident_lower_scoped: $ => /(([a-z_][a-zA-Z0-9_]*|[A-Z][a-zA-Z0-9_]*)\.)*[a-z_][a-zA-Z0-9_]*/,
+    expr_log_neg: $ => prec(13, seq("not", $._expr)),
 
-    _ident_upper_scoped: $ => /(([a-z_][a-zA-Z0-9_]*|[A-Z][a-zA-Z0-9_]*)\.)*[A-Z][a-zA-Z0-9_]*/,
+    expr_log_or: $ => prec.left(3, seq($._expr, "or", $._expr)),
 
-    _item: $ => choice($.item_import, $._item_function, $._item_relation, $.item_rule, $._item_typedef),
+    expr_lt: $ => prec(8, seq($._expr, "<", $._expr)),
 
-    item_import: $ => seq("import", $.module_path, optional(seq("as", $.module_alias))),
+    expr_lteq: $ => prec(8, seq($._expr, "<=", $._expr)),
 
-    _item_function: $ => choice($.item_function_normal, $.item_function_extern),
+    expr_match: $ =>
+      seq("match", "(", $._expr, ")", "{", optional($.match_clause), repeat(seq(",", $.match_clause)), "}"),
 
-    item_function_extern: $ =>
+    expr_mul: $ => prec.left(12, seq($._expr, "*", $._expr)),
+
+    expr_neg: $ => prec(15, seq("-", $._expr)),
+
+    expr_neq: $ => prec.left(8, seq($._expr, "!=", $._expr)),
+
+    expr_parens: $ => seq("(", $._expr, ")"),
+
+    expr_proj: $ => prec(17, seq($._expr, ".", /[0-9]+/)),
+
+    expr_rem: $ => prec.left(12, seq($._expr, "%", $._expr)),
+
+    expr_return: $ => prec.right(seq("return", optional($._expr))),
+
+    expr_seq: $ => prec.right(0, seq($._expr, ";", $._expr)),
+
+    expr_shl: $ => prec.left(10, seq($._expr, "<<", $._expr)),
+
+    expr_shr: $ => prec.left(10, seq($._expr, ">>", $._expr)),
+
+    expr_sub: $ => prec.left(11, seq($._expr, "-", $._expr)),
+
+    expr_tuple: $ => seq("(", $._expr, repeat1(seq(",", $._expr)), ")"),
+
+    expr_type: $ => prec(17, seq($._expr, ":", $._type_atom)),
+
+    expr_wild: $ => "_",
+
+    field: $ => seq(optional($.attributes), $.name_field, ":", $._type_atom),
+
+    _function: $ => choice($.function, $.function_extern),
+
+    function_extern: $ =>
       seq(
         "extern",
         "function",
@@ -164,10 +253,10 @@ module.exports = grammar({
         optional(seq($.arg, repeat(seq(",", $.arg)))),
         ")",
         ":",
-        $._type_spec_simple,
+        $._type_atom,
       ),
 
-    item_function_normal: $ =>
+    function: $ =>
       prec.right(
         seq(
           "function",
@@ -176,69 +265,28 @@ module.exports = grammar({
           optional(seq($.arg, repeat(seq(",", $.arg)))),
           ")",
           ":",
-          $._type_spec_simple,
+          $._type_atom,
           choice(seq("=", $._expr), "{", $._expr, "}"),
         ),
       ),
 
-    _item_relation: $ => choice($.item_relation_args, $.item_relation_elem),
+    _ident: $ => choice(Pattern.ident_lower, Pattern.ident_upper),
 
-    item_relation_args: $ =>
-      seq(
-        optional(choice("input", "output")),
-        "relation",
-        optional("&"),
-        $.name_rel,
-        "(",
-        $.arg,
-        repeat(seq(",", $.arg)),
-        ")",
-        optional($.primary_key),
-      ),
+    _ident_lower_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*\.)*[a-z_][a-zA-Z0-9_]*/,
 
-    item_relation_elem: $ =>
-      seq(
-        optional(choice("input", "output")),
-        "relation",
-        $.name_rel,
-        "[",
-        $._type_spec_simple,
-        "]",
-        optional($.primary_key),
-      ),
+    _ident_upper_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*\.)*[A-Z][a-zA-Z0-9_]*/,
 
-    item_rule: $ => seq($._atom, repeat(seq(",", $._atom)), ":-", $._rhs_clause, repeat(seq(",", $._rhs_clause))),
+    import: $ => seq("import", $.module_path, optional(seq("as", $.module_alias))),
 
-    _item_typedef: $ => choice($.item_typedef_normal, $.item_typedef_external),
+    _item: $ => choice($.import, $._function, $._relation, $.rule, $._typedef),
 
-    item_typedef_external: $ =>
-      seq(
-        "extern",
-        "type",
-        $.name_var_type,
-        optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">")),
-      ),
-
-    item_typedef_normal: $ =>
-      seq(
-        "typedef",
-        $.name_type,
-        optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">")),
-        "=",
-        $._type_spec,
-      ),
-
-    _literal_bool: $ => choice($.literal_bool_false, $.literal_bool_true),
-
-    literal_bool_false: $ => "false",
-
-    literal_bool_true: $ => "true",
+    _literal_bool: $ => choice($.bool_false, $.bool_true),
 
     literal_int: $ => "literal_int",
 
     literal_map: $ => seq("[", $._expr, "->", $._expr, repeat(seq(",", $._expr, "->", $._expr)), "]"),
 
-    literal_string: $ => "literal_string",
+    literal_string: $ => seq('"', repeat(choice(token.immediate(/[^"\\\n]+|\\\r?\n/), $._escape_sequence)), '"'),
 
     literal_vec: $ => seq("[", $._expr, repeat(seq(",", $._expr)), "]"),
 
@@ -258,7 +306,7 @@ module.exports = grammar({
 
     name_func: $ => $._ident_lower_scoped,
 
-    name_rel: $ => $._ident_upper_scoped,
+    name_rel: $ => prec(1, $._ident_upper_scoped),
 
     name_type: $ => choice($._ident_lower_scoped, $._ident_upper_scoped),
 
@@ -269,9 +317,9 @@ module.exports = grammar({
     _pattern: $ =>
       choice($._pattern_cons, $.pattern_term_decl_var, $._pattern_literal, $.pattern_tuple, $.pattern_wildcard),
 
-    _pattern_cons: $ => choice($.pattern_cons_named, $.pattern_cons_positional),
+    _pattern_cons: $ => choice($.pattern_cons_rec, $.pattern_cons_pos),
 
-    pattern_cons_named: $ =>
+    pattern_cons_rec: $ =>
       prec(
         1,
         seq(
@@ -282,7 +330,7 @@ module.exports = grammar({
         ),
       ),
 
-    pattern_cons_positional: $ =>
+    pattern_cons_pos: $ =>
       seq($.name_cons, optional(seq("{", optional(seq($._pattern, repeat(seq(",", $._pattern)))), "}"))),
 
     _pattern_literal: $ => choice($._literal_bool, $.literal_int, $.literal_string),
@@ -295,146 +343,135 @@ module.exports = grammar({
 
     primary_key: $ => seq("primary", "key", "(", $.name_var_term, ")", $._expr),
 
-    _rhs_clause: $ =>
-      choice(
-        $.rhs_clause_assign,
-        $.rhs_clause_atom,
-        $.rhs_clause_atom_neg,
-        $.rhs_clause_expr,
-        $.rhs_clause_flat_map,
-        $.rhs_clause_grouping,
-      ),
+    _relation: $ => choice($.relation_args, $.relation_elem),
 
-    rhs_clause_assign: $ => seq($._expr, "=", $._expr),
-
-    rhs_clause_atom: $ => $._atom,
-
-    rhs_clause_atom_neg: $ => seq("not", $._atom),
-
-    rhs_clause_expr: $ => $._expr,
-
-    rhs_clause_flat_map: $ => prec(1, seq("var", $.name_var_term, "=", "FlatMap", "(", $._expr, ")")),
-
-    rhs_clause_grouping: $ => seq("var", $.name_var_term, "=", $._expr, ".", "group_by", "(", $._expr, ")"),
-
-    _term: $ =>
-      choice(
-        $.term_tuple,
-        $.term_break,
-        $.term_cond,
-        $.term_continue,
-        $.term_for,
-        $._term_literal,
-        $.term_match,
-        $.term_return,
-        $.term_decl_var,
-        $.term_wildcard,
-      ),
-
-    term_break: $ => "break",
-
-    _term_cons: $ => choice($.term_cons_named, $.term_cons_positional),
-
-    term_cons_named: $ =>
+    relation_args: $ =>
       seq(
-        $.name_cons,
-        "{",
-        optional(seq(".", $.name_field, "=", $._expr, repeat(seq(",", ".", $.name_field, "=", $._expr)))),
-        "}",
+        optional(choice("input", "output")),
+        "relation",
+        optional("&"),
+        $.name_rel,
+        "(",
+        $.arg,
+        repeat(seq(",", $.arg)),
+        ")",
+        optional($.primary_key),
       ),
 
-    term_cons_positional: $ =>
-      seq($.name_cons, optional(seq("{", optional(seq($._expr, repeat(seq(",", $._expr)))), "}"))),
+    relation_elem: $ => choice($.relation_input, $.relation_output, $.relation_internal),
 
-    term_cond: $ => seq("if", $._term, $._term, optional(seq("else", $._term))),
+    relation_input: $ => seq("input", "relation", $.name_rel, "[", $._type_atom, "]", optional($.primary_key)),
 
-    term_continue: $ => "continue",
+    relation_output: $ => seq("output", "relation", $.name_rel, "[", $._type_atom, "]", optional($.primary_key)),
 
-    term_decl_var: $ => seq(optional("var"), $.name_var_term),
+    relation_internal: $ => seq("relation", $.name_rel, "[", $._type_atom, "]", optional($.primary_key)),
 
-    term_for: $ => seq("for", "(", $.name_var_term, "in", $._expr, ")", $._term),
+    _rhs: $ => choice($.rhs_atom, $.rhs_atom_neg, $.rhs_expr, $.rhs_flat_map, $.rhs_grouping),
 
-    _term_literal: $ => choice($._literal_bool, $.literal_map, $.literal_vec),
+    rhs_atom: $ => $._atom,
 
-    term_match: $ =>
-      seq("match", "(", $._expr, ")", "{", optional($.match_clause), repeat(seq(",", $.match_clause)), "}"),
+    rhs_atom_neg: $ => seq("not", $._atom),
 
-    term_return: $ => prec.right(seq("return", optional($._expr))),
+    rhs_expr: $ => $._expr,
 
-    term_tuple: $ => seq("(", $._term, repeat1(seq(",", $._term)), ")"),
+    rhs_flat_map: $ => prec(1, seq("var", $.name_var_term, "=", "FlatMap", "(", $._expr, ")")),
 
-    term_wildcard: $ => "_",
+    rhs_grouping: $ => seq("var", $.name_var_term, "=", $._expr, ".", "group_by", "(", $._expr, ")"),
 
-    _type_spec: $ =>
-      choice(
-        $.type_spec_alias,
-        $.type_spec_bigint,
-        $.type_spec_bitvector,
-        $.type_spec_bool,
-        $.type_spec_double,
-        $.type_spec_float,
-        $.type_spec_function,
-        $.type_spec_integer,
-        $.type_spec_string,
-        $.type_spec_tuple,
-        $.type_spec_union,
-        $.type_spec_var,
+    rule: $ => seq($._atom, repeat(seq(",", $._atom)), ":-", $._rhs, repeat(seq(",", $._rhs))),
+
+    _typedef: $ => choice($.typedef, $.typedef_external),
+
+    typedef_external: $ =>
+      seq(
+        "extern",
+        "type",
+        $.name_var_type,
+        optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">")),
       ),
 
-    type_spec_alias: $ => seq($.name_type, optional(seq("<", $._type_spec, repeat(seq(",", $._type_spec)), ">"))),
+    typedef: $ =>
+      seq(
+        "typedef",
+        $.name_type,
+        optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">")),
+        "=",
+        $._type,
+      ),
 
-    type_spec_bigint: $ => "bigint",
-
-    type_spec_bitvector: $ => seq("bit", "<", Pattern.decimal, ">"),
-
-    type_spec_bool: $ => "bool",
-
-    type_spec_double: $ => "double",
-
-    type_spec_float: $ => "float",
-
-    type_spec_function: $ =>
+    _type: $ =>
       choice(
-        seq(
-          "function",
-          "(",
-          optional(seq(optional("mut"), $._type_spec, repeat(seq(",", optional("mut"), $._type_spec)))),
-          ")",
-          optional(seq(":", $._type_spec)),
-        ),
-        prec.left(
+        $.type_bit,
+        $.type_signed,
+        $.type_bigint,
+        $.type_double,
+        $.type_float,
+        $.type_string,
+        $.type_bool,
+        $.type_union,
+        $.type_user,
+        $.type_var,
+        $.type_fun,
+        $.type_tuple,
+      ),
+
+    type_bigint: $ => "bigint",
+
+    type_bit: $ => seq("bit", "<", Pattern.decimal, ">"),
+
+    type_bool: $ => "bool",
+
+    type_double: $ => "double",
+
+    type_float: $ => "float",
+
+    type_fun: $ =>
+      prec.right(
+        choice(
           seq(
-            "|",
-            optional(seq(optional("mut"), $._type_spec, repeat(seq(",", optional("mut"), $._type_spec)))),
-            "|",
-            optional(seq(":", $._type_spec)),
+            "function",
+            "(",
+            optional(seq(optional("mut"), $._type, repeat(seq(",", optional("mut"), $._type)))),
+            ")",
+            optional(seq(":", $._type)),
+          ),
+          prec.left(
+            seq(
+              "|",
+              optional(seq(optional("mut"), $._type, repeat(seq(",", optional("mut"), $._type)))),
+              "|",
+              optional(seq(":", $._type)),
+            ),
           ),
         ),
       ),
 
-    type_spec_integer: $ => seq("signed", "<", Pattern.decimal, ">"),
+    type_signed: $ => seq("signed", "<", Pattern.decimal, ">"),
 
-    _type_spec_simple: $ =>
+    _type_atom: $ =>
       choice(
-        $.type_spec_bigint,
-        $.type_spec_bool,
-        $.type_spec_string,
-        $.type_spec_bitvector,
-        $.type_spec_double,
-        $.type_spec_float,
-        $.type_spec_tuple,
-        $.type_spec_alias,
-        $.type_spec_var,
-        $.type_spec_function,
+        $.type_bit,
+        $.type_signed,
+        $.type_bigint,
+        $.type_double,
+        $.type_float,
+        $.type_string,
+        $.type_bool,
+        $.type_tuple,
+        $.type_user,
+        $.type_fun,
+        $.type_var,
       ),
 
-    type_spec_string: $ => "string",
+    type_string: $ => "string",
 
-    type_spec_tuple: $ => seq("(", repeat($._type_spec_simple), ")"),
+    type_tuple: $ => seq("(", repeat($._type_atom), ")"),
 
-    type_spec_union: $ => prec.right(seq(repeat(seq($._constructor, "|")), $._constructor)),
+    type_union: $ => prec.right(seq(repeat(seq($._cons, "|")), $._cons)),
 
-    type_spec_var: $ => "var",
+    type_user: $ => prec.right(seq($.name_type, optional(seq("<", $._type, repeat(seq(",", $._type)), ">")))),
+
+    type_var: $ => "var",
 
     word: $ => token(seq(/[a-z_]/, repeat(/[a-zA-Z0-9_]/))),
   },
