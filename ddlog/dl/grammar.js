@@ -272,9 +272,9 @@ module.exports = grammar({
 
     _ident: $ => choice(Pattern.ident_lower, Pattern.ident_upper),
 
-    _ident_lower_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*\.)*[a-z_][a-zA-Z0-9_]*/,
+    _ident_lower_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*::)*[a-z_][a-zA-Z0-9_]*/,
 
-    _ident_upper_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*\.)*[A-Z][a-zA-Z0-9_]*/,
+    _ident_upper_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*::)*[A-Z][a-zA-Z0-9_]*/,
 
     import: $ => seq("import", $.module_path, optional(seq("as", $.module_alias))),
 
