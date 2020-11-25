@@ -177,7 +177,7 @@ module.exports = grammar({
 
     expr_cons_pos: $ => seq($.name_cons, optional(seq("{", optional(seq($._expr, repeat(seq(",", $._expr)))), "}"))),
 
-    expr_decl_var: $ => seq(optional("var"), $.name_var_term),
+    expr_decl_var: $ => prec(18, seq(optional("var"), $.name_var_term)),
 
     expr_div: $ => prec.left(12, seq($._expr, "/", $._expr)),
 
