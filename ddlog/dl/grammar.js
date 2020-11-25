@@ -124,7 +124,6 @@ module.exports = grammar({
         $.expr_mul,
         $.expr_neg,
         $.expr_neq,
-        $.expr_parens,
         $.expr_proj,
         $.expr_rem,
         $.expr_return,
@@ -221,8 +220,6 @@ module.exports = grammar({
 
     expr_neq: $ => prec.left(8, seq($._expr, "!=", $._expr)),
 
-    expr_parens: $ => seq("(", $._expr, ")"),
-
     expr_proj: $ => prec(17, seq($._expr, ".", /[0-9]+/)),
 
     expr_rem: $ => prec.left(12, seq($._expr, "%", $._expr)),
@@ -237,7 +234,7 @@ module.exports = grammar({
 
     expr_sub: $ => prec.left(11, seq($._expr, "-", $._expr)),
 
-    expr_tuple: $ => seq("(", $._expr, repeat1(seq(",", $._expr)), ")"),
+    expr_tuple: $ => seq("(", optional(seq($._expr, repeat(seq(",", $._expr)), optional(","))), ")"),
 
     expr_type: $ => prec(17, seq($._expr, ":", $._type_atom)),
 
@@ -494,7 +491,7 @@ module.exports = grammar({
 
     type_string: $ => "string",
 
-    type_tuple: $ => seq("(", repeat($._type_atom), ")"),
+    type_tuple: $ => seq("(", optional(seq($._type_atom, repeat(seq(",", $._type_atom)), optional(","))), ")"),
 
     type_union: $ => prec.right(seq(repeat(seq($._cons, "|")), $._cons)),
 
