@@ -7,8 +7,9 @@
         "ddlog/dat/src"
       ],
       "sources": [
+        "ddlog/dat/src/binding.cc",
         "ddlog/dat/src/parser.c",
-        "ddlog/dat/src/binding.cc"
+        "ddlog/dat/src/scanner.cc"
       ],
       "cflags_c": [
         "-std=c99",
@@ -21,8 +22,9 @@
         "ddlog/dl/src"
       ],
       "sources": [
+        "ddlog/dl/src/binding.cc",
         "ddlog/dl/src/parser.c",
-        "ddlog/dl/src/binding.cc"
+        "ddlog/dl/src/scanner.cc"
       ],
       "cflags_c": [
         "-std=c99",
