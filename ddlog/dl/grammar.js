@@ -1,7 +1,10 @@
 /// <reference types="tree-sitter-cli/dsl" />
 
 const Pattern = {
-  decimal: /[0-9]+/,
+  literal_num_bin: /[0-1]+/,
+  literal_num_dec: /[0-9]+/,
+  literal_num_hex: /[0-9a-fA-F]+/,
+  literal_num_oct: /[0-7]+/,
   ident_lower: /[a-z_][a-zA-Z0-9_]*/,
   ident_upper: /[A-Z][a-zA-Z0-9_]*/,
 };
@@ -144,7 +147,7 @@ module.exports = grammar({
 
     expr_bit_or: $ => prec.left(5, seq($._expr, "|", $._expr)),
 
-    expr_bit_slice: $ => prec(17, seq($._expr, "[", Pattern.decimal, ",", Pattern.decimal, "]")),
+    expr_bit_slice: $ => prec(17, seq($._expr, "[", Pattern.literal_num_dec, ",", Pattern.literal_num_dec, "]")),
 
     expr_bit_xor: $ => prec.left(6, seq($._expr, "^", $._expr)),
 
@@ -282,7 +285,34 @@ module.exports = grammar({
 
     _literal_bool: $ => choice($.bool_false, $.bool_true),
 
-    literal_int: $ => "literal_int",
+    literal_int: $ =>
+      choice(
+        $.literal_int_dec,
+        prec(
+          18,
+          seq(
+            optional($.literal_int_dec),
+            choice(
+              seq("'b", $.literal_int_bin),
+              seq("'d", $.literal_int_dec),
+              seq("'h", $.literal_int_hex),
+              seq("'o", $.literal_int_oct),
+              seq("'sb", $.literal_int_bin),
+              seq("'sd", $.literal_int_dec),
+              seq("'sh", $.literal_int_hex),
+              seq("'so", $.literal_int_oct),
+            ),
+          ),
+        ),
+      ),
+
+    literal_int_bin: $ => Pattern.literal_num_bin,
+
+    literal_int_dec: $ => Pattern.literal_num_dec,
+
+    literal_int_hex: $ => Pattern.literal_num_hex,
+
+    literal_int_oct: $ => Pattern.literal_num_oct,
 
     literal_map: $ => seq("[", $._expr, "->", $._expr, repeat(seq(",", $._expr, "->", $._expr)), "]"),
 
@@ -417,7 +447,7 @@ module.exports = grammar({
 
     type_bigint: $ => "bigint",
 
-    type_bit: $ => seq("bit", "<", Pattern.decimal, ">"),
+    type_bit: $ => seq("bit", "<", Pattern.literal_num_dec, ">"),
 
     type_bool: $ => "bool",
 
@@ -446,7 +476,7 @@ module.exports = grammar({
         ),
       ),
 
-    type_signed: $ => seq("signed", "<", Pattern.decimal, ">"),
+    type_signed: $ => seq("signed", "<", Pattern.literal_num_dec, ">"),
 
     _type_atom: $ =>
       choice(
