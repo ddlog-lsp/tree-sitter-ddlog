@@ -31,45 +31,58 @@ void tree_sitter_ddlog_dl_external_scanner_deserialize(
 
 void skip_whitespace_and_comments(TSLexer *lexer) {
   while (iswspace(lexer->lookahead) || lexer->lookahead == '/') {
+    // consume remaining whitespace
     while (iswspace(lexer->lookahead)) {
       lexer->advance(lexer, true);
     }
 
+    // check if we are at the start of a comment
     if (lexer->lookahead == '/') {
       lexer->advance(lexer, false);
 
+      // check whether the comment is a line comment
       if (lexer->lookahead == '/') {
         lexer->advance(lexer, false);
+        // consume everything until the end of the line
         while (lexer->lookahead != 0 && lexer->lookahead != '\n') {
           lexer->advance(lexer, false);
         }
-      }
+      // otherwise check whether the comment is a block comment
+      } else {
+        size_t depth = 0;
 
-      size_t depth = 0;
+        // if the comment is a block comment, increment comment depth
+        if (lexer->lookahead == '*') {
+          lexer->advance(lexer, false);
+          depth += 1;
 
-      if (lexer->lookahead == '*') {
-        lexer->advance(lexer, false);
-        depth += 1;
-
-        while (depth > 0 && lexer->lookahead != 0) {
-          while (lexer->lookahead != '/' && lexer->lookahead != '*' && lexer->lookahead != 0) {
-            lexer->advance(lexer, false);
-          }
-          if (lexer->lookahead == '/') {
-            lexer->advance(lexer, false);
-            if (lexer->lookahead == '*') {
+          // continue processing block comments until depth is 0 or eof
+          while (depth > 0 && lexer->lookahead != 0) {
+            // consume everything that isn't '/', '*', or until eof
+            while (lexer->lookahead != '/' && lexer->lookahead != '*' &&
+                   lexer->lookahead != 0) {
               lexer->advance(lexer, false);
-              depth += 1;
             }
-            continue;
-          }
-          if (lexer->lookahead == '*') {
-            lexer->advance(lexer, false);
+
+            // handle nested block comments and increment comment depth as necessary
             if (lexer->lookahead == '/') {
               lexer->advance(lexer, false);
-              depth -= 1;
+              if (lexer->lookahead == '*') {
+                lexer->advance(lexer, false);
+                depth += 1;
+              }
+              continue;
             }
-            continue;
+
+            // handle end of block comments and decrement comment depth
+            if (lexer->lookahead == '*') {
+              lexer->advance(lexer, false);
+              if (lexer->lookahead == '/') {
+                lexer->advance(lexer, false);
+                depth -= 1;
+              }
+              continue;
+            }
           }
         }
       }
