@@ -106,6 +106,11 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
 
       skip_whitespace_and_comments(lexer);
 
+      if (lexer->lookahead == 0) {
+        lexer->result_symbol = RULE_END;
+        return true;
+      }
+
       while (iswalpha(lexer->lookahead)) {
         bool was_uc_ident = false;
 
