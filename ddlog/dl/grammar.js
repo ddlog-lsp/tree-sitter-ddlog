@@ -57,7 +57,7 @@ module.exports = grammar({
         optional(seq($.name_var_term, "in")),
         seq(optional("&"), $.name_rel),
         "(",
-        $._expr,
+        optional($._expr),
         repeat(seq(",", $._expr)),
         ")",
       ),
