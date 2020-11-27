@@ -410,7 +410,8 @@ module.exports = grammar({
 
     rhs_grouping: $ => seq("var", $.name_var_term, "=", $._expr, ".", "group_by", "(", $._expr, ")"),
 
-    rule: $ => seq($._atom, repeat(seq(",", $._atom)), ":-", $._rhs, repeat(seq(",", $._rhs)), $.rule_end),
+    rule: $ =>
+      seq($._atom, repeat(seq(",", $._atom)), optional(seq(":-", $._rhs, repeat(seq(",", $._rhs)))), $.rule_end),
 
     _typedef: $ => choice($.typedef, $.typedef_external),
 
