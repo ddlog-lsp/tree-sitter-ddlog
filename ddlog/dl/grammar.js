@@ -1,10 +1,11 @@
 /// <reference types="tree-sitter-cli/dsl" />
 
 const Pattern = {
-  literal_num_bin: /[0-1]+/,
-  literal_num_dec: /[0-9]+/,
-  literal_num_hex: /[0-9a-fA-F]+/,
-  literal_num_oct: /[0-7]+/,
+  literal_num_bin: /[0-1][0-1_]*/,
+  literal_num_dec: /[0-9][0-9_]*/,
+  literal_num_float: /[0-9][0-9_]*(\.[0-9][0-9_]*)?([eE][+-]?[0-9][0-9_]*)?/,
+  literal_num_hex: /[0-9a-fA-F][0-9a-fA-F_]*/,
+  literal_num_oct: /[0-7][0-7_]*/,
   ident_lower: /[a-z_][a-zA-Z0-9_]*/,
   ident_upper: /[A-Z][a-zA-Z0-9_]*/,
 };
@@ -207,7 +208,7 @@ module.exports = grammar({
 
     expr_gteq: $ => prec(8, seq($._expr, ">=", $._expr)),
 
-    _expr_lit: $ => choice($._literal_bool, $.literal_int, $.literal_map, $.literal_string, $.literal_vec),
+    _expr_lit: $ => choice($._literal_bool, $.literal_num, $.literal_map, $.literal_string, $.literal_vec),
 
     expr_log_and: $ => prec.left(4, seq($._expr, "and", $._expr)),
 
@@ -292,34 +293,37 @@ module.exports = grammar({
 
     _literal_bool: $ => choice($.bool_false, $.bool_true),
 
-    literal_int: $ =>
+    literal_num: $ =>
       choice(
-        $.literal_int_dec,
+        prec.right(choice($.literal_num_dec, $.literal_num_float)),
         prec(
           18,
           seq(
-            optional($.literal_int_dec),
+            optional($.literal_num_dec),
             choice(
-              seq("'b", $.literal_int_bin),
-              seq("'d", $.literal_int_dec),
-              seq("'h", $.literal_int_hex),
-              seq("'o", $.literal_int_oct),
-              seq("'sb", $.literal_int_bin),
-              seq("'sd", $.literal_int_dec),
-              seq("'sh", $.literal_int_hex),
-              seq("'so", $.literal_int_oct),
+              seq("'b", $.literal_num_bin),
+              seq("'d", $.literal_num_dec),
+              seq("'f", $.literal_num_float),
+              seq("'h", $.literal_num_hex),
+              seq("'o", $.literal_num_oct),
+              seq("'sb", $.literal_num_bin),
+              seq("'sd", $.literal_num_dec),
+              seq("'sh", $.literal_num_hex),
+              seq("'so", $.literal_num_oct),
             ),
           ),
         ),
       ),
 
-    literal_int_bin: $ => Pattern.literal_num_bin,
+    literal_num_bin: $ => Pattern.literal_num_bin,
 
-    literal_int_dec: $ => Pattern.literal_num_dec,
+    literal_num_dec: $ => Pattern.literal_num_dec,
 
-    literal_int_hex: $ => Pattern.literal_num_hex,
+    literal_num_float: $ => Pattern.literal_num_float,
 
-    literal_int_oct: $ => Pattern.literal_num_oct,
+    literal_num_hex: $ => Pattern.literal_num_hex,
+
+    literal_num_oct: $ => Pattern.literal_num_oct,
 
     literal_map: $ => seq("[", $._expr, "->", $._expr, repeat(seq(",", $._expr, "->", $._expr)), "]"),
 
@@ -370,7 +374,7 @@ module.exports = grammar({
     pattern_cons_pos: $ =>
       seq($.name_cons, optional(seq("{", optional(seq($._pattern, repeat(seq(",", $._pattern)))), "}"))),
 
-    _pattern_literal: $ => choice($._literal_bool, $.literal_int, $.literal_string),
+    _pattern_literal: $ => choice($._literal_bool, $.literal_num, $.literal_string),
 
     pattern_term_decl_var: $ => seq(optional("var"), $.name_var_term),
 
