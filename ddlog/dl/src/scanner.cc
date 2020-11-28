@@ -330,7 +330,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
           }
 
           // skip remaining alnum characters
-          while (iswalpha(lexer->lookahead)) {
+          while (iswalpha(lexer->lookahead) || lexer->lookahead == '_') {
             lexer->advance(lexer, false);
           }
 
