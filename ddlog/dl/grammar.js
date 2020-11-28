@@ -508,7 +508,7 @@ module.exports = grammar({
 
     type_user: $ => prec.right(seq($.name_type, optional(seq("<", $._type, repeat(seq(",", $._type)), ">")))),
 
-    type_var: $ => "var",
+    type_var: $ => seq("'", token.immediate(Pattern.ident_upper)),
 
     word: $ => token(seq(/[a-z_]/, repeat(/[a-zA-Z0-9_]/))),
   },
