@@ -76,7 +76,7 @@ module.exports = grammar({
         ")",
       ),
 
-    attribute: $ => seq($.name, "=", $._expr),
+    attribute: $ => seq($.name, optional(seq("=", $._expr))),
 
     attributes: $ => seq("#[", $.attribute, repeat(seq(",", $.attribute)), "]"),
 
