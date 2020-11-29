@@ -447,13 +447,15 @@ module.exports = grammar({
 
     rel_internal: $ => seq("relation", $.name_rel, "[", $._type_atom, "]", optional($.key_primary)),
 
-    _rhs: $ => choice($._atom, $.rhs_atom_neg, $._exp, $.rhs_flat_map, $.rhs_grouping),
+    _rhs: $ => choice($.rhs_inspect, $._atom, $.rhs_atom_neg, $._exp, $.rhs_flat_map, $.rhs_grouping),
 
     rhs_atom_neg: $ => seq("not", $._atom),
 
     rhs_flat_map: $ => prec(1, seq("var", $.name_var_term, "=", "FlatMap", "(", $._exp, ")")),
 
     rhs_grouping: $ => seq("var", $.name_var_term, "=", $._exp, ".", "group_by", "(", $._exp, ")"),
+
+    rhs_inspect: $ => seq("Inspect", $._exp),
 
     rule: $ =>
       seq($._atom, repeat(seq(",", $._atom)), optional(seq(":-", $._rhs, repeat(seq(",", $._rhs)))), $.rule_end),
