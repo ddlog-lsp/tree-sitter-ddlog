@@ -53,6 +53,8 @@ module.exports = grammar({
 
     arg: $ => seq($.name_arg, ":", $._type_atom),
 
+    arg_opt_type: $ => seq($.name_arg, optional(seq(":", $._type_atom))),
+
     _atom: $ => choice($.atom_rec, $.atom_pos, $.atom_elem),
 
     atom_elem: $ => seq($.name_rel, "[", $._exp, "]"),
@@ -229,12 +231,18 @@ module.exports = grammar({
           seq(
             "function",
             "(",
-            optional(seq($._pat, repeat(seq(",", $._pat)))),
+            optional(seq($.arg_opt_type, repeat(seq(",", $.arg_opt_type)))),
             ")",
             optional(seq(":", $._type_atom)),
             $._exp,
           ),
-          seq("|", optional(seq($._pat, repeat(seq(",", $._pat)))), "|", optional(seq(":", $._type_atom)), $._exp),
+          seq(
+            "|",
+            optional(seq($.arg_opt_type, repeat(seq(",", $.arg_opt_type)))),
+            "|",
+            optional(seq(":", $._type_atom)),
+            $._exp,
+          ),
         ),
       ),
 
