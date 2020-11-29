@@ -233,7 +233,8 @@ module.exports = grammar({
         ),
       ),
 
-    _expr_lit: $ => choice($._literal_bool, $.literal_num, $.literal_map, $.literal_string, $.literal_vec),
+    _expr_lit: $ =>
+      choice($._literal_bool, $.literal_num, $.literal_map, $.literal_string, $.literal_string_interned, $.literal_vec),
 
     expr_log_and: $ => prec.left(6, seq($._expr, "and", $._expr)),
 
@@ -316,6 +317,8 @@ module.exports = grammar({
 
     import: $ => seq("import", $.module_path, optional(seq("as", $.module_alias))),
 
+    interpolation: $ => seq("${", $._expr, "}"),
+
     _item: $ => choice($.import, $._function, $._relation, $.rule, $._typedef),
 
     _literal_bool: $ => choice($.bool_false, $.bool_true),
@@ -354,7 +357,9 @@ module.exports = grammar({
 
     literal_map: $ => seq("[", $._expr, "->", $._expr, repeat(seq(",", $._expr, "->", $._expr)), "]"),
 
-    literal_string: $ => seq('"', repeat(choice(token.immediate(/[^"\\\n]+|\\\r?\n/), $._escape_sequence)), '"'),
+    literal_string: $ => prec.right(repeat1(choice($.string_quoted, $.string_raw, $.string_raw_interpolated))),
+
+    literal_string_interned: $ => seq("i", $.literal_string),
 
     literal_vec: $ => seq("[", $._expr, repeat(seq(",", $._expr)), "]"),
 
@@ -441,6 +446,18 @@ module.exports = grammar({
 
     rule: $ =>
       seq($._atom, repeat(seq(",", $._atom)), optional(seq(":-", $._rhs, repeat(seq(",", $._rhs)))), $.rule_end),
+
+    string_quoted: $ =>
+      seq(
+        '"',
+        repeat(choice(/[^$"\\\n]+|\\\r?\n/, seq("$", token.immediate(/[^{]/)), $.interpolation, $._escape_sequence)),
+        '"',
+      ),
+
+    string_raw: $ => seq("[|", /([^|]|\|[^\]])*/, "|]"),
+
+    string_raw_interpolated: $ =>
+      seq("$[|", repeat(choice(/([^$|]|\|[^\]])+/, seq("$", token.immediate(/[^{]/)), $.interpolation)), "|]"),
 
     _typedef: $ => choice($.typedef, $.typedef_external),
 
