@@ -103,6 +103,11 @@ module.exports = grammar({
         seq("\\", choice(/[^xu0-7]/, /[0-7]{1,3}/, /x[0-9a-fA-F]{2}/, /u[0-9a-fA-F]{4}/, /u{[0-9a-fA-F]+}/)),
       ),
 
+    _escape_sequence_interpolated: $ =>
+      token.immediate(
+        seq("\\", choice(/[^"xu0-7]/, /[0-7]{1,3}/, /x[0-9a-fA-F]{2}/, /u[0-9a-fA-F]{4}/, /u{[0-9a-fA-F]+}/)),
+      ),
+
     _exp: $ =>
       choice(
         $.exp_add,
@@ -233,7 +238,7 @@ module.exports = grammar({
         ),
       ),
 
-    _exp_lit: $ => choice($._lit_bool, $.lit_num, $.lit_map, $.lit_string, $.lit_string_interned, $.lit_vec),
+    _exp_lit: $ => choice($._lit_bool, $.lit_num, $.lit_map, $.lit_string, $.lit_vec),
 
     exp_log_and: $ => prec.left(6, seq($._exp, "and", $._exp)),
 
@@ -358,9 +363,8 @@ module.exports = grammar({
 
     lit_map: $ => seq("[", $._exp, "->", $._exp, repeat(seq(",", $._exp, "->", $._exp)), "]"),
 
-    lit_string: $ => prec.right(repeat1(choice($.string_quoted, $.string_raw, $.string_raw_interpolated))),
-
-    lit_string_interned: $ => seq("i", $.lit_string),
+    lit_string: $ =>
+      prec.right(repeat1(choice($.string_quoted, $.string_quoted_escaped, $.string_raw, $.string_raw_interpolated))),
 
     lit_vec: $ => seq("[", $._exp, repeat(seq(",", $._exp)), "]"),
 
@@ -448,15 +452,29 @@ module.exports = grammar({
 
     string_quoted: $ =>
       seq(
-        '"',
+        /i?"/,
         repeat(choice(/[^$"\\\n]+|\\\r?\n/, seq("$", token.immediate(/[^{]/)), $.interpolation, $._escape_sequence)),
         '"',
       ),
 
-    string_raw: $ => seq("[|", /([^|]|\|[^\]])*/, "|]"),
+    string_quoted_escaped: $ =>
+      seq(
+        /i?\\"/,
+        repeat(
+          choice(
+            /[^$"\\\n]+|\\\r?\n/,
+            seq("$", token.immediate(/[^{]/)),
+            $.interpolation,
+            $._escape_sequence_interpolated,
+          ),
+        ),
+        '\\"',
+      ),
+
+    string_raw: $ => seq(/i?\[\|/, /([^|]|\|[^\]])*/, "|]"),
 
     string_raw_interpolated: $ =>
-      seq("$[|", repeat(choice(/([^$|]|\|[^\]])+/, seq("$", token.immediate(/[^{]/)), $.interpolation)), "|]"),
+      seq(/i?\$\[\|/, repeat(choice(/([^$|]|\|[^\]])+/, seq("$", token.immediate(/[^{]/)), $.interpolation)), "|]"),
 
     _typedef: $ => choice($.typedef, $.typedef_external),
 
