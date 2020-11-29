@@ -1,11 +1,11 @@
 /// <reference types="tree-sitter-cli/dsl" />
 
 const Pattern = {
-  literal_num_bin: /[0-1][0-1_]*/,
-  literal_num_dec: /[0-9][0-9_]*/,
-  literal_num_float: /[0-9][0-9_]*(\.[0-9][0-9_]*)?([eE][+-]?[0-9][0-9_]*)?/,
-  literal_num_hex: /[0-9a-fA-F][0-9a-fA-F_]*/,
-  literal_num_oct: /[0-7][0-7_]*/,
+  lit_num_bin: /[0-1][0-1_]*/,
+  lit_num_dec: /[0-9][0-9_]*/,
+  lit_num_float: /[0-9][0-9_]*(\.[0-9][0-9_]*)?([eE][+-]?[0-9][0-9_]*)?/,
+  lit_num_hex: /[0-9a-fA-F][0-9a-fA-F_]*/,
+  lit_num_oct: /[0-7][0-7_]*/,
   ident_lower: /[a-z_][a-zA-Z0-9_]*/,
   ident_upper: /[A-Z][a-zA-Z0-9_]*/,
 };
@@ -16,29 +16,29 @@ module.exports = grammar({
   externals: $ => [$.rule_end],
 
   conflicts: $ => [
-    [$.expr_assign],
-    [$.expr_cons_pos, $.patt_cons_pos],
-    [$.expr_eq, $.expr_gt],
-    [$.expr_eq, $.expr_lt],
-    [$.expr_eq, $.expr_lteq],
-    [$.expr_eq, $.expr_gteq],
-    [$.expr_gt],
-    [$.expr_gt, $.expr_gteq],
-    [$.expr_gt, $.expr_lt],
-    [$.expr_gt, $.expr_lteq],
-    [$.expr_gt, $.expr_neq],
-    [$.expr_gteq],
-    [$.expr_gteq, $.expr_lt],
-    [$.expr_gteq, $.expr_lteq],
-    [$.expr_gteq, $.expr_neq],
-    [$._expr_lit, $._patt_lit],
-    [$.expr_lt],
-    [$.expr_lt, $.expr_lteq],
-    [$.expr_lt, $.expr_neq],
-    [$.expr_lteq],
-    [$.expr_lteq, $.expr_neq],
-    [$.expr_tuple, $.patt_tuple],
-    [$.expr_wild, $.patt_wild],
+    [$.exp_assign],
+    [$.exp_cons_pos, $.pat_cons_pos],
+    [$.exp_eq, $.exp_gt],
+    [$.exp_eq, $.exp_lt],
+    [$.exp_eq, $.exp_lteq],
+    [$.exp_eq, $.exp_gteq],
+    [$.exp_gt],
+    [$.exp_gt, $.exp_gteq],
+    [$.exp_gt, $.exp_lt],
+    [$.exp_gt, $.exp_lteq],
+    [$.exp_gt, $.exp_neq],
+    [$.exp_gteq],
+    [$.exp_gteq, $.exp_lt],
+    [$.exp_gteq, $.exp_lteq],
+    [$.exp_gteq, $.exp_neq],
+    [$._exp_lit, $._pat_lit],
+    [$.exp_lt],
+    [$.exp_lt, $.exp_lteq],
+    [$.exp_lt, $.exp_neq],
+    [$.exp_lteq],
+    [$.exp_lteq, $.exp_neq],
+    [$.exp_tuple, $.pat_tuple],
+    [$.exp_wild, $.pat_wild],
     [$.name_cons, $.name_type],
   ],
 
@@ -55,15 +55,15 @@ module.exports = grammar({
 
     _atom: $ => choice($.atom_rec, $.atom_pos, $.atom_elem),
 
-    atom_elem: $ => seq($.name_rel, "[", $._expr, "]"),
+    atom_elem: $ => seq($.name_rel, "[", $._exp, "]"),
 
     atom_pos: $ =>
       seq(
         optional(seq($.name_var_term, "in")),
         seq(optional("&"), $.name_rel),
         "(",
-        optional($._expr),
-        repeat(seq(",", $._expr)),
+        optional($._exp),
+        repeat(seq(",", $._exp)),
         ")",
       ),
 
@@ -75,12 +75,12 @@ module.exports = grammar({
         ".",
         $.name_arg,
         "=",
-        $._expr,
-        repeat(seq(",", ".", $.name_arg, "=", $._expr)),
+        $._exp,
+        repeat(seq(",", ".", $.name_arg, "=", $._exp)),
         ")",
       ),
 
-    attribute: $ => seq($.name, optional(seq("=", $._expr))),
+    attribute: $ => seq($.name, optional(seq("=", $._exp))),
 
     attributes: $ => seq("#[", $.attribute, repeat(seq(",", $.attribute)), "]"),
 
@@ -103,181 +103,180 @@ module.exports = grammar({
         seq("\\", choice(/[^xu0-7]/, /[0-7]{1,3}/, /x[0-9a-fA-F]{2}/, /u[0-9a-fA-F]{4}/, /u{[0-9a-fA-F]+}/)),
       ),
 
-    _expr: $ =>
+    _exp: $ =>
       choice(
-        $.expr_add,
-        $.expr_assign,
-        $.expr_binding,
-        $.expr_bit_and,
-        $.expr_bit_neg,
-        $.expr_bit_or,
-        $.expr_bit_slice,
-        $.expr_block,
-        $.expr_break,
-        $.expr_cast,
-        $.expr_cat,
-        $.expr_cond,
-        $.expr_continue,
-        $.expr_cons_rec,
-        $.expr_cons_pos,
-        $.expr_decl_var,
-        $.expr_div,
-        $.expr_eq,
-        $.expr_field,
-        $.expr_for,
-        $.expr_fun_call,
-        $.expr_fun_call_dot,
-        $.expr_gt,
-        $.expr_gteq,
-        $.expr_lambda,
-        $._expr_lit,
-        $.expr_log_and,
-        $.expr_log_imp,
-        $.expr_log_neg,
-        $.expr_log_or,
-        $.expr_lt,
-        $.expr_lteq,
-        $.expr_match,
-        $.expr_mul,
-        $.expr_neg,
-        $.expr_neq,
-        $.expr_proj,
-        $.expr_ref,
-        $.expr_rem,
-        $.expr_return,
-        $.expr_seq,
-        $.expr_shl,
-        $.expr_shr,
-        $.expr_sub,
-        $.expr_tuple,
-        $.expr_type,
-        $.expr_wild,
+        $.exp_add,
+        $.exp_assign,
+        $.exp_binding,
+        $.exp_bit_and,
+        $.exp_bit_neg,
+        $.exp_bit_or,
+        $.exp_bit_slice,
+        $.exp_block,
+        $.exp_break,
+        $.exp_cast,
+        $.exp_cat,
+        $.exp_cond,
+        $.exp_continue,
+        $.exp_cons_rec,
+        $.exp_cons_pos,
+        $.exp_decl_var,
+        $.exp_div,
+        $.exp_eq,
+        $.exp_field,
+        $.exp_for,
+        $.exp_fun_call,
+        $.exp_fun_call_dot,
+        $.exp_gt,
+        $.exp_gteq,
+        $.exp_lambda,
+        $._exp_lit,
+        $.exp_log_and,
+        $.exp_log_imp,
+        $.exp_log_neg,
+        $.exp_log_or,
+        $.exp_lt,
+        $.exp_lteq,
+        $.exp_match,
+        $.exp_mul,
+        $.exp_neg,
+        $.exp_neq,
+        $.exp_proj,
+        $.exp_ref,
+        $.exp_rem,
+        $.exp_return,
+        $.exp_seq,
+        $.exp_shl,
+        $.exp_shr,
+        $.exp_sub,
+        $.exp_tuple,
+        $.exp_type,
+        $.exp_wild,
       ),
 
-    expr_add: $ => prec.left(13, seq($._expr, "+", $._expr)),
+    exp_add: $ => prec.left(13, seq($._exp, "+", $._exp)),
 
-    expr_assign: $ => prec(3, seq($._expr, "=", $._expr)),
+    exp_assign: $ => prec(3, seq($._exp, "=", $._exp)),
 
-    expr_bit_and: $ => prec.left(9, seq($._expr, "&", $._expr)),
+    exp_bit_and: $ => prec.left(9, seq($._exp, "&", $._exp)),
 
-    expr_bit_neg: $ => prec(16, seq("~", $._expr)),
+    exp_bit_neg: $ => prec(16, seq("~", $._exp)),
 
-    expr_bit_or: $ => prec.left(7, seq($._expr, "|", $._expr)),
+    exp_bit_or: $ => prec.left(7, seq($._exp, "|", $._exp)),
 
-    expr_bit_slice: $ => prec(19, seq($._expr, "[", Pattern.literal_num_dec, ",", Pattern.literal_num_dec, "]")),
+    exp_bit_slice: $ => prec(19, seq($._exp, "[", Pattern.lit_num_dec, ",", Pattern.lit_num_dec, "]")),
 
-    expr_bit_xor: $ => prec.left(8, seq($._expr, "^", $._expr)),
+    exp_bit_xor: $ => prec.left(8, seq($._exp, "^", $._exp)),
 
-    expr_block: $ => seq("{", optional($._expr), "}"),
+    exp_block: $ => seq("{", optional($._exp), "}"),
 
-    expr_break: $ => "break",
+    exp_break: $ => "break",
 
-    expr_cast: $ => prec(19, seq($._expr, "as", $._type_atom)),
+    exp_cast: $ => prec(19, seq($._exp, "as", $._type_atom)),
 
-    expr_cat: $ => prec.left(11, seq($._expr, "++", $._expr)),
+    exp_cat: $ => prec.left(11, seq($._exp, "++", $._exp)),
 
-    expr_cond: $ => prec.left(seq("if", $._expr, $._expr, optional(seq("else", $._expr)))),
+    exp_cond: $ => prec.left(seq("if", $._exp, $._exp, optional(seq("else", $._exp)))),
 
-    expr_continue: $ => "continue",
+    exp_continue: $ => "continue",
 
-    _expr_cons: $ => choice($.expr_cons_rec, $.expr_cons_pos),
+    _exp_cons: $ => choice($.exp_cons_rec, $.exp_cons_pos),
 
-    expr_cons_rec: $ =>
+    exp_cons_rec: $ =>
       prec(
         3,
         seq(
           $.name_cons,
           "{",
-          optional(seq(".", $.name_field, "=", $._expr, repeat(seq(",", ".", $.name_field, "=", $._expr)))),
+          optional(seq(".", $.name_field, "=", $._exp, repeat(seq(",", ".", $.name_field, "=", $._exp)))),
           "}",
         ),
       ),
 
-    expr_binding: $ => prec(2, seq($.name_var_term, "@", $._expr)),
+    exp_binding: $ => prec(2, seq($.name_var_term, "@", $._exp)),
 
-    expr_cons_pos: $ => seq($.name_cons, optional(seq("{", optional(seq($._expr, repeat(seq(",", $._expr)))), "}"))),
+    exp_cons_pos: $ => seq($.name_cons, optional(seq("{", optional(seq($._exp, repeat(seq(",", $._exp)))), "}"))),
 
-    expr_decl_var: $ => prec(20, seq(optional("var"), $.name_var_term)),
+    exp_decl_var: $ => prec(20, seq(optional("var"), $.name_var_term)),
 
-    expr_div: $ => prec.left(14, seq($._expr, "/", $._expr)),
+    exp_div: $ => prec.left(14, seq($._exp, "/", $._exp)),
 
-    expr_eq: $ => prec.left(10, seq($._expr, "==", $._expr)),
+    exp_eq: $ => prec.left(10, seq($._exp, "==", $._exp)),
 
-    expr_field: $ => prec(19, seq($._expr, ".", $._ident)),
+    exp_field: $ => prec(19, seq($._exp, ".", $._ident)),
 
     // FIXME: precedence
-    expr_for: $ => prec(20, seq("for", "(", $.name_var_term, "in", $._expr, ")", $._expr)),
+    exp_for: $ => prec(20, seq("for", "(", $.name_var_term, "in", $._exp, ")", $._exp)),
 
-    expr_fun_call: $ => prec(19, seq($._expr, "(", optional(seq($._expr, repeat(seq(",", $._expr)))), ")")),
+    exp_fun_call: $ => prec(19, seq($._exp, "(", optional(seq($._exp, repeat(seq(",", $._exp)))), ")")),
 
-    expr_fun_call_dot: $ =>
-      prec(19, seq($._expr, ".", $.name_func, "(", optional(seq($._expr, repeat(seq(",", $._expr)))), ")")),
+    exp_fun_call_dot: $ =>
+      prec(19, seq($._exp, ".", $.name_func, "(", optional(seq($._exp, repeat(seq(",", $._exp)))), ")")),
 
-    expr_gt: $ => prec(10, seq($._expr, ">", $._expr)),
+    exp_gt: $ => prec(10, seq($._exp, ">", $._exp)),
 
-    expr_gteq: $ => prec(10, seq($._expr, ">=", $._expr)),
+    exp_gteq: $ => prec(10, seq($._exp, ">=", $._exp)),
 
-    expr_lambda: $ =>
+    exp_lambda: $ =>
       prec.right(
         0,
         choice(
           seq(
             "function",
             "(",
-            optional(seq($._patt, repeat(seq(",", $._patt)))),
+            optional(seq($._pat, repeat(seq(",", $._pat)))),
             ")",
             optional(seq(":", $._type_atom)),
-            $._expr,
+            $._exp,
           ),
-          seq("|", optional(seq($._patt, repeat(seq(",", $._patt)))), "|", optional(seq(":", $._type_atom)), $._expr),
+          seq("|", optional(seq($._pat, repeat(seq(",", $._pat)))), "|", optional(seq(":", $._type_atom)), $._exp),
         ),
       ),
 
-    _expr_lit: $ =>
-      choice($._literal_bool, $.literal_num, $.literal_map, $.literal_string, $.literal_string_interned, $.literal_vec),
+    _exp_lit: $ => choice($._lit_bool, $.lit_num, $.lit_map, $.lit_string, $.lit_string_interned, $.lit_vec),
 
-    expr_log_and: $ => prec.left(6, seq($._expr, "and", $._expr)),
+    exp_log_and: $ => prec.left(6, seq($._exp, "and", $._exp)),
 
-    expr_log_imp: $ => prec.left(4, seq($._expr, "=>", $._expr)),
+    exp_log_imp: $ => prec.left(4, seq($._exp, "=>", $._exp)),
 
-    expr_log_neg: $ => prec(15, seq("not", $._expr)),
+    exp_log_neg: $ => prec(15, seq("not", $._exp)),
 
-    expr_log_or: $ => prec.left(5, seq($._expr, "or", $._expr)),
+    exp_log_or: $ => prec.left(5, seq($._exp, "or", $._exp)),
 
-    expr_lt: $ => prec(10, seq($._expr, "<", $._expr)),
+    exp_lt: $ => prec(10, seq($._exp, "<", $._exp)),
 
-    expr_lteq: $ => prec(10, seq($._expr, "<=", $._expr)),
+    exp_lteq: $ => prec(10, seq($._exp, "<=", $._exp)),
 
-    expr_match: $ =>
-      seq("match", "(", $._expr, ")", "{", optional($.match_clause), repeat(seq(",", $.match_clause)), "}"),
+    exp_match: $ =>
+      seq("match", "(", $._exp, ")", "{", optional($.match_clause), repeat(seq(",", $.match_clause)), "}"),
 
-    expr_mul: $ => prec.left(14, seq($._expr, "*", $._expr)),
+    exp_mul: $ => prec.left(14, seq($._exp, "*", $._exp)),
 
-    expr_neg: $ => prec(17, seq("-", $._expr)),
+    exp_neg: $ => prec(17, seq("-", $._exp)),
 
-    expr_neq: $ => prec.left(10, seq($._expr, "!=", $._expr)),
+    exp_neq: $ => prec.left(10, seq($._exp, "!=", $._exp)),
 
-    expr_proj: $ => prec(19, seq($._expr, ".", /[0-9]+/)),
+    exp_proj: $ => prec(19, seq($._exp, ".", /[0-9]+/)),
 
-    expr_ref: $ => prec(18, seq("&", $._expr)),
+    exp_ref: $ => prec(18, seq("&", $._exp)),
 
-    expr_rem: $ => prec.left(14, seq($._expr, "%", $._expr)),
+    exp_rem: $ => prec.left(14, seq($._exp, "%", $._exp)),
 
-    expr_return: $ => prec.right(seq("return", optional($._expr))),
+    exp_return: $ => prec.right(seq("return", optional($._exp))),
 
-    expr_seq: $ => prec.right(1, seq($._expr, ";", $._expr)),
+    exp_seq: $ => prec.right(1, seq($._exp, ";", $._exp)),
 
-    expr_shl: $ => prec.left(12, seq($._expr, "<<", $._expr)),
+    exp_shl: $ => prec.left(12, seq($._exp, "<<", $._exp)),
 
-    expr_shr: $ => prec.left(12, seq($._expr, ">>", $._expr)),
+    exp_shr: $ => prec.left(12, seq($._exp, ">>", $._exp)),
 
-    expr_sub: $ => prec.left(13, seq($._expr, "-", $._expr)),
+    exp_sub: $ => prec.left(13, seq($._exp, "-", $._exp)),
 
-    expr_tuple: $ => seq("(", optional(seq($._expr, repeat(seq(",", $._expr)), optional(","))), ")"),
+    exp_tuple: $ => seq("(", optional(seq($._exp, repeat(seq(",", $._exp)), optional(","))), ")"),
 
-    expr_type: $ => prec(19, seq($._expr, ":", $._type_atom)),
+    exp_type: $ => prec(19, seq($._exp, ":", $._type_atom)),
 
-    expr_wild: $ => "_",
+    exp_wild: $ => "_",
 
     field: $ => seq(optional($.attributes), $.name_field, ":", $._type_atom),
 
@@ -305,7 +304,7 @@ module.exports = grammar({
           ")",
           ":",
           $._type_atom,
-          choice(seq("=", $._expr), "{", $._expr, "}"),
+          choice(seq("=", $._exp), "{", $._exp, "}"),
         ),
       ),
 
@@ -317,53 +316,55 @@ module.exports = grammar({
 
     import: $ => seq("import", $.module_path, optional(seq("as", $.module_alias))),
 
-    interpolation: $ => seq("${", $._expr, "}"),
+    interpolation: $ => seq("${", $._exp, "}"),
 
-    _item: $ => choice($.import, $._function, $._relation, $.rule, $._typedef),
+    _item: $ => choice($.import, $._function, $._rel, $.rule, $._typedef),
 
-    _literal_bool: $ => choice($.bool_false, $.bool_true),
+    key_primary: $ => seq("primary", "key", "(", $.name_var_term, ")", $._exp),
 
-    literal_num: $ =>
+    _lit_bool: $ => choice($.bool_false, $.bool_true),
+
+    lit_num: $ =>
       choice(
-        prec.right(choice($.literal_num_dec, $.literal_num_float)),
+        prec.right(choice($.lit_num_dec, $.lit_num_float)),
         prec(
           18,
           seq(
-            optional($.literal_num_dec),
+            optional($.lit_num_dec),
             choice(
-              seq("'b", $.literal_num_bin),
-              seq("'d", $.literal_num_dec),
-              seq("'f", $.literal_num_float),
-              seq("'h", $.literal_num_hex),
-              seq("'o", $.literal_num_oct),
-              seq("'sb", $.literal_num_bin),
-              seq("'sd", $.literal_num_dec),
-              seq("'sh", $.literal_num_hex),
-              seq("'so", $.literal_num_oct),
+              seq("'b", $.lit_num_bin),
+              seq("'d", $.lit_num_dec),
+              seq("'f", $.lit_num_float),
+              seq("'h", $.lit_num_hex),
+              seq("'o", $.lit_num_oct),
+              seq("'sb", $.lit_num_bin),
+              seq("'sd", $.lit_num_dec),
+              seq("'sh", $.lit_num_hex),
+              seq("'so", $.lit_num_oct),
             ),
           ),
         ),
       ),
 
-    literal_num_bin: $ => Pattern.literal_num_bin,
+    lit_num_bin: $ => Pattern.lit_num_bin,
 
-    literal_num_dec: $ => Pattern.literal_num_dec,
+    lit_num_dec: $ => Pattern.lit_num_dec,
 
-    literal_num_float: $ => Pattern.literal_num_float,
+    lit_num_float: $ => Pattern.lit_num_float,
 
-    literal_num_hex: $ => Pattern.literal_num_hex,
+    lit_num_hex: $ => Pattern.lit_num_hex,
 
-    literal_num_oct: $ => Pattern.literal_num_oct,
+    lit_num_oct: $ => Pattern.lit_num_oct,
 
-    literal_map: $ => seq("[", $._expr, "->", $._expr, repeat(seq(",", $._expr, "->", $._expr)), "]"),
+    lit_map: $ => seq("[", $._exp, "->", $._exp, repeat(seq(",", $._exp, "->", $._exp)), "]"),
 
-    literal_string: $ => prec.right(repeat1(choice($.string_quoted, $.string_raw, $.string_raw_interpolated))),
+    lit_string: $ => prec.right(repeat1(choice($.string_quoted, $.string_raw, $.string_raw_interpolated))),
 
-    literal_string_interned: $ => seq("i", $.literal_string),
+    lit_string_interned: $ => seq("i", $.lit_string),
 
-    literal_vec: $ => seq("[", $._expr, repeat(seq(",", $._expr)), "]"),
+    lit_vec: $ => seq("[", $._exp, repeat(seq(",", $._exp)), "]"),
 
-    match_clause: $ => seq($._patt, "->", $._expr),
+    match_clause: $ => seq($._pat, "->", $._exp),
 
     module_alias: $ => $._ident,
 
@@ -387,36 +388,34 @@ module.exports = grammar({
 
     name_var_type: $ => /'[A-Z][a-zA-Z0-9_]*/,
 
-    _patt: $ => choice($._patt_cons, $.patt_term_decl_var, $._patt_lit, $.patt_tuple, $.patt_wild),
+    _pat: $ => choice($._pat_cons, $.pat_term_decl_var, $._pat_lit, $.pat_tuple, $.pat_wild),
 
-    _patt_cons: $ => choice($.patt_cons_rec, $.patt_cons_pos),
+    _pat_cons: $ => choice($.pat_cons_rec, $.pat_cons_pos),
 
-    patt_cons_rec: $ =>
+    pat_cons_rec: $ =>
       prec(
         1,
         seq(
           $.name_cons,
           "{",
-          optional(seq(".", $.name_field, "=", $._patt, repeat(seq(",", ".", $.name_field, "=", $._patt)))),
+          optional(seq(".", $.name_field, "=", $._pat, repeat(seq(",", ".", $.name_field, "=", $._pat)))),
           "}",
         ),
       ),
 
-    patt_cons_pos: $ => seq($.name_cons, optional(seq("{", optional(seq($._patt, repeat(seq(",", $._patt)))), "}"))),
+    pat_cons_pos: $ => seq($.name_cons, optional(seq("{", optional(seq($._pat, repeat(seq(",", $._pat)))), "}"))),
 
-    _patt_lit: $ => choice($._literal_bool, $.literal_num, $.literal_string),
+    _pat_lit: $ => choice($._lit_bool, $.lit_num, $.lit_string),
 
-    patt_term_decl_var: $ => seq(optional("var"), $.name_var_term),
+    pat_term_decl_var: $ => seq(optional("var"), $.name_var_term),
 
-    patt_tuple: $ => seq("(", optional(seq($._patt, repeat(seq(",", $._patt)))), ")"),
+    pat_tuple: $ => seq("(", optional(seq($._pat, repeat(seq(",", $._pat)))), ")"),
 
-    patt_wild: $ => "_",
+    pat_wild: $ => "_",
 
-    primary_key: $ => seq("primary", "key", "(", $.name_var_term, ")", $._expr),
+    _rel: $ => choice($.rel_args, $.rel_elem),
 
-    _relation: $ => choice($.relation_args, $.relation_elem),
-
-    relation_args: $ =>
+    rel_args: $ =>
       seq(
         optional(choice("input", "output")),
         "relation",
@@ -425,24 +424,24 @@ module.exports = grammar({
         $.arg,
         repeat(seq(",", $.arg)),
         ")",
-        optional($.primary_key),
+        optional($.key_primary),
       ),
 
-    relation_elem: $ => choice($.relation_input, $.relation_output, $.relation_internal),
+    rel_elem: $ => choice($.rel_input, $.rel_output, $.rel_internal),
 
-    relation_input: $ => seq("input", "relation", $.name_rel, "[", $._type_atom, "]", optional($.primary_key)),
+    rel_input: $ => seq("input", "relation", $.name_rel, "[", $._type_atom, "]", optional($.key_primary)),
 
-    relation_output: $ => seq("output", "relation", $.name_rel, "[", $._type_atom, "]", optional($.primary_key)),
+    rel_output: $ => seq("output", "relation", $.name_rel, "[", $._type_atom, "]", optional($.key_primary)),
 
-    relation_internal: $ => seq("relation", $.name_rel, "[", $._type_atom, "]", optional($.primary_key)),
+    rel_internal: $ => seq("relation", $.name_rel, "[", $._type_atom, "]", optional($.key_primary)),
 
-    _rhs: $ => choice($._atom, $.rhs_atom_neg, $._expr, $.rhs_flat_map, $.rhs_grouping),
+    _rhs: $ => choice($._atom, $.rhs_atom_neg, $._exp, $.rhs_flat_map, $.rhs_grouping),
 
     rhs_atom_neg: $ => seq("not", $._atom),
 
-    rhs_flat_map: $ => prec(1, seq("var", $.name_var_term, "=", "FlatMap", "(", $._expr, ")")),
+    rhs_flat_map: $ => prec(1, seq("var", $.name_var_term, "=", "FlatMap", "(", $._exp, ")")),
 
-    rhs_grouping: $ => seq("var", $.name_var_term, "=", $._expr, ".", "group_by", "(", $._expr, ")"),
+    rhs_grouping: $ => seq("var", $.name_var_term, "=", $._exp, ".", "group_by", "(", $._exp, ")"),
 
     rule: $ =>
       seq($._atom, repeat(seq(",", $._atom)), optional(seq(":-", $._rhs, repeat(seq(",", $._rhs)))), $.rule_end),
@@ -496,7 +495,7 @@ module.exports = grammar({
 
     type_bigint: $ => "bigint",
 
-    type_bit: $ => seq("bit", "<", Pattern.literal_num_dec, ">"),
+    type_bit: $ => seq("bit", "<", Pattern.lit_num_dec, ">"),
 
     type_bool: $ => "bool",
 
@@ -525,7 +524,7 @@ module.exports = grammar({
         ),
       ),
 
-    type_signed: $ => seq("signed", "<", Pattern.literal_num_dec, ">"),
+    type_signed: $ => seq("signed", "<", Pattern.lit_num_dec, ">"),
 
     _type_atom: $ =>
       choice(
