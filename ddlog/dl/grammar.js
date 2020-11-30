@@ -287,7 +287,7 @@ module.exports = grammar({
 
     exp_return: $ => prec.right(seq("return", optional($._exp))),
 
-    exp_seq: $ => prec.right(1, seq($._exp, ";", $._exp)),
+    exp_seq: $ => prec.left(1, seq($._exp, ";", optional($._exp))),
 
     exp_shl: $ => prec.left(12, seq($._exp, "<<", $._exp)),
 
