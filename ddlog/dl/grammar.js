@@ -118,6 +118,7 @@ module.exports = grammar({
         $.exp_bit_neg,
         $.exp_bit_or,
         $.exp_bit_slice,
+        $.exp_bit_xor,
         $.exp_block,
         $.exp_break,
         $.exp_cast,
