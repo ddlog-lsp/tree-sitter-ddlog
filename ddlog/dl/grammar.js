@@ -156,6 +156,7 @@ module.exports = grammar({
         $.exp_shl,
         $.exp_shr,
         $.exp_sub,
+        $.exp_try,
         $.exp_tuple,
         $.exp_type,
         $.exp_wild,
@@ -284,6 +285,8 @@ module.exports = grammar({
     exp_shr: $ => prec.left(12, seq($._exp, ">>", $._exp)),
 
     exp_sub: $ => prec.left(13, seq($._exp, "-", $._exp)),
+
+    exp_try: $ => prec.left(19, seq($._exp, "?")),
 
     exp_tuple: $ => seq("(", optional(seq($._exp, repeat(seq(",", $._exp)), optional(","))), ")"),
 
