@@ -508,12 +508,7 @@ module.exports = grammar({
     _typedef: $ => choice($.typedef, $.typedef_external),
 
     typedef_external: $ =>
-      seq(
-        "extern",
-        "type",
-        $.name_var_type,
-        optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">")),
-      ),
+      seq("extern", "type", $.name_type, optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">"))),
 
     typedef: $ =>
       seq(
