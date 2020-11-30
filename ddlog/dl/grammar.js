@@ -60,13 +60,12 @@ module.exports = grammar({
     atom_elem: $ => seq($.name_rel, "[", $._exp, "]"),
 
     atom_pos: $ =>
-      seq(
-        optional(seq($.name_var_term, "in")),
-        seq(optional("&"), $.name_rel),
-        "(",
-        optional($._exp),
-        repeat(seq(",", $._exp)),
-        ")",
+      prec.right(
+        seq(
+          optional(seq($.name_var_term, "in")),
+          seq(optional("&"), $.name_rel),
+          optional(seq("(", optional($._exp), repeat(seq(",", $._exp)), ")")),
+        ),
       ),
 
     atom_rec: $ =>
