@@ -445,7 +445,7 @@ module.exports = grammar({
         $.rel_semantics,
         seq(optional("&"), $.name_rel),
         "(",
-        $.arg,
+        optional($.arg),
         repeat(seq(",", $.arg)),
         ")",
         optional($.key_primary),
