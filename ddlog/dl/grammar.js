@@ -83,7 +83,7 @@ module.exports = grammar({
 
     attribute: $ => seq($.name, optional(seq("=", $._exp))),
 
-    attributes: $ => seq("#[", $.attribute, repeat(seq(",", $.attribute)), "]"),
+    attributes: $ => repeat1(seq("#[", $.attribute, repeat(seq(",", $.attribute)), "]")),
 
     bool_false: $ => "false",
 
