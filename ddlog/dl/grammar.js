@@ -452,13 +452,13 @@ module.exports = grammar({
 
     name_var_type: $ => /'[A-Z][a-zA-Z0-9_]*/,
 
-    _pat: $ => choice($._pat_cons, $.pat_term_decl_var, $._pat_lit, $.pat_tuple, $.pat_wild),
+    _pat: $ => choice($._pat_cons, $.pat_term_decl_var, $._pat_lit, $.pat_tuple, $.pat_type, $.pat_wild),
 
     _pat_cons: $ => choice($.pat_cons_rec, $.pat_cons_pos),
 
     pat_cons_rec: $ =>
       prec(
-        1,
+        2,
         seq(
           $.name_cons,
           "{",
@@ -468,13 +468,18 @@ module.exports = grammar({
       ),
 
     pat_cons_pos: $ =>
-      seq($.name_cons, optional(seq("{", optional(seq($._pat, repeat(seq(",", $._pat)), optional(","))), "}"))),
+      prec(
+        1,
+        seq($.name_cons, optional(seq("{", optional(seq($._pat, repeat(seq(",", $._pat)), optional(","))), "}"))),
+      ),
 
     _pat_lit: $ => choice($._lit_bool, $.lit_num, $.lit_string),
 
-    pat_term_decl_var: $ => seq(optional("var"), $.name_var_term, optional(seq(":", $._type_atom))),
+    pat_term_decl_var: $ => seq(optional("var"), $.name_var_term),
 
     pat_tuple: $ => seq("(", optional(seq($._pat, repeat(seq(",", $._pat)))), ")"),
+
+    pat_type: $ => seq($._pat, ":", $._type_atom),
 
     pat_wild: $ => "_",
 
