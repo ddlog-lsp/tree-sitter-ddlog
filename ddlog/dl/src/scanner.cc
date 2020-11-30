@@ -119,6 +119,27 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
 
       if (iswlower(lexer->lookahead)) {
         // scan for "export"
+        if (lexer->lookahead == 'a') {
+          lexer->advance(lexer, false);
+          if (lexer->lookahead == 'p') {
+            lexer->advance(lexer, false);
+            if (lexer->lookahead == 'p') {
+              lexer->advance(lexer, false);
+              if (lexer->lookahead == 'l') {
+                lexer->advance(lexer, false);
+                if (lexer->lookahead == 'y') {
+                  lexer->advance(lexer, false);
+                  if (is_end_of_token(lexer)) {
+                    lexer->result_symbol = RULE_END;
+                    return true;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        // scan for "export"
         if (lexer->lookahead == 'e') {
           lexer->advance(lexer, false);
           if (lexer->lookahead == 'x') {
@@ -145,6 +166,16 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
         // scan for "function"
         if (lexer->lookahead == 'f') {
           lexer->advance(lexer, false);
+          if (lexer->lookahead == 'o') {
+            lexer->advance(lexer, false);
+            if (lexer->lookahead == 'r') {
+              lexer->advance(lexer, false);
+              if (is_end_of_token(lexer)) {
+                lexer->result_symbol = RULE_END;
+                return true;
+              }
+            }
+          }
           if (lexer->lookahead == 'u') {
             lexer->advance(lexer, false);
             if (lexer->lookahead == 'n') {
@@ -196,6 +227,19 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
           }
           if (lexer->lookahead == 'n') {
             lexer->advance(lexer, false);
+            if (lexer->lookahead == 'd') {
+              lexer->advance(lexer, false);
+              if (lexer->lookahead == 'e') {
+                lexer->advance(lexer, false);
+                if (lexer->lookahead == 'x') {
+                  lexer->advance(lexer, false);
+                  if (is_end_of_token(lexer)) {
+                    lexer->result_symbol = RULE_END;
+                    return true;
+                  }
+                }
+              }
+            }
             if (lexer->lookahead == 'p') {
               lexer->advance(lexer, false);
               if (lexer->lookahead == 'u') {
