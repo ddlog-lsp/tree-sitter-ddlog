@@ -155,6 +155,7 @@ module.exports = grammar({
         $.exp_seq,
         $.exp_shl,
         $.exp_shr,
+        $.exp_slice,
         $.exp_sub,
         $.exp_try,
         $.exp_tuple,
@@ -283,6 +284,8 @@ module.exports = grammar({
     exp_shl: $ => prec.left(12, seq($._exp, "<<", $._exp)),
 
     exp_shr: $ => prec.left(12, seq($._exp, ">>", $._exp)),
+
+    exp_slice: $ => prec(19, seq($._exp, "[", Pattern.lit_num_dec, ":", Pattern.lit_num_dec, "]")),
 
     exp_sub: $ => prec.left(13, seq($._exp, "-", $._exp)),
 
