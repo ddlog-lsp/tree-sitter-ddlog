@@ -29,7 +29,12 @@ void tree_sitter_ddlog_dl_external_scanner_deserialize(
   (void)length;
 }
 
-void skip_whitespace_and_comments(TSLexer *lexer) {
+bool is_end_of_token(TSLexer *const lexer) {
+  return lexer->lookahead == 0 || iswspace(lexer->lookahead) ||
+         lexer->lookahead == '/';
+}
+
+void skip_whitespace_and_comments(TSLexer *const lexer) {
   while (iswspace(lexer->lookahead) || lexer->lookahead == '/') {
     // consume remaining whitespace
     while (iswspace(lexer->lookahead)) {
@@ -126,7 +131,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                   lexer->advance(lexer, false);
                   if (lexer->lookahead == 'n') {
                     lexer->advance(lexer, false);
-                    if (iswspace(lexer->lookahead)) {
+                    if (is_end_of_token(lexer)) {
                       lexer->result_symbol = RULE_END;
                       return true;
                     }
@@ -154,7 +159,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                       lexer->advance(lexer, false);
                       if (lexer->lookahead == 'n') {
                         lexer->advance(lexer, false);
-                        if (iswspace(lexer->lookahead)) {
+                        if (is_end_of_token(lexer)) {
                           lexer->result_symbol = RULE_END;
                           return true;
                         }
@@ -180,7 +185,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                   lexer->advance(lexer, false);
                   if (lexer->lookahead == 't') {
                     lexer->advance(lexer, false);
-                    if (iswspace(lexer->lookahead)) {
+                    if (is_end_of_token(lexer)) {
                       lexer->result_symbol = RULE_END;
                       return true;
                     }
@@ -197,7 +202,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                 lexer->advance(lexer, false);
                 if (lexer->lookahead == 't') {
                   lexer->advance(lexer, false);
-                  if (iswspace(lexer->lookahead)) {
+                  if (is_end_of_token(lexer)) {
                     lexer->result_symbol = RULE_END;
                     return true;
                   }
@@ -220,7 +225,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                   lexer->advance(lexer, false);
                   if (lexer->lookahead == 't') {
                     lexer->advance(lexer, false);
-                    if (iswspace(lexer->lookahead)) {
+                    if (is_end_of_token(lexer)) {
                       lexer->result_symbol = RULE_END;
                       return true;
                     }
@@ -246,7 +251,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                     lexer->advance(lexer, false);
                     if (lexer->lookahead == 'y') {
                       lexer->advance(lexer, false);
-                      if (iswspace(lexer->lookahead)) {
+                      if (is_end_of_token(lexer)) {
                         lexer->result_symbol = RULE_END;
                         return true;
                       }
@@ -275,7 +280,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                       lexer->advance(lexer, false);
                       if (lexer->lookahead == 'n') {
                         lexer->advance(lexer, false);
-                        if (iswspace(lexer->lookahead)) {
+                        if (is_end_of_token(lexer)) {
                           lexer->result_symbol = RULE_END;
                           return true;
                         }
@@ -303,7 +308,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                     lexer->advance(lexer, false);
                     if (lexer->lookahead == 'f') {
                       lexer->advance(lexer, false);
-                      if (iswspace(lexer->lookahead)) {
+                      if (is_end_of_token(lexer)) {
                         lexer->result_symbol = RULE_END;
                         return true;
                       }
