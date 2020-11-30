@@ -47,7 +47,7 @@ void skip_whitespace_and_comments(TSLexer *lexer) {
         while (lexer->lookahead != 0 && lexer->lookahead != '\n') {
           lexer->advance(lexer, false);
         }
-      // otherwise check whether the comment is a block comment
+        // otherwise check whether the comment is a block comment
       } else {
         size_t depth = 0;
 
@@ -64,7 +64,7 @@ void skip_whitespace_and_comments(TSLexer *lexer) {
               lexer->advance(lexer, false);
             }
 
-            // handle nested block comments and increment comment depth as necessary
+            // handle nested block comments and increment comment depth
             if (lexer->lookahead == '/') {
               lexer->advance(lexer, false);
               if (lexer->lookahead == '*') {
