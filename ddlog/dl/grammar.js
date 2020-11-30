@@ -317,8 +317,7 @@ module.exports = grammar({
         "(",
         optional(seq($.arg, repeat(seq(",", $.arg)))),
         ")",
-        ":",
-        $._type_atom,
+        optional(seq(":", $._type_atom)),
       ),
 
     function: $ =>
