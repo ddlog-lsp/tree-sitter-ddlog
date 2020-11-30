@@ -263,7 +263,15 @@ module.exports = grammar({
     exp_lteq: $ => prec(10, seq($._exp, "<=", $._exp)),
 
     exp_match: $ =>
-      seq("match", "(", $._exp, ")", "{", optional($.match_clause), repeat(seq(",", $.match_clause)), "}"),
+      seq(
+        "match",
+        "(",
+        $._exp,
+        ")",
+        "{",
+        optional(seq(seq($._pat, "->", $._exp), repeat(seq(",", seq($._pat, "->", $._exp))))),
+        "}",
+      ),
 
     exp_mul: $ => prec.left(14, seq($._exp, "*", $._exp)),
 
