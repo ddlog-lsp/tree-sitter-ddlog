@@ -51,9 +51,9 @@ module.exports = grammar({
 
     _annotated_item: $ => seq(optional($.attributes), $._item),
 
-    arg: $ => seq($.name_arg, ":", $._type_atom),
+    arg: $ => seq($.name_arg, ":", optional("mut"), $._type_atom),
 
-    arg_opt_type: $ => seq($.name_arg, optional(seq(":", $._type_atom))),
+    arg_opt_type: $ => seq($.name_arg, optional(seq(":", optional("mut"), $._type_atom))),
 
     _atom: $ => choice($.atom_rec, $.atom_pos, $.atom_elem),
 
