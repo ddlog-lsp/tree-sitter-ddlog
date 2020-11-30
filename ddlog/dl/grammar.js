@@ -431,8 +431,8 @@ module.exports = grammar({
 
     rel_args: $ =>
       seq(
-        optional(choice("input", "output")),
-        "relation",
+        optional($.rel_role),
+        $.rel_semantics,
         seq(optional("&"), $.name_rel),
         "(",
         $.arg,
@@ -441,13 +441,20 @@ module.exports = grammar({
         optional($.key_primary),
       ),
 
-    rel_elem: $ => choice($.rel_input, $.rel_output, $.rel_internal),
+    rel_elem: $ =>
+      seq(
+        optional($.rel_role),
+        $.rel_semantics,
+        seq(optional("&"), $.name_rel),
+        "[",
+        $._type_atom,
+        "]",
+        optional($.key_primary),
+      ),
 
-    rel_input: $ => seq("input", "relation", $.name_rel, "[", $._type_atom, "]", optional($.key_primary)),
+    rel_role: $ => choice("input", "internal", "output"),
 
-    rel_output: $ => seq("output", "relation", $.name_rel, "[", $._type_atom, "]", optional($.key_primary)),
-
-    rel_internal: $ => seq("relation", $.name_rel, "[", $._type_atom, "]", optional($.key_primary)),
+    rel_semantics: $ => choice("relation", "stream", "multiset"),
 
     _rhs: $ => choice($.rhs_inspect, $._atom, $.rhs_atom_neg, $._exp, $.rhs_flat_map, $.rhs_grouping),
 
