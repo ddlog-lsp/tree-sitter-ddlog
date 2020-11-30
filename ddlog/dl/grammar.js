@@ -289,7 +289,7 @@ module.exports = grammar({
 
     exp_sub: $ => prec.left(13, seq($._exp, "-", $._exp)),
 
-    exp_try: $ => prec.left(19, seq($._exp, "?")),
+    exp_try: $ => prec(19, seq($._exp, "?")),
 
     exp_tuple: $ => seq("(", optional(seq($._exp, repeat(seq(",", $._exp)), optional(","))), ")"),
 
