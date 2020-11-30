@@ -86,7 +86,7 @@ module.exports = grammar({
         seq(
           optional(seq($.name_var_term, "in")),
           seq(optional("&"), $.name_rel),
-          optional(seq("(", optional($._exp), repeat(seq(",", $._exp)), ")")),
+          optional(seq("(", optional(seq($._exp, repeat(seq(",", $._exp)), optional(","))), ")")),
         ),
       ),
 
@@ -119,7 +119,17 @@ module.exports = grammar({
 
     cons_pos: $ => seq(optional($.attributes), $.name_cons),
 
-    cons_rec: $ => prec(1, seq(optional($.attributes), $.name_cons, "{", $.field, repeat(seq(",", $.field)), "}")),
+    cons_rec: $ =>
+      prec(
+        1,
+        seq(
+          optional($.attributes),
+          $.name_cons,
+          "{",
+          optional(seq($.field, repeat(seq(",", $.field)), optional(","))),
+          "}",
+        ),
+      ),
 
     _escape_sequence: $ =>
       token.immediate(
@@ -239,10 +249,10 @@ module.exports = grammar({
     // FIXME: precedence
     exp_for: $ => prec(20, seq("for", "(", $.name_var_term, "in", $._exp, ")", $._exp)),
 
-    exp_fun_call: $ => prec(19, seq($._exp, "(", optional(seq($._exp, repeat(seq(",", $._exp)))), ")")),
+    exp_fun_call: $ => prec(19, seq($._exp, "(", optional(seq($._exp, repeat(seq(",", $._exp)), optional(","))), ")")),
 
     exp_fun_call_dot: $ =>
-      prec(19, seq($._exp, ".", $.name_func, "(", optional(seq($._exp, repeat(seq(",", $._exp)))), ")")),
+      prec(19, seq($._exp, ".", $.name_func, "(", optional(seq($._exp, repeat(seq(",", $._exp)), optional(","))), ")")),
 
     exp_gt: $ => prec(10, seq($._exp, ">", $._exp)),
 
@@ -291,7 +301,7 @@ module.exports = grammar({
         $._exp,
         ")",
         "{",
-        optional(seq(seq($._pat, "->", $._exp), repeat(seq(",", seq($._pat, "->", $._exp))))),
+        optional(seq(seq($._pat, "->", $._exp), repeat(seq(",", seq($._pat, "->", $._exp))), optional(","))),
         "}",
       ),
 
@@ -365,7 +375,8 @@ module.exports = grammar({
 
     import: $ => seq("import", $.module_path, optional(seq("as", $.module_alias))),
 
-    index: $ => seq("index", $.name_index, "(", optional($.arg), repeat(seq(",", $.arg)), ")", "on", $._atom),
+    index: $ =>
+      seq("index", $.name_index, "(", optional(seq($.arg, repeat(seq(",", $.arg)), optional(","))), ")", "on", $._atom),
 
     interpolation: $ => seq("${", $._exp, "}"),
 
@@ -456,7 +467,8 @@ module.exports = grammar({
         ),
       ),
 
-    pat_cons_pos: $ => seq($.name_cons, optional(seq("{", optional(seq($._pat, repeat(seq(",", $._pat)))), "}"))),
+    pat_cons_pos: $ =>
+      seq($.name_cons, optional(seq("{", optional(seq($._pat, repeat(seq(",", $._pat)), optional(","))), "}"))),
 
     _pat_lit: $ => choice($._lit_bool, $.lit_num, $.lit_string),
 
@@ -474,8 +486,7 @@ module.exports = grammar({
         $.rel_semantics,
         seq(optional("&"), $.name_rel),
         "(",
-        optional($.arg),
-        repeat(seq(",", $.arg)),
+        optional(seq($.arg, repeat(seq(",", $.arg)), optional(","))),
         ")",
         optional($.key_primary),
       ),
@@ -538,7 +549,9 @@ module.exports = grammar({
         $._exp,
         ")",
         "{",
-        optional(seq(seq($._pat, "->", $._statement), repeat(seq(",", seq($._pat, "->", $._statement))))),
+        optional(
+          seq(seq($._pat, "->", $._statement), repeat(seq(",", seq($._pat, "->", $._statement))), optional(",")),
+        ),
         "}",
       ),
 
