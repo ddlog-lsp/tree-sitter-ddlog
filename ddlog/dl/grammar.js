@@ -563,7 +563,14 @@ module.exports = grammar({
     string_quoted: $ =>
       seq(
         /i?"/,
-        repeat(choice(/[^$"\\\n]+|\\\r?\n/, seq("$", token.immediate(/[^{]/)), $.interpolation, $._escape_sequence)),
+        repeat(
+          choice(
+            /[^$"\\\n]+|\\\r?\n/,
+            seq("$", optional(token.immediate(/[^{]/))),
+            $.interpolation,
+            $._escape_sequence,
+          ),
+        ),
         '"',
       ),
 
@@ -573,7 +580,7 @@ module.exports = grammar({
         repeat(
           choice(
             /[^$"\\\n]+|\\\r?\n/,
-            seq("$", token.immediate(/[^{]/)),
+            seq("$", optional(token.immediate(/[^{]/))),
             $.interpolation,
             $._escape_sequence_interpolated,
           ),
@@ -584,7 +591,11 @@ module.exports = grammar({
     string_raw: $ => seq(/i?\[\|/, /([^|]|\|[^\]])*/, "|]"),
 
     string_raw_interpolated: $ =>
-      seq(/i?\$\[\|/, repeat(choice(/([^$|]|\|[^\]])+/, seq("$", token.immediate(/[^{]/)), $.interpolation)), "|]"),
+      seq(
+        /i?\$\[\|/,
+        repeat(choice(/([^$|]|\|[^\]])+/, seq("$", optional(token.immediate(/[^{]/))), $.interpolation)),
+        "|]",
+      ),
 
     transformer: $ =>
       seq(
