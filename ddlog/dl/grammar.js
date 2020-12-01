@@ -444,7 +444,7 @@ module.exports = grammar({
 
     name_rel: $ => prec(1, $._ident_upper_scoped),
 
-    name_trans: $ => $._ident_upper_scoped,
+    name_trans: $ => $._ident_scoped,
 
     name_type: $ => choice($._ident_lower_scoped, $._ident_upper_scoped),
 
