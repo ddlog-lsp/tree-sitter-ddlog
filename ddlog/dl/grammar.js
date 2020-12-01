@@ -12,6 +12,8 @@ const Pattern = {
 };
 
 module.exports = grammar({
+  patterns: Pattern,
+
   name: "ddlog_dl",
 
   externals: $ => [$.rule_end],
