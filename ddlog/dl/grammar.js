@@ -16,8 +16,6 @@ module.exports = grammar({
 
   name: "ddlog_dl",
 
-  externals: $ => [$.rule_end],
-
   conflicts: $ => [
     [$.exp_assign],
     [$.exp_block, $.statement_block],
@@ -48,6 +46,8 @@ module.exports = grammar({
     [$.name_cons, $.name_type],
     [$.statement_if],
   ],
+
+  externals: $ => [$.rule_end],
 
   extras: $ => [$._comment_block, $._comment_line, /[\s\uFEFF\u2060\u200B\u00A0]/],
 
