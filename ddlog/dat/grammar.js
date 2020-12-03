@@ -5,12 +5,14 @@ const ddlog_dl = require("../dl/grammar");
 module.exports = grammar(ddlog_dl, {
   name: "ddlog_dat",
 
+  externals: $ => [$.rule_end, $.updates_end],
+
   extras: $ => [$._comment_line, /[\s\uFEFF\u2060\u200B\u00A0]/],
 
   word: $ => $.word,
 
   rules: {
-    ROOT: $ => optional(seq($._command, repeat(seq(";", $._command)), optional(";"))),
+    ROOT: $ => repeat($._command),
 
     _atom: $ => choice($.atom_rec, $.atom_pos, $.atom_elem),
 
@@ -32,9 +34,7 @@ module.exports = grammar(ddlog_dl, {
         $.dump_index,
         $.echo,
         $.exit,
-        $.insert_or_update,
         $.log_level,
-        $.modify,
         $.profile,
         $.query_index,
         $.rollback,
@@ -44,46 +44,88 @@ module.exports = grammar(ddlog_dl, {
         $.updates,
       ),
 
-    clear: $ => seq("clear", $.name_rel),
+    clear: $ => seq("clear", $.name_rel, ";"),
 
     _comment_line: $ => token(seq("#", /.*/)),
 
-    _commit: $ => seq("commit", optional("dump_changes")),
+    _commit: $ => seq("commit", optional("dump_changes"), ";"),
+
+    _cons_args: $ => seq($.cons_arg, repeat(seq(",", $.cons_arg))),
+
+    cons_arg: $ => choice($.record_named, $.record),
 
     delete: $ => seq("delete", $._atom),
 
     delete_key: $ => seq("delete_key", $.name_rel, $._exp),
 
-    dump: $ => seq("dump", optional($.name_rel)),
+    dump: $ => seq("dump", optional($.name_rel), ";"),
 
-    dump_index: $ => seq("dump_index", $.name_index),
+    dump_index: $ => seq("dump_index", $.name_index, ";"),
 
-    echo: $ => seq("echo", /[^;]*/),
+    echo: $ => seq("echo", /[^;]*/, ";"),
 
-    exit: $ => "exit",
+    exit: $ => seq("exit", ";"),
+
+    _exp: ($, original) => choice($.lit_serialized, original),
 
     insert: $ => seq("insert", $._atom),
 
     insert_or_update: $ => seq("insert_or_update", $._atom),
 
-    log_level: $ => seq("log_level", /[0-9][0-9_]*/),
+    lit_num_hex: $ => /0x[0-9a-fA-F][0-9a-fA-F_]*/,
 
-    modify: $ => seq("modify", $.name_rel, $._exp, "<-", $._atom),
+    lit_serialized: $ => seq("@", $.serde_encoding, $.lit_string),
 
-    profile: $ => seq("profile", optional(seq("cpu", choice("on", "off")))),
+    log_level: $ => seq("log_level", /[0-9][0-9_]*/, ";"),
+
+    modify: $ => seq("modify", $.name_rel, $.record, "<-", $.record),
+
+    profile: $ => seq("profile", optional(seq("cpu", choice("on", "off"))), ";"),
 
     query_index: $ =>
-      seq("query_index", $.name_index, "(", optional(seq($.arg, repeat(seq(",", $.arg)), optional(","))), ")"),
+      seq("query_index", $.name_index, "(", optional(seq($.arg, repeat(seq(",", $.arg)), optional(","))), ")", ";"),
 
-    rollback: $ => "rollback",
+    record: $ =>
+      choice(
+        $.lit_bool,
+        $.lit_string,
+        $.lit_serialized,
+        $.val_tuple,
+        $.val_array,
+        $.val_struct,
+        $.lit_num_float,
+        $.lit_num_dec,
+        $.lit_num_hex,
+      ),
 
-    sleep: $ => seq("sleep", /[0-9][0-9_]*/),
+    record_named: $ => seq(".", $.name_field, "=", $.record),
 
-    start: $ => "start",
+    rollback: $ => seq("rollback", ";"),
 
-    timestamp: $ => "timestamp",
+    serde_encoding: $ => token.immediate("json"),
 
-    updates: $ => seq(choice($.delete, $.delete_key, $.insert), repeat(seq(",", choice($.delete, $.insert)))),
+    sleep: $ => seq("sleep", /[0-9][0-9_]*/, ";"),
+
+    start: $ => seq("start", ";"),
+
+    lit_string: $ =>
+      seq(
+        /%?"/,
+        repeat(choice(/[^$"\\\n]+|\\\r?\n/, seq("$", optional(token.immediate(/[^{]/))), $._escape_sequence)),
+        '"',
+      ),
+
+    timestamp: $ => seq("timestamp", ";"),
+
+    update: $ => choice($.delete, $.delete_key, $.insert, $.insert_or_update, $.modify),
+
+    updates: $ => seq($.update, repeat(seq(",", $.update)), $.updates_end),
+
+    val_array: $ => seq("[", optional(seq($.record, repeat(seq(",", $.record)), optional(","))), "]"),
+
+    val_struct: $ => seq($.name_rel, optional(seq("{", $._cons_args, "}"))),
+
+    val_tuple: $ => seq("(", optional(seq($.record, repeat(seq(",", $.record)), optional(","))), ")"),
 
     word: $ => token(seq(/[a-z_]/, repeat(/[a-zA-Z0-9_]/))),
   },
