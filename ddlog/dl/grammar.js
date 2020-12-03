@@ -387,7 +387,7 @@ module.exports = grammar({
 
     lit_num: $ =>
       choice(
-        prec.right(choice($.lit_num_dec, $.lit_num_float)),
+        prec.right(choice($.lit_num_dec, $.lit_num_float, $.lit_num_hex)),
         prec(
           18,
           seq(
