@@ -109,10 +109,6 @@ module.exports = grammar({
 
     attributes: $ => repeat1(seq("#[", $.attribute, repeat(seq(",", $.attribute)), "]")),
 
-    bool_false: $ => "false",
-
-    bool_true: $ => "true",
-
     _comment_block: $ => seq("/*", repeat(choice($._comment_block, /[^/*]+/, "/", "*")), "*/"),
 
     _comment_line: $ => token(seq("//", /.*/)),
@@ -282,7 +278,7 @@ module.exports = grammar({
         ),
       ),
 
-    _exp_lit: $ => choice($._lit_bool, $.lit_num, $.lit_map, $.lit_string, $.lit_vec),
+    _exp_lit: $ => choice($.lit_bool, $.lit_num, $.lit_map, $.lit_string, $.lit_vec),
 
     exp_log_and: $ => prec.left(6, seq($._exp, "and", $._exp)),
 
@@ -387,7 +383,7 @@ module.exports = grammar({
 
     key_primary: $ => seq("primary", "key", "(", $.name_var_term, ")", $._exp),
 
-    _lit_bool: $ => choice($.bool_false, $.bool_true),
+    lit_bool: $ => choice("false", "true"),
 
     lit_num: $ =>
       choice(
@@ -475,7 +471,7 @@ module.exports = grammar({
         seq($.name_cons, optional(seq("{", optional(seq($._pat, repeat(seq(",", $._pat)), optional(","))), "}"))),
       ),
 
-    _pat_lit: $ => choice($._lit_bool, $.lit_num, $.lit_string),
+    _pat_lit: $ => choice($.lit_bool, $.lit_num, $.lit_string),
 
     pat_term_decl_var: $ => seq(optional("var"), $.name_var_term),
 
