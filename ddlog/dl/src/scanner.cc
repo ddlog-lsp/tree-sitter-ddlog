@@ -29,12 +29,12 @@ void tree_sitter_ddlog_dl_external_scanner_deserialize(
   (void)length;
 }
 
-bool is_end_of_token(TSLexer *const lexer) {
+bool tree_sitter_ddlog_dl_is_end_of_token(TSLexer *const lexer) {
   return lexer->lookahead == 0 || iswspace(lexer->lookahead) ||
          lexer->lookahead == '/';
 }
 
-void skip_whitespace_and_comments(TSLexer *const lexer) {
+void tree_sitter_ddlog_dl_skip_extras(TSLexer *const lexer) {
   while (iswspace(lexer->lookahead) || lexer->lookahead == '/') {
     // consume remaining whitespace
     while (iswspace(lexer->lookahead)) {
@@ -101,7 +101,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
   (void)payload;
 
   if (valid_symbols[RULE_END]) {
-    skip_whitespace_and_comments(lexer);
+    tree_sitter_ddlog_dl_skip_extras(lexer);
 
     // lookahead for '.'
     if (lexer->lookahead == '.') {
@@ -109,7 +109,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
       lexer->advance(lexer, false);
       lexer->mark_end(lexer);
 
-      skip_whitespace_and_comments(lexer);
+      tree_sitter_ddlog_dl_skip_extras(lexer);
 
       // check for eof or the beginning of an attribute
       if (lexer->lookahead == 0 || lexer->lookahead == '#') {
@@ -129,7 +129,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                 lexer->advance(lexer, false);
                 if (lexer->lookahead == 'y') {
                   lexer->advance(lexer, false);
-                  if (is_end_of_token(lexer)) {
+                  if (tree_sitter_ddlog_dl_is_end_of_token(lexer)) {
                     lexer->result_symbol = RULE_END;
                     return true;
                   }
@@ -152,7 +152,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                   lexer->advance(lexer, false);
                   if (lexer->lookahead == 'n') {
                     lexer->advance(lexer, false);
-                    if (is_end_of_token(lexer)) {
+                    if (tree_sitter_ddlog_dl_is_end_of_token(lexer)) {
                       lexer->result_symbol = RULE_END;
                       return true;
                     }
@@ -170,7 +170,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
             lexer->advance(lexer, false);
             if (lexer->lookahead == 'r') {
               lexer->advance(lexer, false);
-              if (is_end_of_token(lexer)) {
+              if (tree_sitter_ddlog_dl_is_end_of_token(lexer)) {
                 lexer->result_symbol = RULE_END;
                 return true;
               }
@@ -190,7 +190,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                       lexer->advance(lexer, false);
                       if (lexer->lookahead == 'n') {
                         lexer->advance(lexer, false);
-                        if (is_end_of_token(lexer)) {
+                        if (tree_sitter_ddlog_dl_is_end_of_token(lexer)) {
                           lexer->result_symbol = RULE_END;
                           return true;
                         }
@@ -216,7 +216,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                   lexer->advance(lexer, false);
                   if (lexer->lookahead == 't') {
                     lexer->advance(lexer, false);
-                    if (is_end_of_token(lexer)) {
+                    if (tree_sitter_ddlog_dl_is_end_of_token(lexer)) {
                       lexer->result_symbol = RULE_END;
                       return true;
                     }
@@ -233,7 +233,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                 lexer->advance(lexer, false);
                 if (lexer->lookahead == 'x') {
                   lexer->advance(lexer, false);
-                  if (is_end_of_token(lexer)) {
+                  if (tree_sitter_ddlog_dl_is_end_of_token(lexer)) {
                     lexer->result_symbol = RULE_END;
                     return true;
                   }
@@ -246,7 +246,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                 lexer->advance(lexer, false);
                 if (lexer->lookahead == 't') {
                   lexer->advance(lexer, false);
-                  if (is_end_of_token(lexer)) {
+                  if (tree_sitter_ddlog_dl_is_end_of_token(lexer)) {
                     lexer->result_symbol = RULE_END;
                     return true;
                   }
@@ -269,7 +269,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                   lexer->advance(lexer, false);
                   if (lexer->lookahead == 't') {
                     lexer->advance(lexer, false);
-                    if (is_end_of_token(lexer)) {
+                    if (tree_sitter_ddlog_dl_is_end_of_token(lexer)) {
                       lexer->result_symbol = RULE_END;
                       return true;
                     }
@@ -295,7 +295,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                     lexer->advance(lexer, false);
                     if (lexer->lookahead == 'y') {
                       lexer->advance(lexer, false);
-                      if (is_end_of_token(lexer)) {
+                      if (tree_sitter_ddlog_dl_is_end_of_token(lexer)) {
                         lexer->result_symbol = RULE_END;
                         return true;
                       }
@@ -324,7 +324,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                       lexer->advance(lexer, false);
                       if (lexer->lookahead == 'n') {
                         lexer->advance(lexer, false);
-                        if (is_end_of_token(lexer)) {
+                        if (tree_sitter_ddlog_dl_is_end_of_token(lexer)) {
                           lexer->result_symbol = RULE_END;
                           return true;
                         }
@@ -352,7 +352,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
                     lexer->advance(lexer, false);
                     if (lexer->lookahead == 'f') {
                       lexer->advance(lexer, false);
-                      if (is_end_of_token(lexer)) {
+                      if (tree_sitter_ddlog_dl_is_end_of_token(lexer)) {
                         lexer->result_symbol = RULE_END;
                         return true;
                       }
@@ -377,7 +377,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
         }
 
         // skip interspersed whitespace
-        skip_whitespace_and_comments(lexer);
+        tree_sitter_ddlog_dl_skip_extras(lexer);
 
         // skip scope delimiter
         if (lexer->lookahead == ':') {
@@ -394,7 +394,7 @@ bool tree_sitter_ddlog_dl_external_scanner_scan(
           }
         }
 
-        skip_whitespace_and_comments(lexer);
+        tree_sitter_ddlog_dl_skip_extras(lexer);
       }
 
       // scan for end of rel_name
