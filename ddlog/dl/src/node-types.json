@@ -235,14 +235,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -436,6 +428,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -470,14 +466,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -671,6 +659,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -709,14 +701,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -910,6 +894,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -952,14 +940,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -1153,6 +1133,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -1244,14 +1228,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -1445,6 +1421,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -1475,14 +1455,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -1676,6 +1648,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -1706,14 +1682,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -1907,6 +1875,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -1941,14 +1913,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -2142,6 +2106,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -2172,14 +2140,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -2373,6 +2333,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -2403,14 +2367,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -2604,6 +2560,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -2634,14 +2594,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -2835,6 +2787,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -2865,14 +2821,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -3066,6 +3014,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -3096,14 +3048,6 @@
       "required": false,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -3297,6 +3241,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -3327,14 +3275,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -3528,6 +3468,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -3602,14 +3546,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -3803,6 +3739,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -3833,14 +3773,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -4034,6 +3966,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -4064,14 +4000,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -4265,6 +4193,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -4299,14 +4231,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -4500,6 +4424,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -4553,14 +4481,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -4754,6 +4674,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -4784,14 +4708,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -4985,6 +4901,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -5015,14 +4935,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -5216,6 +5128,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -5246,14 +5162,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -5447,6 +5355,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -5481,14 +5393,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -5682,6 +5586,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -5712,14 +5620,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -5913,6 +5813,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -5947,14 +5851,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -6148,6 +6044,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -6178,14 +6078,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -6379,6 +6271,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -6413,14 +6309,6 @@
           "named": true
         },
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -6614,6 +6502,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -6688,14 +6580,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -6889,6 +6773,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -6919,14 +6807,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -7120,6 +7000,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -7150,14 +7034,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -7351,6 +7227,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -7381,14 +7261,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -7582,6 +7454,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -7612,14 +7488,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -7813,6 +7681,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -7843,14 +7715,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -8044,6 +7908,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -8074,14 +7942,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -8275,6 +8135,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -8329,14 +8193,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -8530,6 +8386,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -8560,14 +8420,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -8761,6 +8613,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -8791,14 +8647,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -8992,6 +8840,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -9022,14 +8874,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -9223,6 +9067,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -9253,14 +9101,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -9454,6 +9294,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -9484,14 +9328,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -9685,6 +9521,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -9715,14 +9555,6 @@
       "required": false,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -9916,6 +9748,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -9946,14 +9782,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -10147,6 +9975,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -10177,14 +10009,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -10378,6 +10202,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -10408,14 +10236,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -10609,6 +10429,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -10639,14 +10463,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -10840,6 +10656,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -10870,14 +10690,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -11071,6 +10883,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -11101,14 +10917,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -11302,6 +11110,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -11332,14 +11144,6 @@
       "required": false,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -11533,6 +11337,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -11563,14 +11371,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -11764,6 +11564,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -11910,14 +11714,6 @@
           "named": true
         },
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -12111,6 +11907,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -12302,14 +12102,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -12503,6 +12295,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -12533,14 +12329,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -12734,6 +12522,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -12760,6 +12552,11 @@
     }
   },
   {
+    "type": "lit_bool",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "lit_map",
     "named": true,
     "fields": {},
@@ -12767,14 +12564,6 @@
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
         {
           "type": "exp_add",
           "named": true
@@ -12969,6 +12758,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -13062,14 +12855,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -13266,6 +13051,10 @@
           "named": true
         },
         {
+          "type": "lit_bool",
+          "named": true
+        },
+        {
           "type": "lit_map",
           "named": true
         },
@@ -13353,11 +13142,7 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -13408,11 +13193,7 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -13482,11 +13263,7 @@
       "required": false,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -13533,11 +13310,7 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -13768,14 +13541,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -13969,6 +13734,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -14003,14 +13772,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -14204,6 +13965,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -14238,14 +14003,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -14439,6 +14196,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -14481,14 +14242,6 @@
           "named": true
         },
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -14682,6 +14435,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -14732,14 +14489,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -14933,6 +14682,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -15042,14 +14795,6 @@
           "named": true
         },
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -15243,6 +14988,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -15301,14 +15050,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -15502,6 +15243,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -15583,14 +15328,6 @@
       "required": true,
       "types": [
         {
-          "type": "bool_false",
-          "named": true
-        },
-        {
-          "type": "bool_true",
-          "named": true
-        },
-        {
           "type": "exp_add",
           "named": true
         },
@@ -15784,6 +15521,10 @@
         },
         {
           "type": "exp_wild",
+          "named": true
+        },
+        {
+          "type": "lit_bool",
           "named": true
         },
         {
@@ -16558,14 +16299,6 @@
     "named": false
   },
   {
-    "type": "bool_false",
-    "named": true
-  },
-  {
-    "type": "bool_true",
-    "named": true
-  },
-  {
     "type": "else",
     "named": false
   },
@@ -16579,6 +16312,10 @@
   },
   {
     "type": "extern",
+    "named": false
+  },
+  {
+    "type": "false",
     "named": false
   },
   {
@@ -16699,6 +16436,10 @@
   },
   {
     "type": "transformer",
+    "named": false
+  },
+  {
+    "type": "true",
     "named": false
   },
   {
