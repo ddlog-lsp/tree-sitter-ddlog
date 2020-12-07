@@ -197,6 +197,8 @@ module.exports = grammar({
 
     exp_assign: $ => prec(3, seq($._exp, "=", $._exp)),
 
+    exp_binding: $ => prec(2, seq($.name_var_term, "@", $._exp)),
+
     exp_bit_and: $ => prec.left(9, seq($._exp, "&", $._exp)),
 
     exp_bit_neg: $ => prec(16, seq("~", $._exp)),
@@ -221,6 +223,8 @@ module.exports = grammar({
 
     _exp_cons: $ => choice($.exp_cons_rec, $.exp_cons_pos),
 
+    exp_cons_pos: $ => seq($.name_cons, optional(seq("{", optional(seq($._exp, repeat(seq(",", $._exp)))), "}"))),
+
     exp_cons_rec: $ =>
       prec(
         3,
@@ -231,10 +235,6 @@ module.exports = grammar({
           "}",
         ),
       ),
-
-    exp_binding: $ => prec(2, seq($.name_var_term, "@", $._exp)),
-
-    exp_cons_pos: $ => seq($.name_cons, optional(seq("{", optional(seq($._exp, repeat(seq(",", $._exp)))), "}"))),
 
     exp_decl_var: $ => prec(20, seq(optional("var"), $.name_var_term)),
 
@@ -339,17 +339,6 @@ module.exports = grammar({
 
     _function: $ => choice($.function, $.function_extern),
 
-    function_extern: $ =>
-      seq(
-        "extern",
-        "function",
-        $.name_func,
-        "(",
-        optional(seq($.arg, repeat(seq(",", $.arg)))),
-        ")",
-        optional(seq(":", $._type_atom)),
-      ),
-
     function: $ =>
       prec.right(
         seq(
@@ -361,6 +350,17 @@ module.exports = grammar({
           optional(seq(":", $._type_atom)),
           choice(seq("=", $._exp), "{", $._exp, "}"),
         ),
+      ),
+
+    function_extern: $ =>
+      seq(
+        "extern",
+        "function",
+        $.name_func,
+        "(",
+        optional(seq($.arg, repeat(seq(",", $.arg)))),
+        ")",
+        optional(seq(":", $._type_atom)),
       ),
 
     _ident: $ => choice(Pattern.ident_lower, Pattern.ident_upper),
@@ -454,6 +454,12 @@ module.exports = grammar({
 
     _pat_cons: $ => choice($.pat_cons_rec, $.pat_cons_pos),
 
+    pat_cons_pos: $ =>
+      prec(
+        1,
+        seq($.name_cons, optional(seq("{", optional(seq($._pat, repeat(seq(",", $._pat)), optional(","))), "}"))),
+      ),
+
     pat_cons_rec: $ =>
       prec(
         2,
@@ -463,12 +469,6 @@ module.exports = grammar({
           optional(seq(".", $.name_field, "=", $._pat, repeat(seq(",", ".", $.name_field, "=", $._pat)))),
           "}",
         ),
-      ),
-
-    pat_cons_pos: $ =>
-      prec(
-        1,
-        seq($.name_cons, optional(seq("{", optional(seq($._pat, repeat(seq(",", $._pat)), optional(","))), "}"))),
       ),
 
     _pat_lit: $ => choice($.lit_bool, $.lit_num, $.lit_string),
@@ -609,20 +609,6 @@ module.exports = grammar({
         ")",
       ),
 
-    _typedef: $ => choice($.typedef, $.typedef_external),
-
-    typedef_external: $ =>
-      seq("extern", "type", $.name_type, optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">"))),
-
-    typedef: $ =>
-      seq(
-        "typedef",
-        $.name_type,
-        optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">")),
-        "=",
-        $._type,
-      ),
-
     _type: $ =>
       choice(
         $.type_bit,
@@ -702,6 +688,20 @@ module.exports = grammar({
     type_user: $ => prec.right(seq($.name_type, optional(seq("<", $._type, repeat(seq(",", $._type)), ">")))),
 
     type_var: $ => seq("'", token.immediate(Pattern.ident_upper)),
+
+    _typedef: $ => choice($.typedef, $.typedef_extern),
+
+    typedef: $ =>
+      seq(
+        "typedef",
+        $.name_type,
+        optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">")),
+        "=",
+        $._type,
+      ),
+
+    typedef_extern: $ =>
+      seq("extern", "type", $.name_type, optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">"))),
 
     word: $ => token(seq(/[a-z_]/, repeat(/[a-zA-Z0-9_]/))),
   },
