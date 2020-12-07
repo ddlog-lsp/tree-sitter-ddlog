@@ -56,7 +56,7 @@
           "named": true
         },
         {
-          "type": "typedef_external",
+          "type": "typedef_extern",
           "named": true
         }
       ]
@@ -16060,7 +16060,7 @@
     }
   },
   {
-    "type": "typedef_external",
+    "type": "typedef_extern",
     "named": true,
     "fields": {},
     "children": {
