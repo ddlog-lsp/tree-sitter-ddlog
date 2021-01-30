@@ -1,7 +1,7 @@
 {
   "name": "tree-sitter-ddlog",
   "version": "0.0.0",
-  "author": "Darin Morrison <darinmorrison@users.noreply.github.com>",
+  "author": "hvithrafn <hvithrafn@users.noreply.github.com>",
   "license": "Apache-2.0 WITH LLVM-exception",
   "description": "DDlog grammars for tree-sitter",
   "homepage": "https://github.com/ddlog-lsp/tree-sitter-ddlog#readme",
