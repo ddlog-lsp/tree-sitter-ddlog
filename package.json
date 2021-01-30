@@ -14,9 +14,13 @@
   },
   "main": "index.js",
   "scripts": {
-    "build": "npm run build-ddlog-dat && npm run build-ddlog-dl",
-    "build-ddlog-dat": "cd ddlog/dat && tree-sitter generate",
-    "build-ddlog-dl": "cd ddlog/dl && tree-sitter generate",
+    "build": "npm run build-native && npm run build-wasm",
+    "build-wasm": "npm run build-wasm-ddlog-dat && npm run build-wasm-ddlog-dl",
+    "build-wasm-ddlog-dat": "cd ddlog/dat && tree-sitter build-wasm",
+    "build-wasm-ddlog-dl": "cd ddlog/dl && tree-sitter build-wasm",
+    "build-native": "npm run build-native-ddlog-dat && npm run build-native-ddlog-dl",
+    "build-native-ddlog-dat": "cd ddlog/dat && tree-sitter generate",
+    "build-native-ddlog-dl": "cd ddlog/dl && tree-sitter generate",
     "format": "prettier --write '**/*.{js,json,ts,tsx,yml,yaml}'",
     "lint": "eslint '**/*.{js,ts,tsx}'",
     "test": "npm run test-ddlog-dat && npm run test-ddlog-dl",
@@ -25,11 +29,11 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.14.0",
-    "eslint-config-prettier": "^6.15.0",
-    "eslint-plugin-prettier": "^3.2.0",
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
     "prettier": "^2.2.1",
-    "tree-sitter-cli": "^0.17.3"
+    "tree-sitter-cli": "^0.18.0"
   },
   "dependencies": {
     "nan": "^2.14.2"
