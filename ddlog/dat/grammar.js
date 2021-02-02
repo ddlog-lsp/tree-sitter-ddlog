@@ -12,24 +12,24 @@ module.exports = grammar(ddlog_dl, {
   word: $ => $.word,
 
   rules: {
-    ROOT: $ => repeat($._command),
+    ROOT: $ => repeat($.command),
 
-    _atom: $ => choice($.atom_rec, $.atom_pos, $.atom_elem),
+    atom: $ => choice($.atom_rec, $.atom_pos, $.atom_elem),
 
-    atom_elem: $ => seq($.name_rel, "[", $._exp, "]"),
+    atom_elem: $ => seq($.name_rel, "[", $.exp, "]"),
 
     atom_pos: $ =>
       prec.right(
-        seq($.name_rel, optional(seq("(", optional(seq($._exp, repeat(seq(",", $._exp)), optional(","))), ")"))),
+        seq($.name_rel, optional(seq("(", optional(seq($.exp, repeat(seq(",", $.exp)), optional(","))), ")"))),
       ),
 
     atom_rec: $ =>
-      seq($.name_rel, "(", ".", $.name_arg, "=", $._exp, repeat(seq(",", ".", $.name_arg, "=", $._exp)), ")"),
+      seq($.name_rel, "(", ".", $.name_arg, "=", $.exp, repeat(seq(",", ".", $.name_arg, "=", $.exp)), ")"),
 
-    _command: $ =>
+    command: $ =>
       choice(
         $.clear,
-        $._commit,
+        $.commit,
         $.dump,
         $.dump_index,
         $.echo,
@@ -48,15 +48,15 @@ module.exports = grammar(ddlog_dl, {
 
     _comment_line: $ => token(seq("#", /.*/)),
 
-    _commit: $ => seq("commit", optional("dump_changes"), ";"),
+    commit: $ => seq("commit", optional("dump_changes"), ";"),
 
-    _cons_args: $ => seq($.cons_arg, repeat(seq(",", $.cons_arg))),
+    cons_args: $ => seq($.cons_arg, repeat(seq(",", $.cons_arg))),
 
     cons_arg: $ => choice($.record_named, $.record),
 
-    delete: $ => seq("delete", $._atom),
+    delete: $ => seq("delete", $.atom),
 
-    delete_key: $ => seq("delete_key", $.name_rel, $._exp),
+    delete_key: $ => seq("delete_key", $.name_rel, $.exp),
 
     dump: $ => seq("dump", optional($.name_rel), ";"),
 
@@ -66,11 +66,11 @@ module.exports = grammar(ddlog_dl, {
 
     exit: $ => seq("exit", ";"),
 
-    _exp: ($, original) => choice($.lit_serialized, original),
+    exp: ($, original) => choice($.lit_serialized, original),
 
-    insert: $ => seq("insert", $._atom),
+    insert: $ => seq("insert", $.atom),
 
-    insert_or_update: $ => seq("insert_or_update", $._atom),
+    insert_or_update: $ => seq("insert_or_update", $.atom),
 
     lit_num_hex: $ => /0x[0-9a-fA-F][0-9a-fA-F_]*/,
 
@@ -123,7 +123,7 @@ module.exports = grammar(ddlog_dl, {
 
     val_array: $ => seq("[", optional(seq($.record, repeat(seq(",", $.record)), optional(","))), "]"),
 
-    val_struct: $ => seq($.name_rel, optional(seq("{", $._cons_args, "}"))),
+    val_struct: $ => seq($.name_rel, optional(seq("{", $.cons_args, "}"))),
 
     val_tuple: $ => seq("(", optional(seq($.record, repeat(seq(",", $.record)), optional(","))), ")"),
 
