@@ -49,7 +49,7 @@ module.exports = grammar({
 
   externals: $ => [$.rule_end],
 
-  extras: $ => [$._comment_block, $._comment_line, /[\s\uFEFF\u2060\u200B\u00A0]/],
+  extras: $ => [$.comment_block, $.comment_line, /[\s\uFEFF\u2060\u200B\u00A0]/],
 
   word: $ => $.word,
 
@@ -109,9 +109,9 @@ module.exports = grammar({
 
     attributes: $ => repeat1(seq("#[", $.attribute, repeat(seq(",", $.attribute)), "]")),
 
-    _comment_block: $ => seq("/*", repeat(choice($._comment_block, /[^/*]+/, "/", "*")), "*/"),
+    comment_block: $ => seq("/*", repeat(choice($.comment_block, /[^/*]+/, "/", "*")), "*/"),
 
-    _comment_line: $ => token(seq("//", /.*/)),
+    comment_line: $ => token(seq("//", /.*/)),
 
     cons: $ => choice($.cons_rec, $.cons_pos),
 
@@ -129,12 +129,12 @@ module.exports = grammar({
         ),
       ),
 
-    _escape_sequence: $ =>
+    escape_sequence: $ =>
       token.immediate(
         seq("\\", choice(/[^xu0-7]/, /[0-7]{1,3}/, /x[0-9a-fA-F]{2}/, /u[0-9a-fA-F]{4}/, /u{[0-9a-fA-F]+}/)),
       ),
 
-    _escape_sequence_interpolated: $ =>
+    escape_sequence_interpolated: $ =>
       token.immediate(
         seq("\\", choice(/[^"xu0-7]/, /[0-7]{1,3}/, /x[0-9a-fA-F]{2}/, /u[0-9a-fA-F]{4}/, /u{[0-9a-fA-F]+}/)),
       ),
@@ -240,7 +240,7 @@ module.exports = grammar({
 
     exp_eq: $ => prec.left(10, seq($.exp, "==", $.exp)),
 
-    exp_field: $ => prec(19, seq($.exp, ".", $._ident)),
+    exp_field: $ => prec(19, seq($.exp, ".", $.ident)),
 
     // FIXME: precedence
     exp_for: $ => prec(20, seq("for", "(", $.name_var_term, "in", $.exp, ")", $.exp)),
@@ -337,6 +337,17 @@ module.exports = grammar({
 
     function: $ => choice($.function_normal, $.function_extern),
 
+    function_extern: $ =>
+      seq(
+        "extern",
+        "function",
+        field("identifier", $.name_func),
+        "(",
+        optional(seq($.arg, repeat(seq(",", $.arg)))),
+        ")",
+        optional(seq(":", $.type_atom)),
+      ),
+
     function_normal: $ =>
       prec.right(
         seq(
@@ -350,24 +361,13 @@ module.exports = grammar({
         ),
       ),
 
-    function_extern: $ =>
-      seq(
-        "extern",
-        "function",
-        field("identifier", $.name_func),
-        "(",
-        optional(seq($.arg, repeat(seq(",", $.arg)))),
-        ")",
-        optional(seq(":", $.type_atom)),
-      ),
+    ident: $ => choice(Pattern.ident_lower, Pattern.ident_upper),
 
-    _ident: $ => choice(Pattern.ident_lower, Pattern.ident_upper),
+    ident_lower_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*::)*[a-z_][a-zA-Z0-9_]*/,
 
-    _ident_lower_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*::)*[a-z_][a-zA-Z0-9_]*/,
+    ident_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*::)*[a-zA-Z_][a-zA-Z0-9_]*/,
 
-    _ident_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*::)*[a-zA-Z_][a-zA-Z0-9_]*/,
-
-    _ident_upper_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*::)*[A-Z][a-zA-Z0-9_]*/,
+    ident_upper_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*::)*[A-Z][a-zA-Z0-9_]*/,
 
     import: $ => seq("import", $.module_path, optional(seq("as", $.module_alias))),
 
@@ -389,6 +389,8 @@ module.exports = grammar({
     key_primary: $ => seq("primary", "key", "(", $.name_var_term, ")", $.exp),
 
     lit_bool: $ => choice("false", "true"),
+
+    lit_map: $ => seq("[", $.exp, "->", $.exp, repeat(seq(",", $.exp, "->", $.exp)), "]"),
 
     lit_num: $ =>
       choice(
@@ -422,36 +424,34 @@ module.exports = grammar({
 
     lit_num_oct: $ => Pattern.lit_num_oct,
 
-    lit_map: $ => seq("[", $.exp, "->", $.exp, repeat(seq(",", $.exp, "->", $.exp)), "]"),
-
     lit_string: $ =>
       prec.right(repeat1(choice($.string_quoted, $.string_quoted_escaped, $.string_raw, $.string_raw_interpolated))),
 
     lit_vec: $ => seq("[", $.exp, repeat(seq(",", $.exp)), "]"),
 
-    module_alias: $ => $._ident,
+    module_alias: $ => $.ident,
 
-    module_path: $ => seq($._ident, repeat(seq("::", $._ident))),
+    module_path: $ => seq($.ident, repeat(seq("::", $.ident))),
 
     name: $ => Pattern.ident_lower,
 
     name_arg: $ => Pattern.ident_lower,
 
-    name_cons: $ => $._ident_upper_scoped,
+    name_cons: $ => $.ident_upper_scoped,
 
     name_field: $ => Pattern.ident_lower,
 
-    name_func: $ => $._ident_lower_scoped,
+    name_func: $ => $.ident_lower_scoped,
 
-    name_index: $ => $._ident_scoped,
+    name_index: $ => $.ident_scoped,
 
-    name_rel: $ => prec(1, $._ident_upper_scoped),
+    name_rel: $ => prec(1, $.ident_upper_scoped),
 
-    name_trans: $ => $._ident_scoped,
+    name_trans: $ => $.ident_scoped,
 
-    name_type: $ => choice($._ident_lower_scoped, $._ident_upper_scoped),
+    name_type: $ => choice($.ident_lower_scoped, $.ident_upper_scoped),
 
-    name_var_term: $ => $._ident_lower_scoped,
+    name_var_term: $ => $.ident_lower_scoped,
 
     name_var_type: $ => /'[A-Z][a-zA-Z0-9_]*/,
 
@@ -540,11 +540,11 @@ module.exports = grammar({
 
     statement_empty: $ => "skip",
 
+    statement_for: $ => seq("for", "(", $.atom, optional(seq("if", $.exp)), ")", $.statement),
+
     statement_if: $ => seq("if", "(", $.exp, ")", $.statement, optional(seq("else", $.statement))),
 
     statement_insert: $ => $.atom,
-
-    statement_for: $ => seq("for", "(", $.atom, optional(seq("if", $.exp)), ")", $.statement),
 
     statement_match: $ =>
       seq(
@@ -561,12 +561,7 @@ module.exports = grammar({
       seq(
         /i?"/,
         repeat(
-          choice(
-            /[^$"\\\n]+|\\\r?\n/,
-            seq("$", optional(token.immediate(/[^{]/))),
-            $.interpolation,
-            $._escape_sequence,
-          ),
+          choice(/[^$"\\\n]+|\\\r?\n/, seq("$", optional(token.immediate(/[^{]/))), $.interpolation, $.escape_sequence),
         ),
         '"',
       ),
@@ -579,7 +574,7 @@ module.exports = grammar({
             /[^$"\\\n]+|\\\r?\n/,
             seq("$", optional(token.immediate(/[^{]/))),
             $.interpolation,
-            $._escape_sequence_interpolated,
+            $.escape_sequence_interpolated,
           ),
         ),
         '\\"',
@@ -690,6 +685,14 @@ module.exports = grammar({
 
     typedef: $ => choice($.typedef_normal, $.typedef_extern),
 
+    typedef_extern: $ =>
+      seq(
+        "extern",
+        "type",
+        field("identifier", $.name_type),
+        optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">")),
+      ),
+
     typedef_normal: $ =>
       seq(
         "typedef",
@@ -697,14 +700,6 @@ module.exports = grammar({
         optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">")),
         "=",
         $.type,
-      ),
-
-    typedef_extern: $ =>
-      seq(
-        "extern",
-        "type",
-        field("identifier", $.name_type),
-        optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">")),
       ),
 
     word: $ => token(seq(/[a-z_]/, repeat(/[a-zA-Z0-9_]/))),
