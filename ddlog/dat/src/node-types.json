@@ -302,6 +302,21 @@
     }
   },
   {
+    "type": "comment_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "comment_block",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "commit",
     "named": true,
     "fields": {}
@@ -970,11 +985,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "exp",
+          "named": true
+        },
+        {
+          "type": "ident",
           "named": true
         }
       ]
@@ -1567,6 +1586,11 @@
     }
   },
   {
+    "type": "ident",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "import",
     "named": true,
     "fields": {},
@@ -1804,7 +1828,17 @@
   {
     "type": "lit_string",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "escape_sequence",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "lit_vec",
@@ -1848,12 +1882,32 @@
   {
     "type": "module_alias",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "module_path",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "name",
@@ -1868,7 +1922,17 @@
   {
     "type": "name_cons",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ident_upper_scoped",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "name_field",
@@ -1878,32 +1942,96 @@
   {
     "type": "name_func",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ident_lower_scoped",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "name_index",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ident_scoped",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "name_rel",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ident_upper_scoped",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "name_trans",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ident_scoped",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "name_type",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ident_lower_scoped",
+          "named": true
+        },
+        {
+          "type": "ident_upper_scoped",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "name_var_term",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ident_lower_scoped",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "pat",
@@ -3247,6 +3375,10 @@
     "named": false
   },
   {
+    "type": "comment_line",
+    "named": true
+  },
+  {
     "type": "commit",
     "named": false
   },
@@ -3283,6 +3415,14 @@
     "named": false
   },
   {
+    "type": "escape_sequence",
+    "named": true
+  },
+  {
+    "type": "escape_sequence_interpolated",
+    "named": true
+  },
+  {
     "type": "exit",
     "named": false
   },
@@ -3313,6 +3453,18 @@
   {
     "type": "group_by",
     "named": false
+  },
+  {
+    "type": "ident_lower_scoped",
+    "named": true
+  },
+  {
+    "type": "ident_scoped",
+    "named": true
+  },
+  {
+    "type": "ident_upper_scoped",
+    "named": true
   },
   {
     "type": "if",

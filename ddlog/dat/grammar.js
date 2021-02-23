@@ -7,7 +7,7 @@ module.exports = grammar(ddlog_dl, {
 
   externals: $ => [$.rule_end, $.updates_end],
 
-  extras: $ => [$._comment_line, /[\s\uFEFF\u2060\u200B\u00A0]/],
+  extras: $ => [$.comment_line, /[\s\uFEFF\u2060\u200B\u00A0]/],
 
   word: $ => $.word,
 
@@ -46,7 +46,7 @@ module.exports = grammar(ddlog_dl, {
 
     clear: $ => seq("clear", $.name_rel, ";"),
 
-    _comment_line: $ => token(seq("#", /.*/)),
+    comment_line: $ => token(seq("#", /.*/)),
 
     commit: $ => seq("commit", optional("dump_changes"), ";"),
 
@@ -75,6 +75,13 @@ module.exports = grammar(ddlog_dl, {
     lit_num_hex: $ => /0x[0-9a-fA-F][0-9a-fA-F_]*/,
 
     lit_serialized: $ => seq("@", $.serde_encoding, $.lit_string),
+
+    lit_string: $ =>
+      seq(
+        /%?"/,
+        repeat(choice(/[^$"\\\n]+|\\\r?\n/, seq("$", optional(token.immediate(/[^{]/))), $.escape_sequence)),
+        '"',
+      ),
 
     log_level: $ => seq("log_level", /[0-9][0-9_]*/, ";"),
 
@@ -107,13 +114,6 @@ module.exports = grammar(ddlog_dl, {
     sleep: $ => seq("sleep", /[0-9][0-9_]*/, ";"),
 
     start: $ => seq("start", ";"),
-
-    lit_string: $ =>
-      seq(
-        /%?"/,
-        repeat(choice(/[^$"\\\n]+|\\\r?\n/, seq("$", optional(token.immediate(/[^{]/))), $._escape_sequence)),
-        '"',
-      ),
 
     timestamp: $ => seq("timestamp", ";"),
 
