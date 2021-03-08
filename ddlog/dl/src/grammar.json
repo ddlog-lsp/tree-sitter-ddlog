@@ -5585,6 +5585,7 @@
       "statement_if"
     ]
   ],
+  "precedences": [],
   "externals": [
     {
       "type": "SYMBOL",
