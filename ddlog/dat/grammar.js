@@ -26,6 +26,8 @@ module.exports = grammar(ddlog_dl, {
     atom_rec: $ =>
       seq($.name_rel, "(", ".", $.name_arg, "=", $.exp, repeat(seq(",", ".", $.name_arg, "=", $.exp)), ")"),
 
+    clear: $ => seq("clear", $.name_rel, ";"),
+
     command: $ =>
       choice(
         $.clear,
@@ -43,8 +45,6 @@ module.exports = grammar(ddlog_dl, {
         $.timestamp,
         $.updates,
       ),
-
-    clear: $ => seq("clear", $.name_rel, ";"),
 
     comment_line: $ => token(seq("#", /.*/)),
 
