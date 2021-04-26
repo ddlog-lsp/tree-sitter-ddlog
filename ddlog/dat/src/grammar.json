@@ -5420,6 +5420,23 @@
         ]
       }
     },
+    "clear": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "clear"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "name_rel"
+        },
+        {
+          "type": "STRING",
+          "value": ";"
+        }
+      ]
+    },
     "command": {
       "type": "CHOICE",
       "members": [
@@ -5478,23 +5495,6 @@
         {
           "type": "SYMBOL",
           "name": "updates"
-        }
-      ]
-    },
-    "clear": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "clear"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "name_rel"
-        },
-        {
-          "type": "STRING",
-          "value": ";"
         }
       ]
     },
