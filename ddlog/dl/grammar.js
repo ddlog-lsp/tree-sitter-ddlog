@@ -61,7 +61,7 @@ module.exports = grammar({
     apply: $ =>
       seq(
         "apply",
-        field("identifier", $.name_trans),
+        $.name_trans,
         "(",
         optional(choice($.name_func, $.name_rel)),
         repeat(seq(",", choice($.name_func, $.name_rel))),
@@ -341,7 +341,7 @@ module.exports = grammar({
       seq(
         "extern",
         "function",
-        field("identifier", $.name_func),
+        $.name_func,
         "(",
         optional(seq($.arg, repeat(seq(",", $.arg)))),
         ")",
@@ -352,7 +352,7 @@ module.exports = grammar({
       prec.right(
         seq(
           "function",
-          field("identifier", $.name_func),
+          $.name_func,
           "(",
           optional(seq($.arg, repeat(seq(",", $.arg)))),
           ")",
@@ -372,15 +372,7 @@ module.exports = grammar({
     import: $ => seq("import", $.module_path, optional(seq("as", $.module_alias))),
 
     index: $ =>
-      seq(
-        "index",
-        field("identifier", $.name_index),
-        "(",
-        optional(seq($.arg, repeat(seq(",", $.arg)), optional(","))),
-        ")",
-        "on",
-        $.atom,
-      ),
+      seq("index", $.name_index, "(", optional(seq($.arg, repeat(seq(",", $.arg)), optional(","))), ")", "on", $.atom),
 
     interpolation: $ => seq("${", $.exp, "}"),
 
@@ -489,7 +481,7 @@ module.exports = grammar({
       seq(
         optional($.rel_role),
         $.rel_semantics,
-        seq(optional("&"), field("identifier", $.name_rel)),
+        seq(optional("&"), $.name_rel),
         "(",
         optional(seq($.arg, repeat(seq(",", $.arg)), optional(","))),
         ")",
@@ -500,7 +492,7 @@ module.exports = grammar({
       seq(
         optional($.rel_role),
         $.rel_semantics,
-        seq(optional("&"), field("identifier", $.name_rel)),
+        seq(optional("&"), $.name_rel),
         "[",
         $.type_atom,
         "]",
@@ -593,7 +585,7 @@ module.exports = grammar({
       seq(
         "extern",
         "transformer",
-        field("identifier", $.name_trans),
+        $.name_trans,
         "(",
         optional(seq($.arg_trans, repeat(seq(",", $.arg_trans)))),
         ")",
@@ -686,17 +678,12 @@ module.exports = grammar({
     typedef: $ => choice($.typedef_normal, $.typedef_extern),
 
     typedef_extern: $ =>
-      seq(
-        "extern",
-        "type",
-        field("identifier", $.name_type),
-        optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">")),
-      ),
+      seq("extern", "type", $.name_type, optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">"))),
 
     typedef_normal: $ =>
       seq(
         "typedef",
-        field("identifier", $.name_type),
+        $.name_type,
         optional(seq("<", $.name_var_type, repeat(seq(",", $.name_var_type)), ">")),
         "=",
         $.type,
