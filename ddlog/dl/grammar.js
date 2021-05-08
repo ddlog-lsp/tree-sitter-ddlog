@@ -220,8 +220,6 @@ module.exports = grammar({
 
     exp_cond: $ => prec.left(seq("if", $.exp, $.exp, optional(seq("else", $.exp)))),
 
-    exp_continue: $ => "continue",
-
     exp_cons_pos: $ => seq($.name_cons, optional(seq("{", optional(seq($.exp, repeat(seq(",", $.exp)))), "}"))),
 
     exp_cons_rec: $ =>
@@ -234,6 +232,8 @@ module.exports = grammar({
           "}",
         ),
       ),
+
+    exp_continue: $ => "continue",
 
     exp_decl_var: $ => prec(20, seq(optional("var"), $.name_var_term)),
 
