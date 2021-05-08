@@ -206,7 +206,7 @@ module.exports = grammar({
 
     exp_bit_or: $ => prec.left(7, seq($.exp, "|", $.exp)),
 
-    exp_bit_slice: $ => prec(19, seq($.exp, "[", Pattern.lit_num_dec, ",", Pattern.lit_num_dec, "]")),
+    exp_bit_slice: $ => prec(19, seq($.exp, "[", $.lit_num_dec, ",", $.lit_num_dec, "]")),
 
     exp_bit_xor: $ => prec.left(8, seq($.exp, "^", $.exp)),
 
@@ -322,7 +322,7 @@ module.exports = grammar({
 
     exp_shr: $ => prec.left(12, seq($.exp, ">>", $.exp)),
 
-    exp_slice: $ => prec(19, seq($.exp, "[", Pattern.lit_num_dec, ":", Pattern.lit_num_dec, "]")),
+    exp_slice: $ => prec(19, seq($.exp, "[", $.lit_num_dec, ":", $.lit_num_dec, "]")),
 
     exp_sub: $ => prec.left(13, seq($.exp, "-", $.exp)),
 
