@@ -622,10 +622,10 @@ module.exports = grammar({
         $.type_float,
         $.type_string,
         $.type_bool,
-        $.type_tuple,
         $.type_user,
-        $.type_fun,
         $.type_var,
+        $.type_fun,
+        $.type_tuple,
       ),
 
     type_bigint: $ => "bigint",
