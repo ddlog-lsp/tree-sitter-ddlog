@@ -2685,14 +2685,18 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "PATTERN",
-          "value": "[a-z_][a-zA-Z0-9_]*"
+          "type": "SYMBOL",
+          "name": "ident_lower"
         },
         {
-          "type": "PATTERN",
-          "value": "[A-Z][a-zA-Z0-9_]*"
+          "type": "SYMBOL",
+          "name": "ident_upper"
         }
       ]
+    },
+    "ident_lower": {
+      "type": "PATTERN",
+      "value": "[a-z_][a-zA-Z0-9_]*"
     },
     "ident_lower_scoped": {
       "type": "PATTERN",
@@ -2701,6 +2705,10 @@
     "ident_scoped": {
       "type": "PATTERN",
       "value": "([a-zA-Z_][a-zA-Z0-9_]*::)*[a-zA-Z_][a-zA-Z0-9_]*"
+    },
+    "ident_upper": {
+      "type": "PATTERN",
+      "value": "[A-Z][a-zA-Z0-9_]*"
     },
     "ident_upper_scoped": {
       "type": "PATTERN",
@@ -4466,21 +4474,24 @@
       ]
     },
     "string_raw": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": "i?\\[\\|"
-        },
-        {
-          "type": "PATTERN",
-          "value": "([^|]|\\|[^\\]])*"
-        },
-        {
-          "type": "STRING",
-          "value": "|]"
-        }
-      ]
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "i?\\[\\|"
+          },
+          {
+            "type": "PATTERN",
+            "value": "([^|]|\\|[^\\]])*"
+          },
+          {
+            "type": "STRING",
+            "value": "|]"
+          }
+        ]
+      }
     },
     "string_raw_interpolated": {
       "type": "SEQ",

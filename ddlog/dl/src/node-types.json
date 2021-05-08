@@ -1411,6 +1411,25 @@
   {
     "type": "ident",
     "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ident_lower",
+          "named": true
+        },
+        {
+          "type": "ident_upper",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ident_lower",
+    "named": true,
     "fields": {}
   },
   {
@@ -2370,11 +2389,6 @@
     }
   },
   {
-    "type": "string_raw",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "string_raw_interpolated",
     "named": true,
     "fields": {},
@@ -2996,6 +3010,10 @@
     "named": true
   },
   {
+    "type": "ident_upper",
+    "named": true
+  },
+  {
     "type": "ident_upper_scoped",
     "named": true
   },
@@ -3102,6 +3120,10 @@
   {
     "type": "stream",
     "named": false
+  },
+  {
+    "type": "string_raw",
+    "named": true
   },
   {
     "type": "transformer",

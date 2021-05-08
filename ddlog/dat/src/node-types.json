@@ -1583,6 +1583,25 @@
   {
     "type": "ident",
     "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ident_lower",
+          "named": true
+        },
+        {
+          "type": "ident_upper",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ident_lower",
+    "named": true,
     "fields": {}
   },
   {
@@ -3421,6 +3440,10 @@
   },
   {
     "type": "ident_scoped",
+    "named": true
+  },
+  {
+    "type": "ident_upper",
     "named": true
   },
   {
