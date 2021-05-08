@@ -109,7 +109,8 @@ module.exports = grammar({
 
     attributes: $ => repeat1(seq("#[", $.attribute, repeat(seq(",", $.attribute)), "]")),
 
-    comment_block: $ => seq("/*", repeat(choice($.comment_block, /[^/*]+/, "/", "*")), "*/"),
+    comment_block: $ =>
+      seq("/*", repeat(choice($.comment_block, alias(token(choice(/[^/*]+/, "/", "*")), $.comment_block_inner))), "*/"),
 
     comment_line: $ => token(seq("//", /.*/)),
 
@@ -307,7 +308,7 @@ module.exports = grammar({
 
     exp_neq: $ => prec.left(10, seq($.exp, "!=", $.exp)),
 
-    exp_proj: $ => prec(19, seq($.exp, ".", /[0-9]+/)),
+    exp_proj: $ => prec(19, seq($.exp, ".", alias(/[0-9]+/, $.exp_proj_digits))),
 
     exp_ref: $ => prec(18, seq("&", $.exp)),
 
