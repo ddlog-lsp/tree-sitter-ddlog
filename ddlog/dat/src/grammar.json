@@ -486,16 +486,29 @@
                 "name": "comment_block"
               },
               {
-                "type": "PATTERN",
-                "value": "[^/*]+"
-              },
-              {
-                "type": "STRING",
-                "value": "/"
-              },
-              {
-                "type": "STRING",
-                "value": "*"
+                "type": "ALIAS",
+                "content": {
+                  "type": "TOKEN",
+                  "content": {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "PATTERN",
+                        "value": "[^/*]+"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "/"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "*"
+                      }
+                    ]
+                  }
+                },
+                "named": true,
+                "value": "comment_block_inner"
               }
             ]
           }
@@ -1059,16 +1072,16 @@
             "value": "["
           },
           {
-            "type": "PATTERN",
-            "value": "[0-9][0-9_]*"
+            "type": "SYMBOL",
+            "name": "lit_num_dec"
           },
           {
             "type": "STRING",
             "value": ","
           },
           {
-            "type": "PATTERN",
-            "value": "[0-9][0-9_]*"
+            "type": "SYMBOL",
+            "name": "lit_num_dec"
           },
           {
             "type": "STRING",
@@ -1211,10 +1224,6 @@
         ]
       }
     },
-    "exp_continue": {
-      "type": "STRING",
-      "value": "continue"
-    },
     "exp_cons_pos": {
       "type": "SEQ",
       "members": [
@@ -1355,6 +1364,10 @@
           }
         ]
       }
+    },
+    "exp_continue": {
+      "type": "STRING",
+      "value": "continue"
     },
     "exp_decl_var": {
       "type": "PREC",
@@ -2139,8 +2152,13 @@
             "value": "."
           },
           {
-            "type": "PATTERN",
-            "value": "[0-9]+"
+            "type": "ALIAS",
+            "content": {
+              "type": "PATTERN",
+              "value": "[0-9]+"
+            },
+            "named": true,
+            "value": "exp_proj_digits"
           }
         ]
       }
@@ -2294,16 +2312,16 @@
             "value": "["
           },
           {
-            "type": "PATTERN",
-            "value": "[0-9][0-9_]*"
+            "type": "SYMBOL",
+            "name": "lit_num_dec"
           },
           {
             "type": "STRING",
             "value": ":"
           },
           {
-            "type": "PATTERN",
-            "value": "[0-9][0-9_]*"
+            "type": "SYMBOL",
+            "name": "lit_num_dec"
           },
           {
             "type": "STRING",

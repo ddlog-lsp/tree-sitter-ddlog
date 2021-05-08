@@ -250,6 +250,10 @@
         {
           "type": "comment_block",
           "named": true
+        },
+        {
+          "type": "comment_block_inner",
+          "named": true
         }
       ]
     }
@@ -625,11 +629,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "exp",
+          "named": true
+        },
+        {
+          "type": "lit_num_dec",
           "named": true
         }
       ]
@@ -1116,11 +1124,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "exp",
+          "named": true
+        },
+        {
+          "type": "exp_proj_digits",
           "named": true
         }
       ]
@@ -1221,11 +1233,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "exp",
+          "named": true
+        },
+        {
+          "type": "lit_num_dec",
           "named": true
         }
       ]
@@ -2920,6 +2936,10 @@
     "named": false
   },
   {
+    "type": "comment_block_inner",
+    "named": true
+  },
+  {
     "type": "comment_line",
     "named": true
   },
@@ -2941,6 +2961,10 @@
   },
   {
     "type": "exp_continue",
+    "named": true
+  },
+  {
+    "type": "exp_proj_digits",
     "named": true
   },
   {
