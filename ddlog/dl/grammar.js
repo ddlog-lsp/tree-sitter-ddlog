@@ -388,6 +388,7 @@ module.exports = grammar({
 
     lit_bool: $ => choice("false", "true"),
 
+    // NOTE: can there be an optional trailing comma?
     lit_map: $ => seq("[", $.exp, "->", $.exp, repeat(seq(",", $.exp, "->", $.exp)), "]"),
 
     lit_num: $ =>
