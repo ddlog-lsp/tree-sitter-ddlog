@@ -574,7 +574,7 @@ module.exports = grammar({
         '\\"',
       ),
 
-    string_raw: $ => seq(/i?\[\|/, /([^|]|\|[^\]])*/, "|]"),
+    string_raw: $ => token(seq(/i?\[\|/, /([^|]|\|[^\]])*/, "|]")),
 
     string_raw_interpolated: $ =>
       seq(
