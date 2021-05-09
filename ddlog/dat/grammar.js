@@ -50,9 +50,9 @@ module.exports = grammar(ddlog_dl, {
 
     commit: $ => seq("commit", optional("dump_changes"), ";"),
 
-    cons_args: $ => seq($.cons_arg, repeat(seq(",", $.cons_arg))),
-
     cons_arg: $ => choice($.record_named, $.record),
+
+    cons_args: $ => seq($.cons_arg, repeat(seq(",", $.cons_arg))),
 
     delete: $ => seq("delete", $.atom),
 
