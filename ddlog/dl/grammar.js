@@ -680,7 +680,7 @@ module.exports = grammar({
 
     type_user: $ => prec.right(seq($.name_type, optional(seq("<", $.type, repeat(seq(",", $.type)), ">")))),
 
-    type_var: $ => seq("'", token.immediate(Pattern.ident_upper)),
+    type_var: $ => seq("'", alias(token.immediate(Pattern.ident_upper), $.misc_pat0)),
 
     typedef: $ => choice($.typedef_normal, $.typedef_extern),
 

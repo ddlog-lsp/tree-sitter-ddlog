@@ -62,7 +62,7 @@ module.exports = grammar(ddlog_dl, {
 
     dump_index: $ => seq("dump_index", $.name_index, ";"),
 
-    echo: $ => seq("echo", /[^;]*/, ";"),
+    echo: $ => seq("echo", alias(/[^;]*/, $.misc_pat0), ";"),
 
     exit: $ => seq("exit", ";"),
 
@@ -83,7 +83,7 @@ module.exports = grammar(ddlog_dl, {
         '"',
       ),
 
-    log_level: $ => seq("log_level", /[0-9][0-9_]*/, ";"),
+    log_level: $ => seq("log_level", alias(/[0-9][0-9_]*/, $.misc_pat0), ";"),
 
     modify: $ => seq("modify", $.name_rel, $.record, "<-", $.record),
 
@@ -111,7 +111,7 @@ module.exports = grammar(ddlog_dl, {
 
     serde_encoding: $ => token.immediate("json"),
 
-    sleep: $ => seq("sleep", /[0-9][0-9_]*/, ";"),
+    sleep: $ => seq("sleep", alias(/[0-9][0-9_]*/, $.misc_pat0), ";"),
 
     start: $ => seq("start", ";"),
 
