@@ -635,7 +635,7 @@ module.exports = grammar({
 
     type_bigint: $ => "bigint",
 
-    type_bit: $ => seq("bit", "<", Pattern.lit_num_dec, ">"),
+    type_bit: $ => seq("bit", "<", $.lit_num_dec, ">"),
 
     type_bool: $ => "bool",
 
@@ -664,7 +664,7 @@ module.exports = grammar({
         ),
       ),
 
-    type_signed: $ => seq("signed", "<", Pattern.lit_num_dec, ">"),
+    type_signed: $ => seq("signed", "<", $.lit_num_dec, ">"),
 
     type_string: $ => "string",
 
