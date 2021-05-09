@@ -1607,11 +1607,6 @@
     }
   },
   {
-    "type": "lit_num_dec",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "lit_string",
     "named": true,
     "fields": {},
@@ -2539,7 +2534,17 @@
   {
     "type": "type_bit",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "lit_num_dec",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "type_fun",
@@ -2559,7 +2564,17 @@
   {
     "type": "type_signed",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "lit_num_dec",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "type_trans",
@@ -2666,7 +2681,17 @@
   {
     "type": "type_var",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "misc_pat0",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "typedef",
@@ -3050,6 +3075,10 @@
     "named": true
   },
   {
+    "type": "lit_num_dec",
+    "named": true
+  },
+  {
     "type": "lit_num_float",
     "named": true
   },
@@ -3064,6 +3093,10 @@
   {
     "type": "match",
     "named": false
+  },
+  {
+    "type": "misc_pat0",
+    "named": true
   },
   {
     "type": "multiset",

@@ -4735,11 +4735,11 @@
         },
         {
           "type": "SYMBOL",
-          "name": "type_tuple"
+          "name": "type_user"
         },
         {
           "type": "SYMBOL",
-          "name": "type_user"
+          "name": "type_var"
         },
         {
           "type": "SYMBOL",
@@ -4747,7 +4747,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "type_var"
+          "name": "type_tuple"
         }
       ]
     },
@@ -4767,8 +4767,8 @@
           "value": "<"
         },
         {
-          "type": "PATTERN",
-          "value": "[0-9][0-9_]*"
+          "type": "SYMBOL",
+          "name": "lit_num_dec"
         },
         {
           "type": "STRING",
@@ -4999,8 +4999,8 @@
           "value": "<"
         },
         {
-          "type": "PATTERN",
-          "value": "[0-9][0-9_]*"
+          "type": "SYMBOL",
+          "name": "lit_num_dec"
         },
         {
           "type": "STRING",
@@ -5253,11 +5253,16 @@
           "value": "'"
         },
         {
-          "type": "IMMEDIATE_TOKEN",
+          "type": "ALIAS",
           "content": {
-            "type": "PATTERN",
-            "value": "[A-Z][a-zA-Z0-9_]*"
-          }
+            "type": "IMMEDIATE_TOKEN",
+            "content": {
+              "type": "PATTERN",
+              "value": "[A-Z][a-zA-Z0-9_]*"
+            }
+          },
+          "named": true,
+          "value": "misc_pat0"
         }
       ]
     },
@@ -5516,6 +5521,19 @@
         }
       ]
     },
+    "cons_arg": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "record_named"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "record"
+        }
+      ]
+    },
     "cons_args": {
       "type": "SEQ",
       "members": [
@@ -5538,19 +5556,6 @@
               }
             ]
           }
-        }
-      ]
-    },
-    "cons_arg": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "record_named"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "record"
         }
       ]
     },
@@ -5634,8 +5639,13 @@
           "value": "echo"
         },
         {
-          "type": "PATTERN",
-          "value": "[^;]*"
+          "type": "ALIAS",
+          "content": {
+            "type": "PATTERN",
+            "value": "[^;]*"
+          },
+          "named": true,
+          "value": "misc_pat0"
         },
         {
           "type": "STRING",
@@ -5707,8 +5717,13 @@
           "value": "log_level"
         },
         {
-          "type": "PATTERN",
-          "value": "[0-9][0-9_]*"
+          "type": "ALIAS",
+          "content": {
+            "type": "PATTERN",
+            "value": "[0-9][0-9_]*"
+          },
+          "named": true,
+          "value": "misc_pat0"
         },
         {
           "type": "STRING",
@@ -5944,8 +5959,13 @@
           "value": "sleep"
         },
         {
-          "type": "PATTERN",
-          "value": "[0-9][0-9_]*"
+          "type": "ALIAS",
+          "content": {
+            "type": "PATTERN",
+            "value": "[0-9][0-9_]*"
+          },
+          "named": true,
+          "value": "misc_pat0"
         },
         {
           "type": "STRING",
