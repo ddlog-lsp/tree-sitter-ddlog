@@ -14,7 +14,7 @@ const Pattern = {
 module.exports = grammar({
   patterns: Pattern,
 
-  name: "ddlog_dl",
+  name: "dl",
 
   conflicts: $ => [
     [$.exp_assign],

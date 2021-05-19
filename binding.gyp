@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "tree_sitter_ddlog_dat",
+      "target_name": "tree_sitter_dat",
       "include_dirs": [
         "<!(node -e \"require('nan')\")",
         "ddlog/dat/src"
@@ -16,7 +16,7 @@
       ]
     },
     {
-      "target_name": "tree_sitter_ddlog_dl",
+      "target_name": "tree_sitter_dl",
       "include_dirs": [
         "<!(node -e \"require('nan')\")",
         "ddlog/dl/src"

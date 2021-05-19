@@ -1,9 +1,9 @@
 /// <reference types="tree-sitter-cli/dsl" />
 
-const ddlog_dl = require("../dl/grammar");
+const dl = require("../dl/grammar");
 
-module.exports = grammar(ddlog_dl, {
-  name: "ddlog_dat",
+module.exports = grammar(dl, {
+  name: "dat",
 
   externals: $ => [$.rule_end, $.updates_end],
 

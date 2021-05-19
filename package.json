@@ -15,10 +15,10 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run build-native && npm run build-wasm",
-    "build-wasm": "npm run build-wasm-ddlog-dat && npm run build-wasm-ddlog-dl",
+    "build-wasm": "npm run build-wasm-ddlog-dl && npm run build-wasm-ddlog-dat",
     "build-wasm-ddlog-dat": "cd ddlog/dat && tree-sitter build-wasm",
     "build-wasm-ddlog-dl": "cd ddlog/dl && tree-sitter build-wasm",
-    "build-native": "npm run build-native-ddlog-dat && npm run build-native-ddlog-dl",
+    "build-native": "npm run build-native-ddlog-dl && npm run build-native-ddlog-dat && node-gyp configure && node-gyp build",
     "build-native-ddlog-dat": "cd ddlog/dat && tree-sitter generate --no-bindings",
     "build-native-ddlog-dl": "cd ddlog/dl && tree-sitter generate --no-bindings",
     "format": "prettier --write '**/*.{js,json,ts,tsx,yml,yaml}'",

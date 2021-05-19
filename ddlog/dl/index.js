@@ -1,13 +1,15 @@
 try {
-  module.exports = require("./build/Release/tree_sitter_webassembly_module_binding");
+  module.exports = require("../../build/Release/tree_sitter_dl");
 } catch (error) {
   try {
-    module.exports = require("./build/Debug/tree_sitter_webassembly_module_binding");
+    module.exports = require("../../build/Debug/tree_sitter_dl");
   } catch (_) {
-    throw error
+    throw error;
   }
 }
 
 try {
   module.exports.nodeTypeInfo = require("./src/node-types.json");
-} catch (_) {}
+} catch (_) {
+  //
+}
