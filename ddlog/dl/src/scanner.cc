@@ -14,16 +14,16 @@ void tree_sitter_dl_external_scanner_reset(const void *const payload) {
   (void)payload;
 }
 
-unsigned
-tree_sitter_dl_external_scanner_serialize(const void *const payload,
-                                                char *const buffer) {
+unsigned tree_sitter_dl_external_scanner_serialize(const void *const payload,
+                                                   char *const buffer) {
   (void)payload;
   (void)buffer;
   return 0;
 }
 
-void tree_sitter_dl_external_scanner_deserialize(
-    const void *const payload, char *const buffer, unsigned const length) {
+void tree_sitter_dl_external_scanner_deserialize(const void *const payload,
+                                                 char *const buffer,
+                                                 unsigned const length) {
   (void)payload;
   (void)buffer;
   (void)length;
@@ -95,9 +95,9 @@ static void tree_sitter_dl_skip_extras(TSLexer *const lexer) {
   }
 }
 
-bool tree_sitter_dl_external_scanner_scan(
-    const void *const payload, TSLexer *const lexer,
-    const bool *const valid_symbols) {
+bool tree_sitter_dl_external_scanner_scan(const void *const payload,
+                                          TSLexer *const lexer,
+                                          const bool *const valid_symbols) {
   (void)payload;
 
   if (valid_symbols[RULE_END]) {
