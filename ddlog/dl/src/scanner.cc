@@ -132,10 +132,20 @@ bool tree_sitter_dl_external_scanner_scan(const void *const payload,
                   if (tree_sitter_dl_is_end_of_token(lexer)) {
                     lexer->result_symbol = RULE_END;
                     return true;
+                  } else {
+                    return false;
                   }
+                } else {
+                  return false;
                 }
+              } else {
+                return false;
               }
+            } else {
+              return false;
             }
+          } else {
+            return false;
           }
         }
 
@@ -155,11 +165,23 @@ bool tree_sitter_dl_external_scanner_scan(const void *const payload,
                     if (tree_sitter_dl_is_end_of_token(lexer)) {
                       lexer->result_symbol = RULE_END;
                       return true;
+                    } else {
+                      return false;
                     }
+                  } else {
+                    return false;
                   }
+                } else {
+                  return false;
                 }
+              } else {
+                return false;
               }
+            } else {
+              return false;
             }
+          } else {
+            return false;
           }
         }
 
@@ -174,9 +196,10 @@ bool tree_sitter_dl_external_scanner_scan(const void *const payload,
                 lexer->result_symbol = RULE_END;
                 return true;
               }
+            } else {
+              return false;
             }
-          }
-          if (lexer->lookahead == 'u') {
+          } else if (lexer->lookahead == 'u') {
             lexer->advance(lexer, false);
             if (lexer->lookahead == 'n') {
               lexer->advance(lexer, false);
@@ -193,13 +216,29 @@ bool tree_sitter_dl_external_scanner_scan(const void *const payload,
                         if (tree_sitter_dl_is_end_of_token(lexer)) {
                           lexer->result_symbol = RULE_END;
                           return true;
+                        } else {
+                          return false;
                         }
+                      } else {
+                        return false;
                       }
+                    } else {
+                      return false;
                     }
+                  } else {
+                    return false;
                   }
+                } else {
+                  return false;
                 }
+              } else {
+                return false;
               }
+            } else {
+              return false;
             }
+          } else {
+            return false;
           }
         }
 
@@ -219,13 +258,22 @@ bool tree_sitter_dl_external_scanner_scan(const void *const payload,
                     if (tree_sitter_dl_is_end_of_token(lexer)) {
                       lexer->result_symbol = RULE_END;
                       return true;
+                    } else {
+                      return false;
                     }
+                  } else {
+                    return false;
                   }
+                } else {
+                  return false;
                 }
+              } else {
+                return false;
               }
+            } else {
+              return false;
             }
-          }
-          if (lexer->lookahead == 'n') {
+          } else if (lexer->lookahead == 'n') {
             lexer->advance(lexer, false);
             if (lexer->lookahead == 'd') {
               lexer->advance(lexer, false);
@@ -236,11 +284,16 @@ bool tree_sitter_dl_external_scanner_scan(const void *const payload,
                   if (tree_sitter_dl_is_end_of_token(lexer)) {
                     lexer->result_symbol = RULE_END;
                     return true;
+                  } else {
+                    return false;
                   }
+                } else {
+                  return false;
                 }
+              } else {
+                return false;
               }
-            }
-            if (lexer->lookahead == 'p') {
+            } else if (lexer->lookahead == 'p') {
               lexer->advance(lexer, false);
               if (lexer->lookahead == 'u') {
                 lexer->advance(lexer, false);
@@ -249,8 +302,14 @@ bool tree_sitter_dl_external_scanner_scan(const void *const payload,
                   if (tree_sitter_dl_is_end_of_token(lexer)) {
                     lexer->result_symbol = RULE_END;
                     return true;
+                  } else {
+                    return false;
                   }
+                } else {
+                  return false;
                 }
+              } else {
+                return false;
               }
             }
           }
