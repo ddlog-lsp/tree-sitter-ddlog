@@ -236,7 +236,7 @@ module.exports = grammar({
 
     exp_continue: $ => "continue",
 
-    exp_decl_var: $ => prec(20, seq(optional("var"), $.name_var_term)),
+    exp_decl_var: $ => prec(21, seq(optional("var"), $.name_var_term)),
 
     exp_div: $ => prec.left(14, seq($.exp, "/", $.exp)),
 
@@ -245,12 +245,12 @@ module.exports = grammar({
     exp_field: $ => prec(19, seq($.exp, ".", $.ident)),
 
     // FIXME: precedence
-    exp_for: $ => prec(20, seq("for", "(", $.name_var_term, "in", $.exp, ")", $.exp)),
+    exp_for: $ => prec(21, seq("for", "(", $.name_var_term, "in", $.exp, ")", $.exp)),
 
     exp_fun_call: $ => prec(19, seq($.exp, "(", optional(seq($.exp, repeat(seq(",", $.exp)), optional(","))), ")")),
 
     exp_fun_call_dot: $ =>
-      prec(19, seq($.exp, ".", $.name_func, "(", optional(seq($.exp, repeat(seq(",", $.exp)), optional(","))), ")")),
+      prec(20, seq($.exp, ".", $.name_func, "(", optional(seq($.exp, repeat(seq(",", $.exp)), optional(","))), ")")),
 
     exp_gt: $ => prec(10, seq($.exp, ">", $.exp)),
 
