@@ -1371,7 +1371,7 @@
     },
     "exp_decl_var": {
       "type": "PREC",
-      "value": 20,
+      "value": 21,
       "content": {
         "type": "SEQ",
         "members": [
@@ -1459,7 +1459,7 @@
     },
     "exp_for": {
       "type": "PREC",
-      "value": 20,
+      "value": 21,
       "content": {
         "type": "SEQ",
         "members": [
@@ -1562,7 +1562,7 @@
     },
     "exp_fun_call_dot": {
       "type": "PREC",
-      "value": 19,
+      "value": 20,
       "content": {
         "type": "SEQ",
         "members": [
