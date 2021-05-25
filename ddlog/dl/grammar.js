@@ -594,11 +594,11 @@ module.exports = grammar({
         "transformer",
         $.name_trans,
         "(",
-        optional(seq($.arg_trans, repeat(seq(",", $.arg_trans)))),
+        optional(seq($.arg_trans, repeat(seq(",", $.arg_trans)), optional(","))),
         ")",
         "->",
         "(",
-        optional(seq($.arg_trans, repeat(seq(",", $.arg_trans)))),
+        optional(seq($.arg_trans, repeat(seq(",", $.arg_trans)), optional(","))),
         ")",
       ),
 
