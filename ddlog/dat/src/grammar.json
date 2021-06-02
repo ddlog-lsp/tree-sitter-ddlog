@@ -3177,57 +3177,32 @@
       "value": "[0-7][0-7_]*"
     },
     "lit_string": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": "%?\""
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "PATTERN",
-                "value": "[^$\"\\\\\\n]+|\\\\\\r?\\n"
-              },
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "$"
-                  },
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "IMMEDIATE_TOKEN",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "[^{]"
-                        }
-                      },
-                      {
-                        "type": "BLANK"
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "type": "SYMBOL",
-                "name": "escape_sequence"
-              }
-            ]
-          }
-        },
-        {
-          "type": "STRING",
-          "value": "\""
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "REPEAT1",
+        "content": {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "string_quoted"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "string_quoted_escaped"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "string_raw"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "string_raw_interpolated"
+            }
+          ]
         }
-      ]
+      }
     },
     "lit_vec": {
       "type": "SEQ",
@@ -6005,11 +5980,8 @@
       ]
     },
     "serde_encoding": {
-      "type": "IMMEDIATE_TOKEN",
-      "content": {
-        "type": "STRING",
-        "value": "json"
-      }
+      "type": "STRING",
+      "value": "json"
     },
     "sleep": {
       "type": "SEQ",

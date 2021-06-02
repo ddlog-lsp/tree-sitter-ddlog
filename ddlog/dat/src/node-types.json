@@ -1876,10 +1876,22 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
-          "type": "escape_sequence",
+          "type": "string_quoted",
+          "named": true
+        },
+        {
+          "type": "string_quoted_escaped",
+          "named": true
+        },
+        {
+          "type": "string_raw",
+          "named": true
+        },
+        {
+          "type": "string_raw_interpolated",
           "named": true
         }
       ]
@@ -2755,6 +2767,59 @@
         },
         {
           "type": "statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "string_quoted",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "escape_sequence",
+          "named": true
+        },
+        {
+          "type": "interpolation",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "string_quoted_escaped",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "escape_sequence_interpolated",
+          "named": true
+        },
+        {
+          "type": "interpolation",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "string_raw_interpolated",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "interpolation",
           "named": true
         }
       ]
@@ -3724,6 +3789,10 @@
   {
     "type": "stream",
     "named": false
+  },
+  {
+    "type": "string_raw",
+    "named": true
   },
   {
     "type": "timestamp",
