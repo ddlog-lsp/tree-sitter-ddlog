@@ -77,11 +77,7 @@ module.exports = grammar(dl, {
     lit_serialized: $ => seq("@", $.serde_encoding, $.lit_string),
 
     lit_string: $ =>
-      seq(
-        /%?"/,
-        repeat(choice(/[^$"\\\n]+|\\\r?\n/, seq("$", optional(token.immediate(/[^{]/))), $.escape_sequence)),
-        '"',
-      ),
+      prec.right(repeat1(choice($.string_quoted, $.string_quoted_escaped, $.string_raw, $.string_raw_interpolated))),
 
     log_level: $ => seq("log_level", alias(/[0-9][0-9_]*/, $.misc_pat0), ";"),
 
