@@ -4,37 +4,37 @@
 enum TokenType { RULE_END, UPDATES_END };
 
 extern "C" {
-void *tree_sitter_dat_external_scanner_create() { return NULL; }
+void *tree_sitter_ddlog_dat_external_scanner_create() { return NULL; }
 
-void tree_sitter_dat_external_scanner_destroy(const void *const payload) {
+void tree_sitter_ddlog_dat_external_scanner_destroy(const void *const payload) {
   (void)payload;
 }
 
-void tree_sitter_dat_external_scanner_reset(const void *const payload) {
+void tree_sitter_ddlog_dat_external_scanner_reset(const void *const payload) {
   (void)payload;
 }
 
 unsigned
-tree_sitter_dat_external_scanner_serialize(const void *const payload,
+tree_sitter_ddlog_dat_external_scanner_serialize(const void *const payload,
                                                 char *const buffer) {
   (void)payload;
   (void)buffer;
   return 0;
 }
 
-void tree_sitter_dat_external_scanner_deserialize(
+void tree_sitter_ddlog_dat_external_scanner_deserialize(
     const void *const payload, char *const buffer, unsigned const length) {
   (void)payload;
   (void)buffer;
   (void)length;
 }
 
-static bool tree_sitter_dat_is_end_of_token(TSLexer *const lexer) {
+static bool tree_sitter_ddlog_dat_is_end_of_token(TSLexer *const lexer) {
   return lexer->lookahead == 0 || iswspace(lexer->lookahead) ||
          lexer->lookahead == '/';
 }
 
-static void tree_sitter_dat_skip_extras(TSLexer *const lexer) {
+static void tree_sitter_ddlog_dat_skip_extras(TSLexer *const lexer) {
   while (iswspace(lexer->lookahead) || lexer->lookahead == '#') {
     // consume remaining whitespace
     while (iswspace(lexer->lookahead)) {
@@ -50,13 +50,13 @@ static void tree_sitter_dat_skip_extras(TSLexer *const lexer) {
   }
 }
 
-bool tree_sitter_dat_external_scanner_scan(
+bool tree_sitter_ddlog_dat_external_scanner_scan(
     const void *const payload, TSLexer *const lexer,
     const bool *const valid_symbols) {
   (void)payload;
 
   if (valid_symbols[UPDATES_END]) {
-    tree_sitter_dat_skip_extras(lexer);
+    tree_sitter_ddlog_dat_skip_extras(lexer);
 
     // scan for ';'
     if (lexer->lookahead == ';') {
@@ -71,7 +71,7 @@ bool tree_sitter_dat_external_scanner_scan(
       lexer->advance(lexer, false);
       lexer->mark_end(lexer);
 
-      tree_sitter_dat_skip_extras(lexer);
+      tree_sitter_ddlog_dat_skip_extras(lexer);
 
       if (lexer->lookahead == 'd') {
         lexer->advance(lexer, false);
@@ -85,7 +85,7 @@ bool tree_sitter_dat_external_scanner_scan(
                 lexer->advance(lexer, false);
                 if (lexer->lookahead == 'e') {
                   lexer->advance(lexer, false);
-                  if (tree_sitter_dat_is_end_of_token(lexer)) {
+                  if (tree_sitter_ddlog_dat_is_end_of_token(lexer)) {
                     return false;
                   }
                   if (lexer->lookahead == '_') {
@@ -96,7 +96,7 @@ bool tree_sitter_dat_external_scanner_scan(
                         lexer->advance(lexer, false);
                         if (lexer->lookahead == 'y') {
                           lexer->advance(lexer, false);
-                          if (tree_sitter_dat_is_end_of_token(lexer)) {
+                          if (tree_sitter_ddlog_dat_is_end_of_token(lexer)) {
                             return false;
                           }
                         }
@@ -122,7 +122,7 @@ bool tree_sitter_dat_external_scanner_scan(
                 lexer->advance(lexer, false);
                 if (lexer->lookahead == 't') {
                   lexer->advance(lexer, false);
-                  if (tree_sitter_dat_is_end_of_token(lexer)) {
+                  if (tree_sitter_ddlog_dat_is_end_of_token(lexer)) {
                     return false;
                   }
                   if (lexer->lookahead == '_') {
@@ -145,7 +145,7 @@ bool tree_sitter_dat_external_scanner_scan(
                                     lexer->advance(lexer, false);
                                     if (lexer->lookahead == 'e') {
                                       lexer->advance(lexer, false);
-                                      if (tree_sitter_dat_is_end_of_token(lexer)) {
+                                      if (tree_sitter_ddlog_dat_is_end_of_token(lexer)) {
                                         return false;
                                       }
                                     }
@@ -177,7 +177,7 @@ bool tree_sitter_dat_external_scanner_scan(
                 lexer->advance(lexer, false);
                 if (lexer->lookahead == 'y') {
                   lexer->advance(lexer, false);
-                  if (tree_sitter_dat_is_end_of_token(lexer)) {
+                  if (tree_sitter_ddlog_dat_is_end_of_token(lexer)) {
                     return false;
                   }
                 }

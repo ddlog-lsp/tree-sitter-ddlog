@@ -14,7 +14,7 @@ const Pattern = {
 module.exports = grammar({
   patterns: Pattern,
 
-  name: "dl",
+  name: "ddlog_dl",
 
   conflicts: $ => [
     [$.exp_assign],
@@ -256,25 +256,30 @@ module.exports = grammar({
 
     exp_gteq: $ => prec(10, seq($.exp, ">=", $.exp)),
 
-    exp_lambda: $ =>
+    exp_lambda: $ => choice($.exp_lambda_branch_0, $.exp_lambda_branch_1),
+
+    exp_lambda_branch_0: $ =>
       prec.right(
         0,
-        choice(
-          seq(
-            "function",
-            "(",
-            optional(seq($.arg_opt_type, repeat(seq(",", $.arg_opt_type)))),
-            ")",
-            optional(seq(":", $.type_atom)),
-            $.exp,
-          ),
-          seq(
-            "|",
-            optional(seq($.arg_opt_type, repeat(seq(",", $.arg_opt_type)))),
-            "|",
-            optional(seq(":", $.type_atom)),
-            $.exp,
-          ),
+        seq(
+          "function",
+          "(",
+          optional(seq($.arg_opt_type, repeat(seq(",", $.arg_opt_type)))),
+          ")",
+          optional(seq(":", $.type_atom)),
+          $.exp,
+        ),
+      ),
+
+    exp_lambda_branch_1: $ =>
+      prec.right(
+        0,
+        seq(
+          "|",
+          optional(seq($.arg_opt_type, repeat(seq(",", $.arg_opt_type)))),
+          "|",
+          optional(seq(":", $.type_atom)),
+          $.exp,
         ),
       ),
 
@@ -359,9 +364,13 @@ module.exports = grammar({
           optional(seq($.arg, repeat(seq(",", $.arg)))),
           ")",
           optional(seq(":", $.type_atom)),
-          choice(seq("=", $.exp), "{", $.exp, "}"),
+          choice($.function_normal_branch_0, $.function_normal_branch_1),
         ),
       ),
+
+    function_normal_branch_0: $ => seq("=", $.exp),
+
+    function_normal_branch_1: $ => seq("{", $.exp, "}"),
 
     ident: $ => choice($.ident_lower, $.ident_upper),
 
@@ -399,27 +408,46 @@ module.exports = grammar({
     // NOTE: can there be an optional trailing comma?
     lit_map: $ => seq("[", $.exp, "->", $.exp, repeat(seq(",", $.exp, "->", $.exp)), "]"),
 
-    lit_num: $ =>
-      choice(
-        prec.right(choice($.lit_num_dec, $.lit_num_float, $.lit_num_hex)),
-        prec(
-          18,
-          seq(
-            optional($.lit_num_dec),
-            choice(
-              seq("'b", $.lit_num_bin),
-              seq("'d", $.lit_num_dec),
-              seq("'f", $.lit_num_float),
-              seq("'h", $.lit_num_hex),
-              seq("'o", $.lit_num_oct),
-              seq("'sb", $.lit_num_bin),
-              seq("'sd", $.lit_num_dec),
-              seq("'sh", $.lit_num_hex),
-              seq("'so", $.lit_num_oct),
-            ),
+    lit_num: $ => choice($.lit_num_branch_0, $.lit_num_branch_1),
+
+    lit_num_branch_0: $ => prec.right(choice($.lit_num_dec, $.lit_num_float, $.lit_num_hex)),
+
+    lit_num_branch_1: $ =>
+      prec(
+        18,
+        seq(
+          optional($.lit_num_dec),
+          choice(
+            $.lit_num_branch_10,
+            $.lit_num_branch_11,
+            $.lit_num_branch_12,
+            $.lit_num_branch_13,
+            $.lit_num_branch_14,
+            $.lit_num_branch_15,
+            $.lit_num_branch_16,
+            $.lit_num_branch_17,
+            $.lit_num_branch_18,
           ),
         ),
       ),
+
+    lit_num_branch_10: $ => seq("'b", $.lit_num_bin),
+
+    lit_num_branch_11: $ => seq("'d", $.lit_num_dec),
+
+    lit_num_branch_12: $ => seq("'f", $.lit_num_float),
+
+    lit_num_branch_13: $ => seq("'h", $.lit_num_hex),
+
+    lit_num_branch_14: $ => seq("'o", $.lit_num_oct),
+
+    lit_num_branch_15: $ => seq("'sb", $.lit_num_bin),
+
+    lit_num_branch_16: $ => seq("'sd", $.lit_num_dec),
+
+    lit_num_branch_17: $ => seq("'sh", $.lit_num_hex),
+
+    lit_num_branch_18: $ => seq("'so", $.lit_num_oct),
 
     lit_num_bin: $ => Pattern.lit_num_bin,
 
@@ -568,18 +596,25 @@ module.exports = grammar({
       seq(
         /i?"/,
         repeat(
-          choice(/[^$"\\\n]+|\\\r?\n/, seq("$", optional(token.immediate(/[^{]/))), $.interpolation, $.escape_sequence),
+          choice(
+            $.string_quoted_branch_0,
+            seq("$", optional(token.immediate(/[^{]/))),
+            $.interpolation,
+            $.escape_sequence,
+          ),
         ),
         '"',
       ),
+
+    string_quoted_branch_0: $ => /[^$"\\\n]+|\\\r?\n/,
 
     string_quoted_escaped: $ =>
       seq(
         /i?\\"/,
         repeat(
           choice(
-            /[^$"\\\n]+|\\\r?\n/,
-            seq("$", optional(token.immediate(/[^{]/))),
+            $.string_quoted_escaped_branch_0,
+            $.string_quoted_escaped_branch_1,
             $.interpolation,
             $.escape_sequence_interpolated,
           ),
@@ -587,14 +622,22 @@ module.exports = grammar({
         '\\"',
       ),
 
+    string_quoted_escaped_branch_0: $ => /[^$"\\\n]+|\\\r?\n/,
+
+    string_quoted_escaped_branch_1: $ => seq("$", optional(token.immediate(/[^{]/))),
+
     string_raw: $ => token(seq(/i?\[\|/, /([^|]|\|[^\]])*/, "|]")),
 
     string_raw_interpolated: $ =>
       seq(
         /i?\$\[\|/,
-        repeat(choice(/([^$|]|\|[^\]])+/, seq("$", optional(token.immediate(/[^{]/))), $.interpolation)),
+        repeat(choice($.string_raw_interpolated_branch_0, $.string_raw_interpolated_branch_1, $.interpolation)),
         "|]",
       ),
+
+    string_raw_interpolated_branch_0: $ => /([^$|]|\|[^\]])+/,
+
+    string_raw_interpolated_branch_1: $ => seq("$", optional(token.immediate(/[^{]/))),
 
     transformer: $ =>
       seq(
@@ -651,24 +694,26 @@ module.exports = grammar({
 
     type_float: $ => "float",
 
-    type_fun: $ =>
+    type_fun: $ => choice($.type_fun_branch_0, $.type_fun_branch_1),
+
+    type_fun_branch_0: $ =>
       prec.right(
-        choice(
-          seq(
-            "function",
-            "(",
-            optional(seq(optional("mut"), $.type, repeat(seq(",", optional("mut"), $.type)))),
-            ")",
-            optional(seq(":", $.type)),
-          ),
-          prec.left(
-            seq(
-              "|",
-              optional(seq(optional("mut"), $.type, repeat(seq(",", optional("mut"), $.type)))),
-              "|",
-              optional(seq(":", $.type)),
-            ),
-          ),
+        seq(
+          "function",
+          "(",
+          optional(seq(optional("mut"), $.type, repeat(seq(",", optional("mut"), $.type)))),
+          ")",
+          optional(seq(":", $.type)),
+        ),
+      ),
+
+    type_fun_branch_1: $ =>
+      prec.right(
+        seq(
+          "|",
+          optional(seq(optional("mut"), $.type, repeat(seq(",", optional("mut"), $.type)))),
+          "|",
+          optional(seq(":", $.type)),
         ),
       ),
 

@@ -1,8 +1,8 @@
 try {
-  module.exports = require("../../build/Release/tree_sitter_dl");
+  module.exports = require("../../build/Release/tree_sitter_ddlog_dl");
 } catch (error) {
   try {
-    module.exports = require("../../build/Debug/tree_sitter_dl");
+    module.exports = require("../../build/Debug/tree_sitter_ddlog_dl");
   } catch (_) {
     throw error;
   }

@@ -3,7 +3,7 @@
 const dl = require("../dl/grammar");
 
 module.exports = grammar(dl, {
-  name: "dat",
+  name: "ddlog_dat",
 
   externals: $ => [$.rule_end, $.updates_end],
 
