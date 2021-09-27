@@ -2679,12 +2679,21 @@
         {
           "type": "string_quoted_branch_0",
           "named": true
+        },
+        {
+          "type": "string_quoted_branch_1",
+          "named": true
         }
       ]
     }
   },
   {
     "type": "string_quoted_branch_0",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "string_quoted_branch_1",
     "named": true,
     "fields": {}
   },
@@ -3350,10 +3359,6 @@
   },
   {
     "type": "[",
-    "named": false
-  },
-  {
-    "type": "\\\"",
     "named": false
   },
   {

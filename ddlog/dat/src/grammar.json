@@ -4444,28 +4444,8 @@
                 "name": "string_quoted_branch_0"
               },
               {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "$"
-                  },
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "IMMEDIATE_TOKEN",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "[^{]"
-                        }
-                      },
-                      {
-                        "type": "BLANK"
-                      }
-                    ]
-                  }
-                ]
+                "type": "SYMBOL",
+                "name": "string_quoted_branch_1"
               },
               {
                 "type": "SYMBOL",
@@ -4487,6 +4467,30 @@
     "string_quoted_branch_0": {
       "type": "PATTERN",
       "value": "[^$\"\\\\\\n]+|\\\\\\r?\\n"
+    },
+    "string_quoted_branch_1": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "$"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": "[^{]"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
     },
     "string_quoted_escaped": {
       "type": "SEQ",
@@ -4521,7 +4525,7 @@
         },
         {
           "type": "STRING",
-          "value": "\\\""
+          "value": "\""
         }
       ]
     },
