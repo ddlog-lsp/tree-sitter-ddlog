@@ -595,18 +595,13 @@ module.exports = grammar({
     string_quoted: $ =>
       seq(
         /i?"/,
-        repeat(
-          choice(
-            $.string_quoted_branch_0,
-            seq("$", optional(token.immediate(/[^{]/))),
-            $.interpolation,
-            $.escape_sequence,
-          ),
-        ),
+        repeat(choice($.string_quoted_branch_0, $.string_quoted_branch_1, $.interpolation, $.escape_sequence)),
         '"',
       ),
 
     string_quoted_branch_0: $ => /[^$"\\\n]+|\\\r?\n/,
+
+    string_quoted_branch_1: $ => seq("$", optional(token.immediate(/[^{]/))),
 
     string_quoted_escaped: $ =>
       seq(
@@ -619,7 +614,7 @@ module.exports = grammar({
             $.escape_sequence_interpolated,
           ),
         ),
-        '\\"',
+        '"',
       ),
 
     string_quoted_escaped_branch_0: $ => /[^$"\\\n]+|\\\r?\n/,
