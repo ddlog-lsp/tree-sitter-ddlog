@@ -571,7 +571,7 @@ module.exports = grammar({
 
     statement_assign: $ => seq($.exp, "in", $.statement),
 
-    statement_block: $ => seq("{", repeat(seq($.statement, optional(seq(";", optional($.statement))))), "}"),
+    statement_block: $ => seq("{", optional(seq($.statement, repeat(seq(";", $.statement)), optional(";"))), "}"),
 
     statement_empty: $ => "skip",
 
