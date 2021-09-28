@@ -601,7 +601,7 @@ module.exports = grammar({
 
     string_quoted_branch_0: $ => /[^$"\\\n]+|\\\r?\n/,
 
-    string_quoted_branch_1: $ => seq("$", optional(token.immediate(/[^{]/))),
+    string_quoted_branch_1: $ => token(seq("$", optional(token.immediate(/[^{]/)))),
 
     string_quoted_escaped: $ =>
       seq(
