@@ -3078,11 +3078,6 @@
     "fields": {}
   },
   {
-    "type": "string_quoted_branch_1",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "string_quoted_escaped",
     "named": true,
     "fields": {},
@@ -4141,6 +4136,10 @@
   {
     "type": "stream",
     "named": false
+  },
+  {
+    "type": "string_quoted_branch_1",
+    "named": true
   },
   {
     "type": "string_raw",
