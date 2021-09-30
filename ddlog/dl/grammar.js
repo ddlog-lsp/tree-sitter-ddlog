@@ -135,7 +135,6 @@ module.exports = grammar({
         seq("\\", choice(/[^xu0-7]/, /[0-7]{1,3}/, /x[0-9a-fA-F]{2}/, /u[0-9a-fA-F]{4}/, /u{[0-9a-fA-F]+}/)),
       ),
 
-    // NOTE: why did this need to be a separate rule? duplicated from above
     escape_sequence_interpolated: $ =>
       token.immediate(
         seq("\\", choice(/[^"xu0-7]/, /[0-7]{1,3}/, /x[0-9a-fA-F]{2}/, /u[0-9a-fA-F]{4}/, /u{[0-9a-fA-F]+}/)),
