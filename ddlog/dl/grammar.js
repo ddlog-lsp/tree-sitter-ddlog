@@ -613,7 +613,7 @@ module.exports = grammar({
             $.escape_sequence_interpolated,
           ),
         ),
-        '"',
+        '\\"',
       ),
 
     string_quoted_escaped_branch_0: $ => /[^$"\\\n]+|\\\r?\n/,
