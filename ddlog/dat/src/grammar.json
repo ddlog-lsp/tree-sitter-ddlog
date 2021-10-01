@@ -2709,8 +2709,16 @@
           "value": "{"
         },
         {
-          "type": "SYMBOL",
-          "name": "exp"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "exp"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
