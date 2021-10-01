@@ -369,7 +369,7 @@ module.exports = grammar({
 
     function_normal_branch_0: $ => seq("=", $.exp),
 
-    function_normal_branch_1: $ => seq("{", $.exp, "}"),
+    function_normal_branch_1: $ => seq("{", optional($.exp), "}"),
 
     ident: $ => choice($.ident_lower, $.ident_upper),
 
