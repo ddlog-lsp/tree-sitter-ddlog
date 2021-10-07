@@ -618,7 +618,7 @@ module.exports = grammar({
 
     string_quoted_escaped_branch_0: $ => /[^$"\\\n]+|\\\r?\n/,
 
-    string_quoted_escaped_branch_1: $ => seq("$", optional(token.immediate(/[^{]/))),
+    string_quoted_escaped_branch_1: $ => token(seq("$", optional(token.immediate(/[^{]/)))),
 
     string_raw: $ => token(seq(/i?\[\|/, /([^|]|\|[^\]])*/, "|]")),
 
@@ -631,7 +631,7 @@ module.exports = grammar({
 
     string_raw_interpolated_branch_0: $ => /([^$|]|\|[^\]])+/,
 
-    string_raw_interpolated_branch_1: $ => seq("$", optional(token.immediate(/[^{]/))),
+    string_raw_interpolated_branch_1: $ => token(seq("$", optional(token.immediate(/[^{]/)))),
 
     transformer: $ =>
       seq(
