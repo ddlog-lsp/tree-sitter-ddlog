@@ -2767,8 +2767,12 @@
           "value": "import"
         },
         {
-          "type": "SYMBOL",
-          "name": "module_path"
+          "type": "FIELD",
+          "name": "module_path",
+          "content": {
+            "type": "SYMBOL",
+            "name": "module_path"
+          }
         },
         {
           "type": "CHOICE",
@@ -2781,8 +2785,12 @@
                   "value": "as"
                 },
                 {
-                  "type": "SYMBOL",
-                  "name": "module_alias"
+                  "type": "FIELD",
+                  "name": "module_alias",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "module_alias"
+                  }
                 }
               ]
             },

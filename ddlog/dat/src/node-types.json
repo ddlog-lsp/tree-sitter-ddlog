@@ -1714,20 +1714,27 @@
   {
     "type": "import",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "module_alias",
-          "named": true
-        },
-        {
-          "type": "module_path",
-          "named": true
-        }
-      ]
+    "fields": {
+      "module_alias": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "module_alias",
+            "named": true
+          }
+        ]
+      },
+      "module_path": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "module_path",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
