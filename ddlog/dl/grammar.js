@@ -383,7 +383,8 @@ module.exports = grammar({
 
     ident_upper_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*::)*[A-Z][a-zA-Z0-9_]*/,
 
-    import: $ => seq("import", $.module_path, optional(seq("as", $.module_alias))),
+    import: $ =>
+      seq("import", field("module_path", $.module_path), optional(seq("as", field("module_alias", $.module_alias)))),
 
     index: $ =>
       seq(
