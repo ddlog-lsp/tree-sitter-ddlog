@@ -66,15 +66,22 @@
   {
     "type": "arg",
     "named": true,
-    "fields": {},
+    "fields": {
+      "identifier": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name_arg",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
-        {
-          "type": "name_arg",
-          "named": true
-        },
         {
           "type": "type_atom",
           "named": true
@@ -570,17 +577,24 @@
   {
     "type": "exp_binding",
     "named": true,
-    "fields": {},
+    "fields": {
+      "identifier": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name_var_term",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
           "type": "exp",
-          "named": true
-        },
-        {
-          "type": "name_var_term",
           "named": true
         }
       ]
@@ -1126,17 +1140,24 @@
   {
     "type": "exp_match_arm",
     "named": true,
-    "fields": {},
+    "fields": {
+      "pattern": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "pat",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
           "type": "exp",
-          "named": true
-        },
-        {
-          "type": "pat",
           "named": true
         }
       ]
@@ -2685,15 +2706,22 @@
   {
     "type": "statement_match_arm",
     "named": true,
-    "fields": {},
+    "fields": {
+      "pattern": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "pat",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
-        {
-          "type": "pat",
-          "named": true
-        },
         {
           "type": "statement",
           "named": true
