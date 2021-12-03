@@ -1299,6 +1299,25 @@
           "named": true
         },
         {
+          "type": "exp_match_arm",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "exp_match_arm",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "exp",
+          "named": true
+        },
+        {
           "type": "pat",
           "named": true
         }
@@ -3041,6 +3060,21 @@
           "type": "exp",
           "named": true
         },
+        {
+          "type": "statement_match_arm",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "statement_match_arm",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
         {
           "type": "pat",
           "named": true
