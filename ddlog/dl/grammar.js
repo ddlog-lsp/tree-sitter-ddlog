@@ -73,7 +73,7 @@ module.exports = grammar({
         ")",
       ),
 
-    arg: $ => seq($.name_arg, ":", optional("mut"), $.type_atom),
+    arg: $ => seq(field("identifier", $.name_arg), ":", optional("mut"), $.type_atom),
 
     arg_opt_type: $ => seq($.name_arg, optional(seq(":", optional("mut"), $.type_atom))),
 
@@ -198,7 +198,7 @@ module.exports = grammar({
 
     exp_assign: $ => prec(3, seq($.exp, "=", $.exp)),
 
-    exp_binding: $ => prec(2, seq($.name_var_term, "@", $.exp)),
+    exp_binding: $ => prec(2, seq(field("identifier", $.name_var_term), "@", $.exp)),
 
     exp_bit_and: $ => prec.left(9, seq($.exp, "&", $.exp)),
 
@@ -307,7 +307,7 @@ module.exports = grammar({
         "}",
       ),
 
-    exp_match_arm: $ => seq($.pat, "->", $.exp),
+    exp_match_arm: $ => seq(field("pattern", $.pat), "->", $.exp),
 
     exp_mul: $ => prec.left(14, seq($.exp, "*", $.exp)),
 
@@ -594,7 +594,7 @@ module.exports = grammar({
         "}",
       ),
 
-    statement_match_arm: $ => seq($.pat, "->", $.statement),
+    statement_match_arm: $ => seq(field("pattern", $.pat), "->", $.statement),
 
     string_quoted: $ =>
       seq(
