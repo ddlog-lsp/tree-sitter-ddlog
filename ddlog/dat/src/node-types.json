@@ -1299,7 +1299,7 @@
           "named": true
         },
         {
-          "type": "pat",
+          "type": "match_arm",
           "named": true
         }
       ]
@@ -2208,6 +2208,25 @@
     }
   },
   {
+    "type": "match_arm",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "exp",
+          "named": true
+        },
+        {
+          "type": "pat",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "modify",
     "named": true,
     "fields": {},
@@ -3042,11 +3061,7 @@
           "named": true
         },
         {
-          "type": "pat",
-          "named": true
-        },
-        {
-          "type": "statement",
+          "type": "match_arm",
           "named": true
         }
       ]

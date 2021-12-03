@@ -2091,21 +2091,8 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "pat"
-                    },
-                    {
-                      "type": "STRING",
-                      "value": "->"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "exp"
-                    }
-                  ]
+                  "type": "SYMBOL",
+                  "name": "match_arm"
                 },
                 {
                   "type": "REPEAT",
@@ -2117,21 +2104,8 @@
                         "value": ","
                       },
                       {
-                        "type": "SEQ",
-                        "members": [
-                          {
-                            "type": "SYMBOL",
-                            "name": "pat"
-                          },
-                          {
-                            "type": "STRING",
-                            "value": "->"
-                          },
-                          {
-                            "type": "SYMBOL",
-                            "name": "exp"
-                          }
-                        ]
+                        "type": "SYMBOL",
+                        "name": "match_arm"
                       }
                     ]
                   }
@@ -3389,6 +3363,23 @@
         }
       ]
     },
+    "match_arm": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "pat"
+        },
+        {
+          "type": "STRING",
+          "value": "->"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "exp"
+        }
+      ]
+    },
     "module_alias": {
       "type": "SYMBOL",
       "name": "ident"
@@ -4444,21 +4435,8 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "pat"
-                    },
-                    {
-                      "type": "STRING",
-                      "value": "->"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "statement"
-                    }
-                  ]
+                  "type": "SYMBOL",
+                  "name": "match_arm"
                 },
                 {
                   "type": "REPEAT",
@@ -4470,21 +4448,8 @@
                         "value": ","
                       },
                       {
-                        "type": "SEQ",
-                        "members": [
-                          {
-                            "type": "SYMBOL",
-                            "name": "pat"
-                          },
-                          {
-                            "type": "STRING",
-                            "value": "->"
-                          },
-                          {
-                            "type": "SYMBOL",
-                            "name": "statement"
-                          }
-                        ]
+                        "type": "SYMBOL",
+                        "name": "match_arm"
                       }
                     ]
                   }
