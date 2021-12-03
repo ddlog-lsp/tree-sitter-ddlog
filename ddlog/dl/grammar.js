@@ -297,15 +297,7 @@ module.exports = grammar({
     exp_lteq: $ => prec(10, seq($.exp, "<=", $.exp)),
 
     exp_match: $ =>
-      seq(
-        "match",
-        "(",
-        $.exp,
-        ")",
-        "{",
-        optional(seq(seq($.pat, "->", $.exp), repeat(seq(",", seq($.pat, "->", $.exp))), optional(","))),
-        "}",
-      ),
+      seq("match", "(", $.exp, ")", "{", optional(seq($.match_arm, repeat(seq(",", $.match_arm)), optional(","))), "}"),
 
     exp_mul: $ => prec.left(14, seq($.exp, "*", $.exp)),
 
@@ -464,6 +456,8 @@ module.exports = grammar({
 
     lit_vec: $ => seq("[", $.exp, repeat(seq(",", $.exp)), "]"),
 
+    match_arm: $ => seq($.pat, "->", $.exp),
+
     module_alias: $ => $.ident,
 
     module_path: $ => seq($.ident, repeat(seq("::", $.ident))),
@@ -582,15 +576,7 @@ module.exports = grammar({
     statement_insert: $ => $.atom,
 
     statement_match: $ =>
-      seq(
-        "match",
-        "(",
-        $.exp,
-        ")",
-        "{",
-        optional(seq(seq($.pat, "->", $.statement), repeat(seq(",", seq($.pat, "->", $.statement))), optional(","))),
-        "}",
-      ),
+      seq("match", "(", $.exp, ")", "{", optional(seq($.match_arm, repeat(seq(",", $.match_arm)), optional(","))), "}"),
 
     string_quoted: $ =>
       seq(
