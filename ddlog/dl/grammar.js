@@ -377,13 +377,13 @@ module.exports = grammar({
 
     ident_lower: $ => Pattern.ident_lower,
 
-    ident_lower_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*::)*[a-z_][a-zA-Z0-9_]*/,
+    ident_lower_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*\s*::\s*)*[a-z_][a-zA-Z0-9_]*/,
 
-    ident_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*::)*[a-zA-Z_][a-zA-Z0-9_]*/,
+    ident_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*\s*::\s*)*[a-zA-Z_][a-zA-Z0-9_]*/,
 
     ident_upper: $ => Pattern.ident_upper,
 
-    ident_upper_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*::)*[A-Z][a-zA-Z0-9_]*/,
+    ident_upper_scoped: $ => /([a-zA-Z_][a-zA-Z0-9_]*\s*::\s*)*[A-Z][a-zA-Z0-9_]*/,
 
     import: $ =>
       seq("import", field("module_path", $.module_path), optional(seq("as", field("module_alias", $.module_alias)))),
