@@ -28,9 +28,10 @@
     "test-ddlog-dl": "cd ddlog/dl && tree-sitter parse corpus/**/*.dl"
   },
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.21.0",
-    "eslint-config-prettier": "^8.1.0",
+    "@babel/core": "^7.16.7",
+    "@babel/eslint-parser": "^7.16.0",
+    "eslint": "^8.5.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.4.0",
     "tree-sitter-cli": "^0.20.0"
