@@ -410,46 +410,44 @@ module.exports = grammar({
     // NOTE: can there be an optional trailing comma?
     lit_map: $ => seq("[", $.exp, "->", $.exp, repeat(seq(",", $.exp, "->", $.exp)), "]"),
 
-    lit_num: $ => choice($.lit_num_branch_0, $.lit_num_branch_1),
+    lit_num: $ => choice($.lit_num_dec, $.lit_num_branch),
 
-    lit_num_branch_0: $ => prec.right(choice($.lit_num_dec, $.lit_num_float, $.lit_num_hex)),
-
-    lit_num_branch_1: $ =>
+    lit_num_branch: $ =>
       prec(
         18,
         seq(
           optional($.lit_num_dec),
           choice(
-            $.lit_num_branch_10,
-            $.lit_num_branch_11,
-            $.lit_num_branch_12,
-            $.lit_num_branch_13,
-            $.lit_num_branch_14,
-            $.lit_num_branch_15,
-            $.lit_num_branch_16,
-            $.lit_num_branch_17,
-            $.lit_num_branch_18,
+            $.lit_num_branch_0,
+            $.lit_num_branch_1,
+            $.lit_num_branch_2,
+            $.lit_num_branch_3,
+            $.lit_num_branch_4,
+            $.lit_num_branch_5,
+            $.lit_num_branch_6,
+            $.lit_num_branch_7,
+            $.lit_num_branch_8,
           ),
         ),
       ),
 
-    lit_num_branch_10: $ => seq("'b", $.lit_num_bin),
+    lit_num_branch_0: $ => seq("'b", $.lit_num_bin),
 
-    lit_num_branch_11: $ => seq("'d", $.lit_num_dec),
+    lit_num_branch_1: $ => seq("'d", $.lit_num_dec),
 
-    lit_num_branch_12: $ => seq("'f", $.lit_num_float),
+    lit_num_branch_2: $ => seq("'f", $.lit_num_float),
 
-    lit_num_branch_13: $ => seq("'h", $.lit_num_hex),
+    lit_num_branch_3: $ => seq("'h", $.lit_num_hex),
 
-    lit_num_branch_14: $ => seq("'o", $.lit_num_oct),
+    lit_num_branch_4: $ => seq("'o", $.lit_num_oct),
 
-    lit_num_branch_15: $ => seq("'sb", $.lit_num_bin),
+    lit_num_branch_5: $ => seq("'sb", $.lit_num_bin),
 
-    lit_num_branch_16: $ => seq("'sd", $.lit_num_dec),
+    lit_num_branch_6: $ => seq("'sd", $.lit_num_dec),
 
-    lit_num_branch_17: $ => seq("'sh", $.lit_num_hex),
+    lit_num_branch_7: $ => seq("'sh", $.lit_num_hex),
 
-    lit_num_branch_18: $ => seq("'so", $.lit_num_oct),
+    lit_num_branch_8: $ => seq("'so", $.lit_num_oct),
 
     lit_num_bin: $ => Pattern.lit_num_bin,
 
