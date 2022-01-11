@@ -2748,11 +2748,11 @@
     },
     "ident_lower_scoped": {
       "type": "PATTERN",
-      "value": "([a-zA-Z_][a-zA-Z0-9_]*::)*[a-z_][a-zA-Z0-9_]*"
+      "value": "([a-zA-Z_][a-zA-Z0-9_]*\\s*::\\s*)*[a-z_][a-zA-Z0-9_]*"
     },
     "ident_scoped": {
       "type": "PATTERN",
-      "value": "([a-zA-Z_][a-zA-Z0-9_]*::)*[a-zA-Z_][a-zA-Z0-9_]*"
+      "value": "([a-zA-Z_][a-zA-Z0-9_]*\\s*::\\s*)*[a-zA-Z_][a-zA-Z0-9_]*"
     },
     "ident_upper": {
       "type": "PATTERN",
@@ -2760,7 +2760,7 @@
     },
     "ident_upper_scoped": {
       "type": "PATTERN",
-      "value": "([a-zA-Z_][a-zA-Z0-9_]*::)*[A-Z][a-zA-Z0-9_]*"
+      "value": "([a-zA-Z_][a-zA-Z0-9_]*\\s*::\\s*)*[A-Z][a-zA-Z0-9_]*"
     },
     "import": {
       "type": "SEQ",
@@ -4079,41 +4079,28 @@
           }
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": ":-"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "rhs"
-                },
-                {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": ","
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "rhs"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "STRING",
+          "value": ":-"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "rhs"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "rhs"
+              }
+            ]
+          }
         },
         {
           "type": "SYMBOL",
