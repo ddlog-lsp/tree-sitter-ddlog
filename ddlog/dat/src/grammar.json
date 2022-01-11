@@ -3036,36 +3036,15 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "lit_num_branch_0"
+          "name": "lit_num_dec"
         },
         {
           "type": "SYMBOL",
-          "name": "lit_num_branch_1"
+          "name": "lit_num_branch"
         }
       ]
     },
-    "lit_num_branch_0": {
-      "type": "PREC_RIGHT",
-      "value": 0,
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "lit_num_dec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "lit_num_float"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "lit_num_hex"
-          }
-        ]
-      }
-    },
-    "lit_num_branch_1": {
+    "lit_num_branch": {
       "type": "PREC",
       "value": 18,
       "content": {
@@ -3088,46 +3067,46 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "lit_num_branch_10"
+                "name": "lit_num_branch_0"
               },
               {
                 "type": "SYMBOL",
-                "name": "lit_num_branch_11"
+                "name": "lit_num_branch_1"
               },
               {
                 "type": "SYMBOL",
-                "name": "lit_num_branch_12"
+                "name": "lit_num_branch_2"
               },
               {
                 "type": "SYMBOL",
-                "name": "lit_num_branch_13"
+                "name": "lit_num_branch_3"
               },
               {
                 "type": "SYMBOL",
-                "name": "lit_num_branch_14"
+                "name": "lit_num_branch_4"
               },
               {
                 "type": "SYMBOL",
-                "name": "lit_num_branch_15"
+                "name": "lit_num_branch_5"
               },
               {
                 "type": "SYMBOL",
-                "name": "lit_num_branch_16"
+                "name": "lit_num_branch_6"
               },
               {
                 "type": "SYMBOL",
-                "name": "lit_num_branch_17"
+                "name": "lit_num_branch_7"
               },
               {
                 "type": "SYMBOL",
-                "name": "lit_num_branch_18"
+                "name": "lit_num_branch_8"
               }
             ]
           }
         ]
       }
     },
-    "lit_num_branch_10": {
+    "lit_num_branch_0": {
       "type": "SEQ",
       "members": [
         {
@@ -3140,7 +3119,7 @@
         }
       ]
     },
-    "lit_num_branch_11": {
+    "lit_num_branch_1": {
       "type": "SEQ",
       "members": [
         {
@@ -3153,7 +3132,7 @@
         }
       ]
     },
-    "lit_num_branch_12": {
+    "lit_num_branch_2": {
       "type": "SEQ",
       "members": [
         {
@@ -3166,7 +3145,7 @@
         }
       ]
     },
-    "lit_num_branch_13": {
+    "lit_num_branch_3": {
       "type": "SEQ",
       "members": [
         {
@@ -3179,7 +3158,7 @@
         }
       ]
     },
-    "lit_num_branch_14": {
+    "lit_num_branch_4": {
       "type": "SEQ",
       "members": [
         {
@@ -3192,7 +3171,7 @@
         }
       ]
     },
-    "lit_num_branch_15": {
+    "lit_num_branch_5": {
       "type": "SEQ",
       "members": [
         {
@@ -3205,7 +3184,7 @@
         }
       ]
     },
-    "lit_num_branch_16": {
+    "lit_num_branch_6": {
       "type": "SEQ",
       "members": [
         {
@@ -3218,7 +3197,7 @@
         }
       ]
     },
-    "lit_num_branch_17": {
+    "lit_num_branch_7": {
       "type": "SEQ",
       "members": [
         {
@@ -3231,7 +3210,7 @@
         }
       ]
     },
-    "lit_num_branch_18": {
+    "lit_num_branch_8": {
       "type": "SEQ",
       "members": [
         {

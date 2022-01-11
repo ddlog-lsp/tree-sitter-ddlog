@@ -1735,11 +1735,62 @@
       "required": true,
       "types": [
         {
+          "type": "lit_num_branch",
+          "named": true
+        },
+        {
+          "type": "lit_num_dec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "lit_num_branch",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
           "type": "lit_num_branch_0",
           "named": true
         },
         {
           "type": "lit_num_branch_1",
+          "named": true
+        },
+        {
+          "type": "lit_num_branch_2",
+          "named": true
+        },
+        {
+          "type": "lit_num_branch_3",
+          "named": true
+        },
+        {
+          "type": "lit_num_branch_4",
+          "named": true
+        },
+        {
+          "type": "lit_num_branch_5",
+          "named": true
+        },
+        {
+          "type": "lit_num_branch_6",
+          "named": true
+        },
+        {
+          "type": "lit_num_branch_7",
+          "named": true
+        },
+        {
+          "type": "lit_num_branch_8",
+          "named": true
+        },
+        {
+          "type": "lit_num_dec",
           "named": true
         }
       ]
@@ -1754,15 +1805,7 @@
       "required": true,
       "types": [
         {
-          "type": "lit_num_dec",
-          "named": true
-        },
-        {
-          "type": "lit_num_float",
-          "named": true
-        },
-        {
-          "type": "lit_num_hex",
+          "type": "lit_num_bin",
           "named": true
         }
       ]
@@ -1773,72 +1816,6 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "lit_num_branch_10",
-          "named": true
-        },
-        {
-          "type": "lit_num_branch_11",
-          "named": true
-        },
-        {
-          "type": "lit_num_branch_12",
-          "named": true
-        },
-        {
-          "type": "lit_num_branch_13",
-          "named": true
-        },
-        {
-          "type": "lit_num_branch_14",
-          "named": true
-        },
-        {
-          "type": "lit_num_branch_15",
-          "named": true
-        },
-        {
-          "type": "lit_num_branch_16",
-          "named": true
-        },
-        {
-          "type": "lit_num_branch_17",
-          "named": true
-        },
-        {
-          "type": "lit_num_branch_18",
-          "named": true
-        },
-        {
-          "type": "lit_num_dec",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "lit_num_branch_10",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "lit_num_bin",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "lit_num_branch_11",
-    "named": true,
-    "fields": {},
-    "children": {
       "multiple": false,
       "required": true,
       "types": [
@@ -1850,7 +1827,7 @@
     }
   },
   {
-    "type": "lit_num_branch_12",
+    "type": "lit_num_branch_2",
     "named": true,
     "fields": {},
     "children": {
@@ -1865,7 +1842,7 @@
     }
   },
   {
-    "type": "lit_num_branch_13",
+    "type": "lit_num_branch_3",
     "named": true,
     "fields": {},
     "children": {
@@ -1880,7 +1857,7 @@
     }
   },
   {
-    "type": "lit_num_branch_14",
+    "type": "lit_num_branch_4",
     "named": true,
     "fields": {},
     "children": {
@@ -1895,7 +1872,7 @@
     }
   },
   {
-    "type": "lit_num_branch_15",
+    "type": "lit_num_branch_5",
     "named": true,
     "fields": {},
     "children": {
@@ -1910,7 +1887,7 @@
     }
   },
   {
-    "type": "lit_num_branch_16",
+    "type": "lit_num_branch_6",
     "named": true,
     "fields": {},
     "children": {
@@ -1925,7 +1902,7 @@
     }
   },
   {
-    "type": "lit_num_branch_17",
+    "type": "lit_num_branch_7",
     "named": true,
     "fields": {},
     "children": {
@@ -1940,7 +1917,7 @@
     }
   },
   {
-    "type": "lit_num_branch_18",
+    "type": "lit_num_branch_8",
     "named": true,
     "fields": {},
     "children": {
