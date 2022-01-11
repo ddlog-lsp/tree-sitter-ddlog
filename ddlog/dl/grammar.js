@@ -556,7 +556,7 @@ module.exports = grammar({
 
     rhs_inspect: $ => seq("Inspect", $.exp),
 
-    rule: $ => seq($.atom, repeat(seq(",", $.atom)), optional(seq(":-", $.rhs, repeat(seq(",", $.rhs)))), $.rule_end),
+    rule: $ => seq($.atom, repeat(seq(",", $.atom)), ":-", $.rhs, repeat(seq(",", $.rhs)), $.rule_end),
 
     statement: $ =>
       choice(
