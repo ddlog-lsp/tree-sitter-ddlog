@@ -28,7 +28,7 @@
     "test-ddlog-dl": "cd ddlog/dl && tree-sitter parse corpus/**/*.dl"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.7",
+    "@babel/core": "^7.17.12",
     "@babel/eslint-parser": "^7.16.0",
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.3.0",
